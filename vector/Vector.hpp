@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/20 19:50:19 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/20 20:52:03 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ namespace ft
 			// Constructors //
 			//////////////////
 
-			explicit vector()	// Base 
+			vector()	// Base 
 			{	c = NULL; size = 0;		}
 
-			explicit vector(size_t n, \
-							const T& val = 0)	// Fill [Узнать, почемy const]
+			explicit vector(size_t n, const T& val = 0)	// Fill [Узнать, почемy const]
 			{
 				c = alloc.allocate(n);
 				for (size_t i = 0; i < n; i++)
@@ -82,6 +81,9 @@ namespace ft
 					iterator()
 					{	current = NULL; index = 0;	}
 
+					iterator(const iterator &copy)
+					{	current = copy.current; index = copy.index;		}
+
 					iterator(ft::vector<T> *set_current, size_t set_index)
 					{	current = set_current; index = set_index;	}
 
@@ -106,6 +108,7 @@ namespace ft
 						++(*this);
 						return (tmp);	
 					}
+					
 					iterator operator--(int)
 					{	
 						iterator tmp = *this;
@@ -113,6 +116,71 @@ namespace ft
 						return (tmp);	
 					}
 
+					iterator &operator+(int i)
+					{
+						index += i;
+						return (*this);
+					}
+
+					iterator &operator-(int i)
+					{
+						index -= i;
+						return (*this);
+					}
+
+					bool operator==(iterator const &other)
+					{
+						if (current == other.current && index = other.index)
+							return (true);
+						return false;
+					}
+
+					bool operator!=(iterator const &other)
+					{
+						if (current == other.current && index = other.index)
+							return (false);
+						return true;
+					}
+
+					bool operator>(iterator const &other)
+					{
+						if (current > other.current)
+							return true;
+						else if (current == other.current && index > other.index)
+							return true;
+						else
+							return false;
+					}
+					
+					bool operator<(iterator const &other)
+					{
+						if (current < other.current)
+							return true;
+						else if (current == other.current && index < other.index)
+							return true;
+						else
+							return false;
+					}
+
+					bool operator<=(iterator const &other)
+					{
+						if (current < other.current)
+							return true;
+						else if (current == other.current && index <= other.index)
+							return true;
+						else
+							return false;
+					}
+
+					bool operator>=(iterator const &other)
+					{
+						if (current > other.current)
+							return true;
+						else if (current == other.current && index >= other.index)
+							return true;
+						else
+							return false;
+					}
 			};
 
 			iterator begin()
