@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/22 02:31:19 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/22 02:36:28 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ namespace ft
 				}
 				else
 				{
-					reserve(n);
+					if (n > space)
+						reserve(n);
 					for (size_t i = len; i < space; i++)
 						c[i] = val;
 					len = n;
@@ -109,7 +110,8 @@ namespace ft
 					c[i] = tmp[i];
 				space = n;
 			}
-
+			size_t capacity()
+			{	return (space);		}
 
 
 			class iterator
