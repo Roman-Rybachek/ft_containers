@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/21 21:20:42 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/22 02:31:19 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ namespace ft
 			vector(const vector<T>& copy)	// Copy
 			{
 				alloc = copy.alloc;
-				len = copy.sizelen;
-				c = alloc.allocate(len);
+				len = copy.len;
+				space = copy.space;
+				c = alloc.allocate(space);
 				for (size_t i = 0; i < len; i++)
 					c[i] = copy.c[i];
 			}
@@ -50,14 +51,15 @@ namespace ft
 				if (last < first)
 					throw std::exception();
 				len = last - first;
-				c = alloc.allocate(len);
+				space = len;
+				c = alloc.allocate(space);
 				for (size_t i = 0; i < len; i++)
 					c[i] = *(first + i);
 			}
 			~vector()
 			{
 				if (c != NULL)
-					alloc.deallocate(c, len);
+					alloc.deallocate(c, space);
 			}
 
 			T&	operator[](size_t index)
@@ -65,9 +67,10 @@ namespace ft
 			vector &operator=(const vector &copy)
 			{
 				if (c != NULL)
-					alloc.deallocate(c, len);
+					alloc.deallocate(c, space);
 				len = copy.len;
-				c = alloc.allocate(len);
+				space = copy.space;
+				c = alloc.allocate(space);
 				for(size_t i = 0; i < len; i++)
 					c[i] = copy.c[i];
 				return (*this);
@@ -79,21 +82,32 @@ namespace ft
 			{	return (-1 / sizeof(ft::vector<T>));	}
 			void resize (size_t n, const T& val = 0)
 			{
-				T		tmp[len];
-				
-				for (size_t i = 0; i < len; i++)
-					tmp[i] = c[i];
-				alloc.deallocate(c, len);
-				c = alloc.allocate(n);
-				for(size_t i = 0; i < len && i < n; i++)
-					c[i] = tmp[i];
-				for(size_t i = len; i < n; i++)
-					c[i] = val;
-				len = n;
+				if (n <= len)
+				{
+					for (size_t i = n; i < len; i++)
+						c[i] = 0;
+					return ;
+				}
+				else
+				{
+					reserve(n);
+					for (size_t i = len; i < space; i++)
+						c[i] = val;
+					len = n;
+				}
 			}
 			void reserve (size_t n)
 			{
-
+				if (n <= space)
+					return ;
+				if (n > max_size())
+					throw std::bad_alloc();
+				vector<T> tmp(*this);
+				alloc.deallocate(c, space);
+				c = alloc.allocate(n);
+				for (size_t i = 0; i < len; i++)
+					c[i] = tmp[i];
+				space = n;
 			}
 
 
