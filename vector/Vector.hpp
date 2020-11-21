@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/21 05:46:41 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/21 21:20:42 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,16 @@ namespace ft
 			Alloc	alloc;
 			T		*c;
 			size_t	len;
+			size_t	space;
 		public:
 			vector()	// Base 
-			{	c = NULL; len = 0;		}
+			{	c = NULL; len = 0;	space = 0;	}
 			explicit vector(size_t n, const T& val = 0)	// Fill [Узнать, почемy const]
 			{
 				c = alloc.allocate(n);
 				for (size_t i = 0; i < n; i++)
 					c[i] = val;
-				len = n;
+				len = n; space = n;
 			}
 			vector(const vector<T>& copy)	// Copy
 			{
@@ -90,6 +91,13 @@ namespace ft
 					c[i] = val;
 				len = n;
 			}
+			void reserve (size_t n)
+			{
+
+			}
+
+
+
 			class iterator
 			{
 				protected:
@@ -202,7 +210,6 @@ namespace ft
 					iterator &operator-=(int value)
 					{	index -= value; return (*this);		}
 			};
-
 
 			iterator begin()
 			{	return(iterator(this, 0));		}
