@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/22 03:21:52 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/22 04:08:59 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,16 +168,18 @@ namespace ft
 				else
 					resize(len + 1, val);
 			}
+			void pop_back()
+			{	c[len--] = 0;	}
 
 			class iterator
 			{
 				protected:
 					ft::vector<T>	*current;
-					int				index;
+					size_t				index;
 				public:
 					ft::vector<T> *getCurrent() const
 					{	return (current);	}
-					ft::vector<T> &getIndex() const
+					const size_t &getIndex() const
 					{	return (index);		}
 					iterator()
 					{	current = NULL; index = 0;	}
@@ -281,6 +283,21 @@ namespace ft
 					iterator &operator-=(int value)
 					{	index -= value; return (*this);		}
 			};
+
+			iterator insert (iterator position, const T& val)
+			{
+				if (position.getCurrent() != this || \
+					position.getIndex() > len || \
+					position.getIndex() < 0 || \
+					size() == 0)
+					throw std::exception();
+				reserve(len + 1);
+				for (size_t i = len; i != position.getIndex(); i--)
+					c[i] = c[i - 1];
+				c[position.getIndex()] = val;
+				len++;
+				return (iterator(this, position.getIndex()));
+			}
 
 			iterator begin()
 			{	return(iterator(this, 0));		}
