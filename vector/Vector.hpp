@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/22 06:05:22 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/22 11:35:56 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,6 +330,22 @@ namespace ft
 				for (long long i = (long long)position.getIndex() + n - 1; i >= (long long)position.getIndex(); i--)
 					c[i] = *(first + --n_copy);
 				len += n;
+			}
+			iterator erase (iterator position)
+			{
+				if (position.getIndex() >= len || position.getIndex() < 0)
+					throw std::exception();
+				for (size_t i = position.getIndex(); i < len - 1; i++)
+					c[i] = c[i + 1];
+				c[len - 1] = 0;
+				len -= 1;
+				return (position);
+			}
+			iterator erase (iterator first, iterator last)
+			{
+				// Устал... :(
+
+				
 			}
 			iterator begin()
 			{	return(iterator(this, 0));		}

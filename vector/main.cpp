@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/22 06:05:41 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/22 10:56:03 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,15 @@ class SimpleClass
 
 int		main(void)
 {
-	for (int j = 0; j < 7; j++)
-	{
-		ft::vector<int> a(7, 7);
-		// std::vector<int> b(10, 22);
-		// std::vector<int>::iterator bb = b.begin();
-		// std::vector<int>::iterator be = b.end();
-
-		ft::vector<int>::iterator it = a.begin();
-
-		it += j;
-		a.insert(it, (size_t)15, (int)44);
-		for (size_t i = 0; i < a.size(); i++)
-			std::cout << a[i] << " ";
-		std::cout << "\n";
-		it -= j;
-	}
-	
+	ft::vector<int> a(15, 7);
+	for (size_t i = 0; i < a.size(); i++)
+		a[i] = i;
+	ft::vector<int>::iterator it = a.begin();
+	it += 10;
+	a.erase(it);
+	a.erase(it);
+	a.erase(it);
+	for (size_t i = 0; i < a.size(); i++)
+		std::cout << a[i] << "\n";	
 	return (0);
 }
