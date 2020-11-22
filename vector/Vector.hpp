@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/22 02:36:28 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/22 03:21:52 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <memory>
 #include <cstdlib>
 #include <iostream>
+#include <exception>
 
 namespace ft
 {
@@ -112,7 +113,61 @@ namespace ft
 			}
 			size_t capacity()
 			{	return (space);		}
-
+			bool empty() const
+			{
+				if (len == 0)
+					return true;
+				return false;
+			}
+			T& at(size_t n)
+			{
+				if (n < 0 || n > len)
+					throw std::exception();
+				return (c[n]);
+			}
+			T& at(size_t n) const
+			{
+				if (n < 0 || n > len)
+					throw std::exception();
+				return (c[n]);
+			}
+			T& front()
+			{	return (c[0]);		}
+			T& front() const
+			{	return (c[0]);		}
+			T& back()
+			{	return (c[len - 1]);		}
+			T& back() const
+			{	return (c[len - 1]);		}
+			template <class TemplateIterator>
+			void assign(TemplateIterator &first, TemplateIterator &last)
+			{
+				if (c != NULL)
+					alloc.deallocate(c, space);
+				if (last < first)
+					throw std::exception();
+				len = last - first;
+				space = len;
+				c = alloc.allocate(space);
+				for (size_t i = 0; i < len; i++)
+					c[i] = *(first + i);
+			}
+			void assign(size_t n, const T& val = 0)
+			{
+				if (c != NULL)
+					alloc.deallocate(c, space);
+				c = alloc.allocate(n);
+				for (size_t i = 0; i < n; i++)
+					c[i] = val;
+				len = n; space = n;
+			}
+			void push_back (const T& val)
+			{
+				if (len < space)
+					c[len++] = val;
+				else
+					resize(len + 1, val);
+			}
 
 			class iterator
 			{
