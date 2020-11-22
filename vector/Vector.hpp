@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/22 11:35:56 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/22 18:58:39 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,9 +343,16 @@ namespace ft
 			}
 			iterator erase (iterator first, iterator last)
 			{
-				// Устал... :(
-
-				
+				if (last < first || last > end() || first < begin())
+					throw std::exception();
+				int n = last - first;
+				iterator it_end = end();
+				for (size_t i = first.getIndex(); i <= it_end.getIndex(); i++)
+					c[i] = c[i + n + 1];
+				for (size_t i = it_end.getIndex() - 1; i >= it_end.getIndex() -1 - n; i--)
+					c[i] = 0;
+				len -= n + 1;
+				return (first);
 			}
 			iterator begin()
 			{	return(iterator(this, 0));		}
