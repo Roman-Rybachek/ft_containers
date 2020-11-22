@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/22 18:58:39 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/22 19:22:57 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,6 +353,12 @@ namespace ft
 					c[i] = 0;
 				len -= n + 1;
 				return (first);
+			}
+			void swap (ft::vector<T>& x)
+			{
+				vector<T> tmp = *this;
+				*this = x;
+				x = tmp;
 			}
 			iterator begin()
 			{	return(iterator(this, 0));		}
