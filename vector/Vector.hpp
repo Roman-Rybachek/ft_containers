@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/22 19:22:57 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/22 20:03:30 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,6 +359,10 @@ namespace ft
 				vector<T> tmp = *this;
 				*this = x;
 				x = tmp;
+			}
+			void clear()
+			{
+				
 			}
 			iterator begin()
 			{	return(iterator(this, 0));		}
