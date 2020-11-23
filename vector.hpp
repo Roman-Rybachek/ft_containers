@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Vector.hpp                                         :+:      :+:    :+:   */
+/*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/23 04:45:21 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/24 01:00:07 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 
 namespace ft
 {
+	/*
+	** Что надо доделать?
+	** 1) Константный итератор, обратные итераторы
+	** 2) relations operators
+	** 3)
+	*/
+
 	template <typename T, typename Alloc = std::allocator<T> >
 	class vector
 	{	
@@ -64,6 +71,8 @@ namespace ft
 			}
 
 			T&	operator[](size_t index)
+			{return (c[index]);}
+			T&	operator[](size_t index) const
 			{return (c[index]);}
 			vector &operator=(const vector &copy)
 			{
@@ -169,7 +178,10 @@ namespace ft
 					resize(len + 1, val);
 			}
 			void pop_back()
-			{	c[len--] = 0;	}
+			{
+				if (len != 0)
+					c[--len] = 0;	
+			}
 
 			class iterator
 			{
@@ -284,7 +296,6 @@ namespace ft
 					{	index -= value; return (*this);		}
 			};
 
-
 			iterator insert (iterator position, const T& val)
 			{
 				if (position.getCurrent() != this || \
@@ -371,18 +382,85 @@ namespace ft
 			{	return(iterator(this, 0));		}
 			iterator end()
 			{	return(iterator(this, len));		}
+
+			friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			{
+				if (lhs.size() != rhs.size())
+					return false;
+				for (size_t i = 0; i < lhs.size(); i++)
+					if (lhs[i] != rhs[i])
+						return (false);
+				return true;
+			}
+			friend bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			{
+				if (lhs.size() == rhs.size())
+					return false;
+				for (size_t i = 0; i < lhs.size(); i++)
+					if (lhs[i] == rhs[i])
+						return (false);
+				return true;
+			}
+			friend bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			{
+				for (size_t i = 0; i < lhs.size(); i++)
+				{
+					if (lhs[i] > rhs[i])
+						return (true);
+					if (lhs.size() == rhs.size())
+						continue ;
+					if (i == rhs.size() - 1)
+						return (true);
+				}
+				return false;
+			}
+			friend bool operator< (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			{
+				for (size_t i = 0; i < rhs.size(); i++)
+				{
+					if (lhs[i] < rhs[i])
+						return (true);
+					if (lhs.size() == rhs.size())
+						continue ;
+					if (i == lhs.size() - 1)
+						return (true);
+				}
+				return false;
+			}
+			friend bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			{
+				for (size_t i = 0; i < rhs.size(); i++)
+				{
+					if (lhs[i] < rhs[i])
+						return (false);
+					if (lhs.size() == rhs.size())
+						continue ;
+					if (i == lhs.size() - 1)
+						return (false);
+				}
+				return true;
+			}
+			friend bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			{
+				for (size_t i = 0; i < lhs.size(); i++)
+				{
+					if (lhs[i] > rhs[i])
+						return (false);
+					if (lhs.size() == rhs.size())
+						continue ;
+					if (i == rhs.size() - 1)
+						return (false);
+				}
+				return true;
+			}
 	};
 
-	/*template <class T, class Alloc>
-	bool operator== (const typename ft::vector<T, Alloc>& lhs, const typename ft::vector<T, Alloc>& rhs)
+	template <class T, class Alloc>
+  	void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y)
 	{
-		if (lhs.size() == rhs.size())
-			return true;
-		typename ft::vector<T, Alloc>::iterator it_l = lhs.begin();
-		typename ft::vector<T, Alloc>::iterator it_r = rhs.begin();
-		for (size_t i = 0; i < lhs.size(); i++)
-			if (*(it_l + i) != *(it_r + i))
-				return false;
-		return true;
-	}*/
+		vector<T, Alloc> tmp = x;
+		x = y;
+		y = tmp;
+	}
+
 }

@@ -6,15 +6,15 @@
 #    By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/23 20:20:36 by jeldora           #+#    #+#              #
-#    Updated: 2020/11/19 13:54:39 by jeldora          ###   ########.fr        #
+#    Updated: 2020/11/23 22:04:10 by jeldora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC =		clang++
-NAME =		test
+NAME =		ft_containers
 FLAGS =		-Wall -Wextra -Werror -g -std=c++98 -o $(NAME)
 SRCS =		main.cpp 
-HEADERS =	Vector.hpp
+HEADERS =	vector.hpp stack.hpp
 
 all: $(NAME)
 
