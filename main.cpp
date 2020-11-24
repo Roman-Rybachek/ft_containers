@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/24 01:03:11 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/24 23:23:24 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@
 #include <list>
 #include "queue.hpp"
 
+
 int		main(void)
 {
-	ft::vector<int> v1(1, 4);
-	ft::vector<int> v2(1, 4);
-
-	std::cout << (v1 <= v2);
-	std::cout << (v1 >= v2);
+	ft::vector<int> a(5, 5);
 	
+	ft::iterator_vector<int> it = a.begin();
+	std::cout << *it;
 	return (0);
 }

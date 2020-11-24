@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/24 01:00:07 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/24 23:29:05 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,26 @@
 
 namespace ft
 {
-	/*
-	** Что надо доделать?
-	** 1) Константный итератор, обратные итераторы
-	** 2) relations operators
-	** 3)
-	*/
+
+
+	template <typename T>
+	class iterator_vector;
+
+/*
+	template <typename T>
+	class const_iterator_vector : public iterator_vector
+	{
+		public:
+			const_iterator_vector() : iterator_vector()
+			{}
+			const_iterator_vector(const iterator_vector &copy)
+			{	current = copy.current; index = copy.index;		}
+			const_iterator_vector(ft::vector<T> *set_current, size_t set_index)
+			{	current = set_current; index = set_index;	}
+			const T &operator*() const
+			{	return(current->c[index]);	}
+	};
+*/
 
 	template <typename T, typename Alloc = std::allocator<T> >
 	class vector
@@ -37,7 +51,7 @@ namespace ft
 		public:
 			vector()	// Base 
 			{	c = NULL; len = 0;	space = 0;	}
-			explicit vector(size_t n, const T& val = 0)	// Fill [Узнать, почемy const]
+			explicit vector(size_t n, const T& val = T())	// Fill [Узнать, почемy const]
 			{
 				c = alloc.allocate(n);
 				for (size_t i = 0; i < n; i++)
@@ -90,12 +104,13 @@ namespace ft
 			{	return len;		}
 			size_t max_size() const
 			{	return (-1 / sizeof(ft::vector<T>));	}
-			void resize (size_t n, const T& val = 0)
+			void resize (size_t n, const T& val = T())
 			{
 				if (n <= len)
 				{
 					for (size_t i = n; i < len; i++)
 						c[i] = 0;
+					len = n;
 					return ;
 				}
 				else
@@ -161,7 +176,7 @@ namespace ft
 				for (size_t i = 0; i < len; i++)
 					c[i] = *(first + i);
 			}
-			void assign(size_t n, const T& val = 0)
+			void assign(size_t n, const T& val = T())
 			{
 				if (c != NULL)
 					alloc.deallocate(c, space);
@@ -183,120 +198,23 @@ namespace ft
 					c[--len] = 0;	
 			}
 
-			class iterator
-			{
-				protected:
-					ft::vector<T>	*current;
-					size_t				index;
-				public:
-					ft::vector<T> *getCurrent() const
-					{	return (current);	}
-					const size_t &getIndex() const
-					{	return (index);		}
-					iterator()
-					{	current = NULL; index = 0;	}
-					iterator(const iterator &copy)
-					{	current = copy.current; index = copy.index;		}
-					iterator(ft::vector<T> *set_current, size_t set_index)
-					{	current = set_current; index = set_index;	}
-					T &operator*()
-					{	return(current->c[index]);		}
-					iterator &operator=(const iterator &copy)
-					{
-						current = copy.current;
-						index = copy.index;
-						return (*this);
-					}
-					iterator &operator++()
-					{	index++; return (*this);	}
-					iterator &operator--()
-					{	index--; return (*this);	}
-					iterator operator++(int)
-					{	
-						iterator tmp = *this;
-						++(*this);
-						return (tmp);	
-					}
-					iterator operator--(int)
-					{	
-						iterator tmp = *this;
-						--(*this);
-						return (tmp);	
-					}
-					iterator operator+(int i)
-					{
-						iterator tmp = iterator(*this);
-						tmp.index = index + i;
-						return (tmp);
-					}
-					iterator operator-(int i)
-					{
-						iterator tmp = iterator(*this);
-						tmp.index = index - i;
-						return (tmp);
-					}
-					int operator-(const iterator &other)
-					{
-						int result;
+					// class const_iterator_vector : public iterator_vector
+			// {
+			// 	public:
+			// 		const_iterator_vector() : iterator_vector() {}
+			// 		const_iterator_vector(const iterator_vector &copy)
+			// 		{
+			// 			current = copy.current;
+			// 			index = copy.index;
+			// 		}
+			// 		const_iterator_vector(ft::vector<T> *set_current, size_t set_index)
+			// 		{	current = set_current; index = set_index;	}
 
-						result = &(current->c[index]) - &(other.current->c[other.index]);
-						return (result);
-					}
-					bool operator==(iterator const &other)
-					{
-						if (current == other.current && index == other.index)
-							return (true);
-						return false;
-					}
-					bool operator!=(iterator const &other)
-					{
-						if (current == other.current && index == other.index)
-							return (false);
-						return true;
-					}
-					bool operator>(iterator const &other)
-					{
-						if (current > other.current)
-							return true;
-						else if (current == other.current && index > other.index)
-							return true;
-						else
-							return false;
-					}
-					bool operator<(iterator const &other)
-					{
-						if (current < other.current)
-							return true;
-						else if (current == other.current && index < other.index)
-							return true;
-						else
-							return false;
-					}
-					bool operator<=(iterator const &other)
-					{
-						if (current < other.current)
-							return true;
-						else if (current == other.current && index <= other.index)
-							return true;
-						else
-							return false;
-					}
-					bool operator>=(iterator const &other)
-					{
-						if (current > other.current)
-							return true;
-						else if (current == other.current && index >= other.index)
-							return true;
-						else
-							return false;
-					}
-					iterator &operator+=(int value)
-					{	index += value; return (*this);		}
-					iterator &operator-=(int value)
-					{	index -= value; return (*this);		}
-			};
+			// 		const T &operator*()
+			// 		{	return(current->c[index]);		}
+			// };
 
-			iterator insert (iterator position, const T& val)
+			iterator_vector<T> insert (iterator_vector<T> position, const T& val)
 			{
 				if (position.getCurrent() != this || \
 					position.getIndex() > len || \
@@ -308,9 +226,9 @@ namespace ft
 					c[i] = c[i - 1];
 				c[position.getIndex()] = val;
 				len++;
-				return (iterator(this, position.getIndex()));
+				return (iterator_vector<T>(this, position.getIndex()));
 			}
-			void insert (iterator position, size_t n, const T& val)
+			void insert (iterator_vector<T> position, size_t n, const T& val)
 			{
 				if (position.getCurrent() != this || \
 					position.getIndex() > len || \
@@ -325,7 +243,7 @@ namespace ft
 				len += n;
 			}
 			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last)
+			void insert (iterator_vector<T> position, InputIterator first, InputIterator last)
 			{
 				if (position.getCurrent() != this || \
 					position.getIndex() > len || \
@@ -343,7 +261,7 @@ namespace ft
 					c[i] = *(first + --n_copy);
 				len += n;
 			}
-			iterator erase (iterator position)
+			iterator_vector<T> erase (iterator_vector<T> position)
 			{
 				if (position.getIndex() >= len || position.getIndex() < 0)
 					throw std::exception();
@@ -353,12 +271,12 @@ namespace ft
 				len -= 1;
 				return (position);
 			}
-			iterator erase (iterator first, iterator last)
+			iterator_vector<T> erase (iterator_vector<T> first, iterator_vector<T> last)
 			{
 				if (last < first || last > end() || first < begin())
 					throw std::exception();
 				int n = last - first;
-				iterator it_end = end();
+				iterator_vector<T> it_end = end();
 				for (size_t i = first.getIndex(); i <= it_end.getIndex(); i++)
 					c[i] = c[i + n + 1];
 				for (size_t i = it_end.getIndex() - 1; i >= it_end.getIndex() -1 - n; i--)
@@ -378,10 +296,10 @@ namespace ft
 					c[i] = 0;
 				len = 0;
 			}
-			iterator begin()
-			{	return(iterator(this, 0));		}
-			iterator end()
-			{	return(iterator(this, len));		}
+			iterator_vector<T> begin()
+			{	return(iterator_vector<T>(this, 0));		}
+			iterator_vector<T> end()
+			{	return(iterator_vector<T>(this, len));		}
 
 			friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 			{
@@ -462,5 +380,118 @@ namespace ft
 		x = y;
 		y = tmp;
 	}
+	
+	template <typename T>
+	class iterator_vector
+	{
+		protected:
+			ft::vector<T>	*current;
+			size_t				index;
+		public:
+			ft::vector<T> *getCurrent() const
+			{	return (current);	}
+			const size_t &getIndex() const
+			{	return (index);		}
+			iterator_vector()
+			{	current = NULL; index = 0;	}
+			iterator_vector(const iterator_vector &copy)
+			{	current = copy.current; index = copy.index;		}
+			iterator_vector(ft::vector<T> *set_current, size_t set_index)
+			{	current = set_current; index = set_index;	}
+			virtual T &operator*()
+			{	return(current[index]);		}
+			iterator_vector &operator=(const iterator_vector &copy)
+			{
+				current = copy.current;
+				index = copy.index;
+				return (*this);
+			}
+			iterator_vector &operator++()
+			{	index++; return (*this);	}
+			iterator_vector &operator--()
+			{	index--; return (*this);	}
+			iterator_vector operator++(int)
+			{	
+				iterator_vector tmp = *this;
+				++(*this);
+				return (tmp);	
+			}
+			iterator_vector operator--(int)
+			{	
+				iterator_vector tmp = *this;
+				--(*this);
+				return (tmp);	
+			}
+			iterator_vector operator+(int i)
+			{
+				iterator_vector tmp = iterator_vector(*this);
+				tmp.index = index + i;
+				return (tmp);
+			}
+			iterator_vector operator-(int i)
+			{
+				iterator_vector tmp = iterator_vector(*this);
+				tmp.index = index - i;
+				return (tmp);
+			}
+			int operator-(const iterator_vector &other)
+			{
+				int result;
 
+				result = &(current[index]) - &(other.current[other.index]);
+				return (result);
+			}
+			bool operator==(iterator_vector const &other)
+			{
+				if (current == other.current && index == other.index)
+					return (true);
+				return false;
+			}
+			bool operator!=(iterator_vector const &other)
+			{
+				if (current == other.current && index == other.index)
+					return (false);
+				return true;
+			}
+			bool operator>(iterator_vector const &other)
+			{
+				if (current > other.current)
+					return true;
+				else if (current == other.current && index > other.index)
+					return true;
+				else
+					return false;
+			}
+			bool operator<(iterator_vector const &other)
+			{
+				if (current < other.current)
+					return true;
+				else if (current == other.current && index < other.index)
+					return true;
+				else
+					return false;
+			}
+			bool operator<=(iterator_vector const &other)
+			{
+				if (current < other.current)
+					return true;
+				else if (current == other.current && index <= other.index)
+					return true;
+				else
+					return false;
+			}
+			bool operator>=(iterator_vector const &other)
+			{
+				if (current > other.current)
+					return true;
+				else if (current == other.current && index >= other.index)
+					return true;
+				else
+					return false;
+			}
+			iterator_vector &operator+=(int value)
+			{	index += value; return (*this);		}
+			iterator_vector &operator-=(int value)
+			{	index -= value; return (*this);		}
+	};
 }
