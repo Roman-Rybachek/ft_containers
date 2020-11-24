@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/25 02:06:51 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/25 02:35:03 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ namespace ft
 					{	p = copy.p;	}
 					iterator(T *set_p)
 					{	p = set_p;	}
-					virtual T &operator*()
+					T &operator*()
 					{	return(*p);		}
 					iterator &operator=(const iterator &copy)
 					{
@@ -273,6 +273,106 @@ namespace ft
 					iterator &operator+=(int value)
 					{	p += value; return (*this);		}
 					iterator &operator-=(int value)
+					{	p -= value; return (*this);		}
+			};
+			class const_iterator
+			{
+				protected:
+					T *p;
+				public:
+					const_iterator()
+					{	p = NULL;		}
+					const_iterator(const const_iterator &copy)
+					{	p = copy.p;	}
+					const_iterator(const iterator &copy)
+					{	p = &(*copy);	}
+					const_iterator(T *set_p)
+					{	p = set_p;	}
+					const T &operator*() const
+					{	return(*p);		}
+					const_iterator &operator=(const const_iterator &copy)
+					{
+						p = copy.p;
+						return (*this);
+					}
+					const_iterator &operator++()
+					{	p++; return (*this);	}
+					const_iterator &operator--()
+					{	p--; return (*this);	}
+					const_iterator operator++(int)
+					{	
+						const_iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					const_iterator operator--(int)
+					{	
+						const_iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					const_iterator operator+(int i)
+					{
+						const_iterator tmp = const_iterator(*this);
+						tmp.p = p + i;
+						return (tmp);
+					}
+					const_iterator operator-(int i)
+					{
+						const_iterator tmp = const_iterator(*this);
+						tmp.index = p - i;
+						return (tmp);
+					}
+					int operator-(const const_iterator &other)
+					{
+						int result;
+
+						result = p - other.p;
+						return (result);
+					}
+					bool operator==(const_iterator const &other)
+					{
+						if (p == other.p)
+							return (true);
+						return false;
+					}
+					bool operator!=(const_iterator const &other)
+					{
+						if (p != other.p)
+							return (false);
+						return true;
+					}
+					bool operator>(const_iterator const &other)
+					{
+						if (p > other.p)
+							return true;
+						else
+							return false;
+					}
+					bool operator<(const_iterator const &other)
+					{
+						if (p < other.p)
+							return true;
+						else
+							return false;
+					}
+					bool operator<=(const_iterator const &other)
+					{
+						if (p <= other.p)
+							return true;
+						else
+							return false;
+					}
+					bool operator>=(const_iterator const &other)
+					{
+						if (p >= other.p)
+							return true;
+						else
+							return false;
+					}
+					const_iterator &operator+=(int value)
+					{	p += value; return (*this);		}
+					const_iterator &operator-=(int value)
 					{	p -= value; return (*this);		}
 			};
 
@@ -362,6 +462,10 @@ namespace ft
 			{	return(iterator(&c[0]));		}
 			iterator end()
 			{	return(iterator(&c[len]));		}
+			const_iterator begin() const
+			{	return(const_iterator(&c[0]));		}
+			const_iterator end() const
+			{	return(const_iterator(&c[len]));		}
 
 			friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 			{
