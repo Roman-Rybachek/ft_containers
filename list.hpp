@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 00:20:14 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/24 22:22:49 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/25 22:20:42 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,36 +26,33 @@ namespace ft
 				T				content;
 			}					t_elem;
 
-			t_elem 				*l;
+			t_elem 				*c;
 			size_t				len;
 			
 		public:
 			list ()
-			{	l = NULL; len = 0;	}
+			{	c = NULL; len = 0;	}
 			explicit list(size_t n, const T& val = int())
 			{
-				t_elem *tmp;
-
 				if (n == 0)
 				{
-					l = NULL;
+					c = NULL;
 					len = 0;
 					return ;
 				}
-				l = new t_elem;
-				l->content = val;
-				l->right = NULL;
-				l->left = NULL;
-				tmp = l;
+				c = new t_elem;
+				t_elem *tmp = c;
+				tmp->left = NULL;
+				tmp->right = NULL;
+				tmp->content = val;
 				for (size_t i = 0; i < n - 1; i++)
 				{
 					tmp->right = new t_elem;
-					tmp->right->content = val;
 					tmp->right->left = tmp;
-					tmp->right->right = NULL;
 					tmp = tmp->right;
+					tmp->content = val;
+					tmp->right = NULL;
 				}
-				len = n;
 			}
 	/*		template <class InputIterator>
 			list (InputIterator first, InputIterator last)
@@ -97,33 +94,37 @@ namespace ft
 					len++;
 				}
 			}*/
+			
 			class iterator
 			{
 				protected:
-					ft::list<T>			*current;
+					t_elem *p;
 				public:
-					ft::list<T> *getCurrent() const
-					{	return (current);	}
-					iterator()
-					{	current = NULL;		}
-					iterator(const iterator &copy)
-					{	current = copy.current; index = copy.index;		}
-					
-					iterator(ft::vector<T> *set_current, size_t set_index)
-					{	
-					current = set_current; index = set_index;	}
-					virtual T &operator*()
-					{	return(current->c[index]);		}
-					iterator &operator=(const iterator &copy)
+					iterator() //
+					{	p = NULL;		}
+					iterator(const iterator &copy)//
+					{	p = copy.p;	}
+					iterator(t_elem *set_p)//
+					{	p = set_p;	}
+					virtual	T &operator*()//
+					{	return(p->content);		}
+					iterator &operator=(const iterator &copy)//
 					{
-						current = copy.current;
-						index = copy.index;
+						p = copy.p;
 						return (*this);
 					}
-					iterator &operator++()
-					{	index++; return (*this);	}
-					iterator &operator--()
-					{	index--; return (*this);	}
+					iterator &operator++()//
+					{	
+						if (p->right != NULL)
+							p = p->right; 
+						return (*this);	
+					}
+					iterator &operator--()//
+					{
+						if (p->left != NULL)
+							p = p->left; 
+						return (*this);	
+					}
 					iterator operator++(int)
 					{	
 						iterator tmp = *this;
@@ -136,86 +137,26 @@ namespace ft
 						--(*this);
 						return (tmp);	
 					}
-					iterator operator+(int i)
-					{
-						iterator tmp = iterator(*this);
-						tmp.index = index + i;
-						return (tmp);
-					}
-					iterator operator-(int i)
-					{
-						iterator tmp = iterator(*this);
-						tmp.index = index - i;
-						return (tmp);
-					}
-					int operator-(const iterator &other)
-					{
-						int result;
-
-						result = &(current->c[index]) - &(other.current->c[other.index]);
-						return (result);
-					}
 					bool operator==(iterator const &other)
 					{
-						if (current == other.current && index == other.index)
+						if (p == other.p)
 							return (true);
 						return false;
 					}
 					bool operator!=(iterator const &other)
 					{
-						if (current == other.current && index == other.index)
+						if (p != other.p)
 							return (false);
 						return true;
 					}
-					bool operator>(iterator const &other)
-					{
-						if (current > other.current)
-							return true;
-						else if (current == other.current && index > other.index)
-							return true;
-						else
-							return false;
-					}
-					bool operator<(iterator const &other)
-					{
-						if (current < other.current)
-							return true;
-						else if (current == other.current && index < other.index)
-							return true;
-						else
-							return false;
-					}
-					bool operator<=(iterator const &other)
-					{
-						if (current < other.current)
-							return true;
-						else if (current == other.current && index <= other.index)
-							return true;
-						else
-							return false;
-					}
-					bool operator>=(iterator const &other)
-					{
-						if (current > other.current)
-							return true;
-						else if (current == other.current && index >= other.index)
-							return true;
-						else
-							return false;
-					}
-					iterator &operator+=(int value)
-					{	index += value; return (*this);		}
-					iterator &operator-=(int value)
-					{	index -= value; return (*this);		}
-				};
-
+			};	
 			T& front()
 			{
-				return (l->content);
+				return (c->content);
 			}
 			const T& front() const
 			{
-				return (l->content);
+				return (c->content);
 			}
 	};
 }
