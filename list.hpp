@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 00:20:14 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/26 00:22:53 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/26 00:46:18 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,14 +250,14 @@ namespace ft
 			T& back()
 			{
 				t_elem tmp = c;
-				while (tmp->right != null)
+				while (tmp->right != NULL)
 					tmp = tmp->right;
 				return (tmp->content);
 			}
 			const T& back() const
 			{
 				t_elem tmp = c;
-				while (tmp->right != null)
+				while (tmp->right != NULL)
 					tmp = tmp->right;
 				return (tmp->content);
 			}
@@ -278,6 +278,76 @@ namespace ft
 				while (tmp->right != NULL)
 					tmp = tmp->right;
 				return (const_iterator(tmp->right));
+			}
+
+			void push_front (const T& val)
+			{
+				c->left = new t_elem;
+				c->left->right = c;
+				c->left->content = val;
+				c->left->left = NULL;
+				c = c->left;
+				len++;
+			}
+			void pop_front()
+			{
+				if (c == NULL)
+					return ;
+				if (c->right != NULL)
+				{
+					c = c->right;
+					delete c->left;
+					c->left = NULL;
+					len--;
+					return ;
+				}
+				delete c;
+				c = NULL;
+				len--;
+			}
+			void push_back (const T& val)
+			{
+				t_elem tmp = c;
+				if (c == NULL)
+				{
+					c = new t_elem;
+					c->left = NULL;
+					c->right = NULL;
+					c->content = val;
+					len++;
+					return ;
+				}
+				while (tmp->right != NULL)
+					tmp = tmp->right;
+				tmp->right = new t_elem;
+				tmp->right->left = tmp;
+				tmp = tmp->right;
+				tmp->right = NULL;
+				tmp->content = val;
+				len++;
+			}
+			void pop_back (const T& val)
+			{
+				t_elem tmp = c;
+				if (c = NULL)
+					throw std::exception();
+				if (c->right == NULL)
+				{
+					delete c;
+					len--;
+					return ;
+				}
+				while (tmp->right->right != NULL)
+					tmp = tmp->right;
+				delete tmp->right;
+				len--;
+			}
+			void swap(list &copy)
+			{
+				ft::list<T> tmp;
+				tmp = *this;
+				*this = copy;
+				copy = tmp;
 			}
 	};
 }
