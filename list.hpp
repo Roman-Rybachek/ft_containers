@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 00:20:14 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/25 22:20:42 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/26 00:05:54 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace ft
 		public:
 			list ()
 			{	c = NULL; len = 0;	}
-			explicit list(size_t n, const T& val = int())
+			explicit list(size_t n, const T& val = T())
 			{
 				if (n == 0)
 				{
@@ -45,7 +45,7 @@ namespace ft
 				tmp->left = NULL;
 				tmp->right = NULL;
 				tmp->content = val;
-				for (size_t i = 0; i < n - 1; i++)
+				for (size_t i = 0; i < n; i++)
 				{
 					tmp->right = new t_elem;
 					tmp->right->left = tmp;
@@ -53,47 +53,75 @@ namespace ft
 					tmp->content = val;
 					tmp->right = NULL;
 				}
+				len = n;
 			}
-	/*		template <class InputIterator>
+			template <class InputIterator>
 			list (InputIterator first, InputIterator last)
 			{
-				t_elem *tmp = l;
-
-				tmp = alloc.allocate(sizeof(t_elem));
-				tmp->content = *first;
-				tmp->left = NULL;
+				if (last < first)
+					throw std::exception();
+				size_t n = last - first;
+				if (n == 0)
+				{	len = 0; c = NULL;	return ;}
+				c = new t_elem;
+				t_elem *tmp = c;
 				tmp->right = NULL;
-				for (InputIterator i = first + 1; i < last; i++)
+				tmp->left = NULL;
+				tmp->content = *first;
+				for (size_t i = 1; i < n + 1; i++)
 				{
-					tmp->right = alloc.allocate(sizeof(t_elem));
+					tmp->right = new t_elem;
 					tmp->right->left = tmp;
-					tmp->right->right = NULL;
-					tmp->right->content = *i;
 					tmp = tmp->right;
+					tmp->right = NULL;
+					if (i == n)
+						tmp->content = 0;
+					else
+						tmp->content = first + n;
+				}
+				len = n;	
+			}
+			list(const list& copy)
+			{
+				len = copy.len;
+				const_iterator it = copy.begin();
+				c = new t_elem;
+				t_elem *tmp = c;
+				tmp->right = NULL;
+				tmp->left = NULL;
+				tmp->content = *it;
+				for (size_t i = 1; i < len; i++)
+				{
+					tmp->right = new t_elem;
+					tmp->right->left = tmp;
+					tmp = tmp->right;
+					tmp->right = NULL;
+					tmp->content = *(it + i);
 				}
 			}
-			list (const list& x)
+			~list()
 			{
-				if (!x)
-					throw std::exception();
-				l = alloc.allocate(sizeof(t_elem));
-				t_elem *tmp = l;
-				t_elem &param = x;
-				tmp->content = param.content;
-				tmp->left = NULL;
-				tmp->right = NULL;
-				len = 1;
-				while (param.right != NULL)
+				if (c == NULL)
+					return ;
+				t_elem *tmp = c;
+				while (tmp->right != NULL)
 				{
-					param = *param.right;
-					tmp->right = alloc.allocate(sizeof(t_elem));
-					tmp->right->content = param.content;
-					tmp->right->left = tmp;
-					tmp->right->right = NULL;
 					tmp = tmp->right;
-					len++;
+					delete c;
+					c = tmp;
 				}
-			}*/
+			}
+			
+			bool empty() const
+			{
+				if (len == 0)
+					return true;
+				return false;
+			}
+			size_t size() const
+			{	return (len);	}
+			size_t max_size() const
+			{	return (-1 / sizeof(t_elem) / 2);	}
 			
 			class iterator
 			{
@@ -116,13 +144,15 @@ namespace ft
 					iterator &operator++()//
 					{	
 						if (p->right != NULL)
-							p = p->right; 
+							std::exception();
+						p = p->right;  
 						return (*this);	
 					}
 					iterator &operator--()//
 					{
 						if (p->left != NULL)
-							p = p->left; 
+							std::exception();
+						p = p->left; 
 						return (*this);	
 					}
 					iterator operator++(int)
@@ -149,6 +179,65 @@ namespace ft
 							return (false);
 						return true;
 					}
+			};
+			class const_iterator : public iterator
+			{
+				protected:
+					t_elem *p;
+				public:
+					const_iterator() : iterator()
+					{	p = NULL;		}
+					const_iterator(const iterator &copy) : iterator(copy)
+					{	p = iterator::p;	}
+					const_iterator(const const_iterator &copy) : iterator(copy)
+					{	p = copy.p;	}
+					const_iterator(t_elem *set_p) : iterator(set_p)
+					{	p = set_p;	}
+					const T &operator*() const
+					{	return(p->content);		}
+					const_iterator &operator=(const const_iterator &copy)//
+					{
+						p = copy.p;
+						return (*this);
+					}
+					const_iterator &operator++()//
+					{	
+						if (p->right != NULL)
+							std::exception();
+						p = p->right;  
+						return (*this);	
+					}
+					const_iterator &operator--()//
+					{
+						if (p->left != NULL)
+							std::exception();
+						p = p->left; 
+						return (*this);	
+					}
+					const_iterator operator++(int)
+					{	
+						const_iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					const_iterator operator--(int)
+					{	
+						const_iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					bool operator==(const_iterator const &other)
+					{
+						if (p == other.p)
+							return (true);
+						return false;
+					}
+					bool operator!=(const_iterator const &other)
+					{
+						if (p != other.p)
+							return (false);
+						return true;
+					}
 			};	
 			T& front()
 			{
@@ -158,5 +247,24 @@ namespace ft
 			{
 				return (c->content);
 			}
+			iterator begin()
+			{	return (iterator(c));	}
+			iterator end()
+			{
+				t_elem tmp = c;
+				while (tmp->right != NULL)
+					tmp = tmp->right;
+				return (iterator(tmp->right));
+			}
+			const_iterator begin() const
+			{	return (const_iterator(c));	}
+			const_iterator end() const
+			{
+				t_elem tmp = c;
+				while (tmp->right != NULL)
+					tmp = tmp->right;
+				return (const_iterator(tmp->right));
+			}
+
 	};
 }

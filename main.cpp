@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/25 22:03:15 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/26 00:05:10 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@
 
 int		main(void)
 {
-	ft::list<int> a(5, 3);
-
+	std::list<int> a;
+	ft::list<int> b;
+	std::cout << a.max_size() << " " << b.max_size();
+	
 	return (0);
 }

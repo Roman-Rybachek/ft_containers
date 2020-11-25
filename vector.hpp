@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/25 04:09:40 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/26 00:02:53 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ namespace ft
 			size_t size() const
 			{	return len;		}
 			size_t max_size() const
-			{	return (-1 / sizeof(ft::vector<T>));	}
+			{	return (-1 / sizeof(T) / 2);	}
 			void resize (size_t n, const T& val = T())
 			{
 				if (n <= len)
