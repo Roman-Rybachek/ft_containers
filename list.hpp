@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 00:20:14 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/26 00:46:18 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/26 00:49:26 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,10 +326,10 @@ namespace ft
 				tmp->content = val;
 				len++;
 			}
-			void pop_back (const T& val)
+			void pop_back ()
 			{
 				t_elem tmp = c;
-				if (c = NULL)
+				if (c == NULL)
 					throw std::exception();
 				if (c->right == NULL)
 				{
