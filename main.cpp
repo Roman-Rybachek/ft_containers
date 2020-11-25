@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/25 03:10:48 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/25 04:06:15 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,9 @@ int		main(void)
 	a[3] = 12;
 	a[4] = 13;
 	//ft::vector<int>::iterator it = a.begin();
-	ft::vector<int>::const_iterator c_it = a.begin();
-	ft::vector<int>::const_iterator it = a.end() -1;
-	c_it += 3;
-	c_it = it;
-	c_it -= 1;
-	std::cout << *c_it << " ";
+	ft::vector<int>::iterator it = a.end();
+	ft::vector<int>::reverse_iterator r_it(it);
+	std::cout << *r_it << " ";
 
 	return (0);
 }

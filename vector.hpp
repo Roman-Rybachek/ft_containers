@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/25 03:10:32 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/25 04:09:40 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,6 +375,226 @@ namespace ft
 					const_iterator &operator-=(int value)
 					{	p -= value; return (*this);		}
 			};
+			class reverse_iterator
+			{
+				protected:
+					iterator it;
+				public:
+					reverse_iterator(){}
+					explicit reverse_iterator (iterator set_it)
+					{	it = set_it;	}
+					reverse_iterator(const reverse_iterator& copy)
+					{	it = copy.it;	}
+					T &operator*()
+					{	return(*it);		}
+					reverse_iterator &operator++()
+					{	it--; return (*this);	}
+					reverse_iterator &operator--()
+					{	it++; return (*this);	}
+					reverse_iterator operator++(int)
+					{	
+						reverse_iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					reverse_iterator operator--(int)
+					{	
+						reverse_iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					reverse_iterator operator+(int i)
+					{
+						reverse_iterator tmp = reverse_iterator(*this);
+						tmp.p = it - i;
+						return (tmp);
+					}
+					reverse_iterator operator-(int i)
+					{
+						reverse_iterator tmp = reverse_iterator(*this);
+						tmp.p = it + i;
+						return (tmp);
+					}
+					int operator-(const reverse_iterator &other)
+					{
+						int result;
+
+						result = it + other.it;
+						return (result);
+					}
+					bool operator==(reverse_iterator const &other)
+					{
+						if (it == other.it)
+							return (true);
+						return false;
+					}
+					bool operator!=(reverse_iterator const &other)
+					{
+						if (it != other.it)
+							return (false);
+						return true;
+					}
+					bool operator>(reverse_iterator const &other)
+					{
+						if (it < other.it)
+							return true;
+						else
+							return false;
+					}
+					bool operator<(reverse_iterator const &other)
+					{
+						if (it > other.it)
+							return true;
+						else
+							return false;
+					}
+					bool operator<=(reverse_iterator const &other)
+					{
+						if (it >= other.it)
+							return true;
+						else
+							return false;
+					}
+					bool operator>=(reverse_iterator const &other)
+					{
+						if (it <= other.it)
+							return true;
+						else
+							return false;
+					}
+					reverse_iterator &operator+=(int value)
+					{	it -= value; return (*this);		}
+					reverse_iterator &operator-=(int value)
+					{	it += value; return (*this);		}
+					T* operator->() const
+					{	return(&(*it));	}
+					T& operator[](size_t n) const
+					{
+						return (*(it - n));
+					}
+					friend reverse_iterator operator+(size_t n, const reverse_iterator& rev_it)
+					{
+						reverse_iterator tmp(rev_it);
+						tmp.it -= n;
+						return (tmp);
+					}
+					friend reverse_iterator operator-(size_t n, const reverse_iterator& rev_it)
+					{
+						reverse_iterator tmp(rev_it);
+						tmp.it += n;
+						return (tmp);
+					}
+			};
+			class const_reverse_iterator
+			{
+				protected:
+					const_iterator it;
+				public:
+					const_reverse_iterator(){}
+					explicit const_reverse_iterator (const_iterator set_it)
+					{	it = set_it;	}
+					const_reverse_iterator(const const_reverse_iterator& copy)
+					{	it = copy.it;	}
+					const T &operator*() const
+					{	return(*it);		}
+					const_reverse_iterator &operator++()
+					{	it--; return (*this);	}
+					const_reverse_iterator &operator--()
+					{	it++; return (*this);	}
+					const_reverse_iterator operator++(int)
+					{	
+						const_reverse_iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					const_reverse_iterator operator--(int)
+					{	
+						const_reverse_iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					const_reverse_iterator operator+(int i)
+					{
+						const_reverse_iterator tmp = const_reverse_iterator(*this);
+						tmp.p = it - i;
+						return (tmp);
+					}
+					const_reverse_iterator operator-(int i)
+					{
+						const_reverse_iterator tmp = const_reverse_iterator(*this);
+						tmp.p = it + i;
+						return (tmp);
+					}
+					int operator-(const const_reverse_iterator &other)
+					{
+						int result;
+
+						result = it + other.it;
+						return (result);
+					}
+					bool operator==(const_reverse_iterator const &other)
+					{
+						if (it == other.it)
+							return (true);
+						return false;
+					}
+					bool operator!=(const_reverse_iterator const &other)
+					{
+						if (it != other.it)
+							return (false);
+						return true;
+					}
+					bool operator>(const_reverse_iterator const &other)
+					{
+						if (it < other.it)
+							return true;
+						else
+							return false;
+					}
+					bool operator<(const_reverse_iterator const &other)
+					{
+						if (it > other.it)
+							return true;
+						else
+							return false;
+					}
+					bool operator<=(const_reverse_iterator const &other)
+					{
+						if (it >= other.it)
+							return true;
+						else
+							return false;
+					}
+					bool operator>=(const_reverse_iterator const &other)
+					{
+						if (it <= other.it)
+							return true;
+						else
+							return false;
+					}
+					const_reverse_iterator &operator+=(int value)
+					{	it -= value; return (*this);		}
+					const_reverse_iterator &operator-=(int value)
+					{	it += value; return (*this);		}
+					T* operator->() const
+					{	return(&(*it));	}
+					T& operator[](size_t n) const
+					{
+						return (*(it - n));
+					}
+					friend const_reverse_iterator operator+(size_t n, const const_reverse_iterator& rev_it)
+					{
+						const_reverse_iterator tmp(rev_it);
+						tmp.it -= n;
+						return (tmp);
+					}
+					friend const_reverse_iterator operator-(size_t n, const const_reverse_iterator& rev_it)
+					{
+						const_reverse_iterator tmp(rev_it);
+						tmp.it += n;
+						return (tmp);
+					}
+			};
 
 			iterator insert (iterator position, const T& val)
 			{
@@ -466,6 +686,15 @@ namespace ft
 			{	return(const_iterator(&c[0]));		}
 			const_iterator end() const
 			{	return(const_iterator(&c[len]));		}
+
+			reverse_iterator rbegin()
+			{	return(reverse_iterator(end()));		}
+			reverse_iterator rend()
+			{	return(reverse_iterator(begin()));		}
+			const_reverse_iterator rbegin() const
+			{	return(const_reverse_iterator(end()));		}
+			const_reverse_iterator rend() const
+			{	return(const_iterator(begin()));		}
 
 			friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 			{
