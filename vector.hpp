@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/25 02:52:36 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/25 03:10:32 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ namespace ft
 					iterator operator-(int i)
 					{
 						iterator tmp = iterator(*this);
-						tmp.index = p - i;
+						tmp.p = p - i;
 						return (tmp);
 					}
 					int operator-(const iterator &other)
@@ -290,6 +290,90 @@ namespace ft
 					{	p = iterator::p;	}
 					const T &operator*() const
 					{	return(*p);		}
+					const_iterator &operator=(const const_iterator &copy)
+					{
+						p = copy.p;
+						return (*this);
+					}
+					const_iterator &operator++()
+					{	p++; return (*this);	}
+					const_iterator &operator--()
+					{	p--; return (*this);	}
+					const_iterator operator++(int)
+					{	
+						const_iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					const_iterator operator--(int)
+					{	
+						const_iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					const_iterator operator+(int i)
+					{
+						const_iterator tmp = const_iterator(*this);
+						tmp.p = p + i;
+						return (tmp);
+					}
+					const_iterator operator-(int i)
+					{
+						const_iterator tmp = const_iterator(*this);
+						tmp.index = p - i;
+						return (tmp);
+					}
+					int operator-(const const_iterator &other)
+					{
+						int result;
+
+						result = p - other.p;
+						return (result);
+					}
+					bool operator==(const_iterator const &other)
+					{
+						if (p == other.p)
+							return (true);
+						return false;
+					}
+					bool operator!=(const_iterator const &other)
+					{
+						if (p != other.p)
+							return (false);
+						return true;
+					}
+					bool operator>(const_iterator const &other)
+					{
+						if (p > other.p)
+							return true;
+						else
+							return false;
+					}
+					bool operator<(const_iterator const &other)
+					{
+						if (p < other.p)
+							return true;
+						else
+							return false;
+					}
+					bool operator<=(const_iterator const &other)
+					{
+						if (p <= other.p)
+							return true;
+						else
+							return false;
+					}
+					bool operator>=(const_iterator const &other)
+					{
+						if (p >= other.p)
+							return true;
+						else
+							return false;
+					}
+					const_iterator &operator+=(int value)
+					{	p += value; return (*this);		}
+					const_iterator &operator-=(int value)
+					{	p -= value; return (*this);		}
 			};
 
 			iterator insert (iterator position, const T& val)
