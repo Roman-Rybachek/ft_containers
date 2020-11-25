@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 00:20:14 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/26 00:05:54 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/26 00:22:53 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,20 @@ namespace ft
 			{
 				return (c->content);
 			}
+			T& back()
+			{
+				t_elem tmp = c;
+				while (tmp->right != null)
+					tmp = tmp->right;
+				return (tmp->content);
+			}
+			const T& back() const
+			{
+				t_elem tmp = c;
+				while (tmp->right != null)
+					tmp = tmp->right;
+				return (tmp->content);
+			}
 			iterator begin()
 			{	return (iterator(c));	}
 			iterator end()
@@ -265,6 +279,5 @@ namespace ft
 					tmp = tmp->right;
 				return (const_iterator(tmp->right));
 			}
-
 	};
 }
