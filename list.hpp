@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 00:20:14 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/26 00:49:26 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/26 03:25:57 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,5 +349,27 @@ namespace ft
 				*this = copy;
 				copy = tmp;
 			}
+			
+			iterator insert (iterator position, const value_type& val)
+			{
+				t_elem *tmp = c;
+
+				while (&tmp->content != &(*position) || tmp != NULL)
+					tmp = tmp->right;
+				t_elem *new_elem = new t_elem;
+				new_elem->content = val;
+				new_elem->right = tmp;
+				new_elem->left = tmp->left;
+				tmp->left->right = new_elem;
+				tmp->left = new_elem;
+				return (--position);
+			}
+			/*void insert (iterator position, size_type n, const value_type& val)
+			{
+				
+			}*/
+			/*template <class InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last);
+			*/
 	};
 }
