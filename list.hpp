@@ -6,11 +6,13 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/29 02:53:23 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/29 06:57:19 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
+#include <string>
+#include <typeinfo>
 
 namespace ft
 {
@@ -23,6 +25,7 @@ namespace ft
 				struct s_elem	*left;
 				struct s_elem	*right;
 				T				content;
+				bool			is_support;
 			}					t_elem;
 
 			size_t				length;
@@ -45,44 +48,38 @@ namespace ft
 					set_left->right = new_elem;
 				if (set_right != NULL)
 					set_right->left = new_elem;
+				new_elem->is_support = false;
 				return new_elem;
 			}
-            void                increaseLength(size_t delta = 1)
-            {
-                length += delta;
-                try
-				{
-					T conv = length;
-                    supp_elem->content = conv;
-				}
-                catch(...)
-                {}
-            }
+			void createSupportElement()
+			{
+				supp_elem = createElemet();
+				supp_elem->left = supp_elem;
+				supp_elem->right = supp_elem;
+				supp_elem->content = T();
+				supp_elem->is_support = true;
+			}
+			void                increaseLength(size_t delta = 1)
+			{
+				length += delta;
+			}
 			void                decreaseLength(size_t delta = 1)
-            {
-                length -= delta;
-                try
-				{
-					T conv = length;
-                    supp_elem->content = conv;
-				}
-                catch(...)
-                {}
-            }
+			{
+				length -= delta;
+			}
+
 		public:
 			list()
 			{	
 				first_elem = NULL; 
 				last_elem = NULL; 
 				length = 0;
-				supp_elem = createElemet();
-				supp_elem->left = supp_elem;
-				supp_elem->right = supp_elem;
-				supp_elem->content = 0;
+				createSupportElement();
 			}
 			explicit list(size_t n, const T& val = T())
 			{
 				length = 0;
+				createSupportElement();
 				for (size_t i = 0; i < n; i++)
 					push_back(val);
 			}
@@ -116,18 +113,18 @@ namespace ft
 			class iterator
 			{
 				protected:
-					t_elem *p;
+					t_elem	*p;
 				public:
 					const void* getAddr() const
 					{
 						return (p);
 					}
 					iterator() //
-					{	p = NULL;		}
+					{	p = NULL;}
 					iterator(const iterator &copy)//
-					{	p = copy.p;	}
+					{	p = copy.p;}
 					iterator(t_elem *set_p)//
-					{	p = set_p;	}
+					{	p = set_p;}
 					virtual	T &operator*()//
 					{	return(p->content);		}
 					iterator &operator=(const iterator &copy)//
@@ -170,6 +167,7 @@ namespace ft
 						return true;
 					}
 			};
+
 			iterator begin()
 			{	return (iterator(first_elem));	}
 			iterator end()
