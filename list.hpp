@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/29 01:08:31 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/29 02:53:23 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,13 @@ namespace ft
 			}					t_elem;
 
 			size_t				length;
-			t_elem				*c;
 			t_elem				*first_elem;
 			t_elem				*last_elem;
-			// создается один раз, хранит в себе длину листа. Указывает на первый и на последний элемент и наоборот
 			t_elem				*supp_elem; 
 			
 
-			t_elem				*createElemet(	const t_elem *set_left = NULL, \
-												const t_elem *set_right = NULL, \
+			t_elem				*createElemet(	t_elem *set_left = NULL, \
+												t_elem *set_right = NULL, \
 												const T&val = T())
 			{
 				t_elem *new_elem;
@@ -49,59 +47,132 @@ namespace ft
 					set_right->left = new_elem;
 				return new_elem;
 			}
-            void                increaseLength(const size_t& delta = 1)
+            void                increaseLength(size_t delta = 1)
             {
                 length += delta;
                 try
-                    supp_element->content = delta;
-                catch(const std::exception& e)
+				{
+					T conv = length;
+                    supp_elem->content = conv;
+				}
+                catch(...)
                 {}
             }
-			void                decreaseLength(const size_t& delta = 1)
+			void                decreaseLength(size_t delta = 1)
             {
                 length -= delta;
                 try
-                    supp_element->content = delta;
-                catch(const std::exception& e)
+				{
+					T conv = length;
+                    supp_elem->content = conv;
+				}
+                catch(...)
                 {}
             }
 		public:
 			list()
 			{	
-				c = NULL; 
 				first_elem = NULL; 
 				last_elem = NULL; 
 				length = 0;
 				supp_elem = createElemet();
+				supp_elem->left = supp_elem;
+				supp_elem->right = supp_elem;
 				supp_elem->content = 0;
+			}
+			explicit list(size_t n, const T& val = T())
+			{
+				length = 0;
+				for (size_t i = 0; i < n; i++)
+					push_back(val);
 			}
 			void push_back(const T& val)
 			{
-				if (c == NULL)
+				if (first_elem == NULL)
 				{
-					c = createElemet(supp_elem, supp_elem, val);
-					last_elem = c;
-					first_elem = c;
+					first_elem = createElemet(supp_elem, supp_elem, val);
+					last_elem = first_elem;
 				}
 				else
 				{
 					last_elem = createElemet(last_elem, supp_elem, val);
-					increaseLength();	
 				}
+				increaseLength();
 			}
 			void push_front(const T& val)
 			{
-				if (c == NULL)
+				if (first_elem == NULL)
 				{
-					c = createElemet(supp_elem, supp_elem, val);
-					last_elem = c;
-					first_elem = c;
+					first_elem = createElemet(supp_elem, supp_elem, val);
+					last_elem = first_elem;
 				}
 				else
 				{
 					first_elem = createElemet(supp_elem, first_elem, val);
-					increaseLength();	
 				}
+				increaseLength();	
 			}
+			
+			class iterator
+			{
+				protected:
+					t_elem *p;
+				public:
+					const void* getAddr() const
+					{
+						return (p);
+					}
+					iterator() //
+					{	p = NULL;		}
+					iterator(const iterator &copy)//
+					{	p = copy.p;	}
+					iterator(t_elem *set_p)//
+					{	p = set_p;	}
+					virtual	T &operator*()//
+					{	return(p->content);		}
+					iterator &operator=(const iterator &copy)//
+					{
+						p = copy.p;
+						return (*this);
+					}
+					iterator &operator++()//
+					{	
+						p = p->right;  
+						return (*this);	
+					}
+					iterator &operator--()//
+					{
+						p = p->left; 
+						return (*this);	
+					}
+					iterator operator++(int)
+					{	
+						iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					iterator operator--(int)
+					{	
+						iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					bool operator==(iterator const &other)
+					{
+						if (p == other.p)
+							return (true);
+						return false;
+					}
+					bool operator!=(iterator const &other)
+					{
+						if (p != other.p)
+							return (false);
+						return true;
+					}
+			};
+			iterator begin()
+			{	return (iterator(first_elem));	}
+			iterator end()
+			{	return (iterator(last_elem));	}
 	};
 }

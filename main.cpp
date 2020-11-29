@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/29 01:08:52 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/29 02:16:27 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <memory>
 #include <stack>
 #include <list>
+#include "list.hpp"
 
 int		main(void)
 {	
@@ -31,15 +32,13 @@ int		main(void)
 		добавялем элемент: в ссылку последнего элемента кладем новый элемент, и устанавливаем ссылку на него. У первого элемента обновляем ссылку на левый элемент.
 	*/
 
-	std::list<float> b((size_t)10, 5);
+	ft::list<std::string> b((size_t)10, "hello");
 	//a = b;
-	std::list<float>::iterator it = b.begin();
-    for (size_t i = 0; i < 20; i++)
+	ft::list<std::string>::iterator it = b.begin();
+    for (size_t i = 0; i < 30; i++)
     {
         std::cout << *it++ << " ";
     }
    
-    std::string str = "hello";
-    std::cout << str + 1 << " ";
 	return (0);
 }

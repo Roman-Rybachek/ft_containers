@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.hpp                                           :+:      :+:    :+:   */
+/*   list_old.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 00:20:14 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/27 04:18:54 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/29 01:42:01 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +155,14 @@ namespace ft
 					}
 					iterator &operator++()//
 					{	
-						if (p->right != NULL)
+						if (p->right == NULL)
 							std::exception();
 						p = p->right;  
 						return (*this);	
 					}
 					iterator &operator--()//
 					{
-						if (p->left != NULL)
+						if (p->left == NULL)
 							std::exception();
 						p = p->left; 
 						return (*this);	
