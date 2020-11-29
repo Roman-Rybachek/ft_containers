@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/29 06:57:19 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/29 09:30:44 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ namespace ft
 				new_elem->is_support = false;
 				return new_elem;
 			}
-			void createSupportElement()
+			void 				createSupportElement()
 			{
 				supp_elem = createElemet();
 				supp_elem->left = supp_elem;
@@ -79,10 +79,39 @@ namespace ft
 			explicit list(size_t n, const T& val = T())
 			{
 				length = 0;
+				first_elem = NULL;
+				last_elem = NULL;
 				createSupportElement();
 				for (size_t i = 0; i < n; i++)
 					push_back(val);
 			}
+			list (const list& copy)
+			{
+				length = 0;
+				first_elem = NULL;
+				last_elem = NULL;
+				createSupportElement();
+				if (copy.size() == 0)
+					return ;
+				for (const_iterator it = copy.begin(); it != copy.end(); it++)
+					push_back(*it);
+			}
+			template <class InputIterator>
+			list (InputIterator first, InputIterator last)
+			{
+				size_t n = last - first;
+				if (last - 1 < first)
+					throw std::exception();
+				first_elem = NULL;
+				last_elem = NULL;
+				length = 0;
+				createSupportElement();
+				for (size_t i = 0; i <= n - 1; i++)
+				{
+					push_back(*(first + i));
+				}
+			}
+			
 			void push_back(const T& val)
 			{
 				if (first_elem == NULL)
@@ -109,7 +138,23 @@ namespace ft
 				}
 				increaseLength();	
 			}
-			
+			void pop_back()
+			{
+				t_elem *tmp = last_elem;
+				last_elem = last_elem->left;
+				last_elem->right = supp_elem;
+				supp_elem->left = last_elem;
+				delete tmp;
+			}
+			void pop_front()
+			{
+				t_elem *tmp;
+				first_elem = first_elem->right;
+				first_elem->left = supp_elem;
+				supp_elem->right = first_elem;
+				delete tmp;
+			}
+
 			class iterator
 			{
 				protected:
@@ -163,14 +208,82 @@ namespace ft
 					bool operator!=(iterator const &other)
 					{
 						if (p != other.p)
-							return (false);
-						return true;
+							return (true);
+						return false;
 					}
 			};
+			class const_iterator : iterator
+			{
+				protected:
+					t_elem	*p;
+				public:
+					const void* getAddr() const
+					{
+						return (p);
+					}
+					const_iterator() //
+					{	p = NULL;}
+					const_iterator(const const_iterator &copy)//
+					{	p = copy.p;}
+					const_iterator(const iterator &copy) : iterator(copy)//
+					{	p = iterator::p;}
+					const_iterator(t_elem *set_p)//
+					{	p = set_p;}
+					T &operator*() const//
+					{	return(p->content);		}
+					const_iterator &operator=(const const_iterator &copy)//
+					{
+						p = copy.p;
+						return (*this);
+					}
+					const_iterator &operator++()//
+					{	
+						p = p->right;  
+						return (*this);	
+					}
+					const_iterator &operator--()//
+					{
+						p = p->left; 
+						return (*this);	
+					}
+					const_iterator operator++(int)
+					{	
+						const_iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					const_iterator operator--(int)
+					{	
+						const_iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					bool operator==(const_iterator const &other)
+					{
+						if (p == other.p)
+							return (true);
+						return false;
+					}
+					bool operator!=(const_iterator const &other)
+					{
+						if (p != other.p)
+							return (true);
+						return false;
+					}
+			};
+
+			size_t size() const
+			{
+				return length;
+			}
 
 			iterator begin()
 			{	return (iterator(first_elem));	}
 			iterator end()
-			{	return (iterator(last_elem));	}
+			{	return (iterator(supp_elem));	}
+			const_iterator begin() const
+			{	return (const_iterator(first_elem));	}
+			const_iterator end() const
+			{	return (const_iterator(supp_elem));	}
 	};
 }
