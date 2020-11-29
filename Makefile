@@ -6,7 +6,7 @@
 #    By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/23 20:20:36 by jeldora           #+#    #+#              #
-#    Updated: 2020/11/29 06:40:25 by jeldora          ###   ########.fr        #
+#    Updated: 2020/11/29 17:45:07 by jeldora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,4 +22,4 @@ $(NAME): $(SRCS) Makefile $(HEADERS)
 	@$(CC) $(FLAGS) $(SRCS)
 	#@./$(NAME)
 clean:
-	rm -f $(NAME)
+	rm -fr $(NAME) $(NAME).dSYM
