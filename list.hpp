@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/29 09:30:44 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/29 14:26:36 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,17 @@ namespace ft
 					push_back(*(first + i));
 				}
 			}
-			
+			list& operator= (const list& copy)
+			{
+				size_t s = size();
+				for (size_t i = 0; i < s; i++)
+					pop_back();
+				if (copy.size() == 0)
+					return ;
+				for (const_iterator it = copy.begin(); it != copy.end(); it++)
+					push_back(*it);
+				return *this;
+			}
 			void push_back(const T& val)
 			{
 				if (first_elem == NULL)
@@ -145,6 +155,7 @@ namespace ft
 				last_elem->right = supp_elem;
 				supp_elem->left = last_elem;
 				delete tmp;
+				decreaseLength();
 			}
 			void pop_front()
 			{
@@ -153,17 +164,13 @@ namespace ft
 				first_elem->left = supp_elem;
 				supp_elem->right = first_elem;
 				delete tmp;
+				decreaseLength();
 			}
 
 			class iterator
 			{
-				protected:
-					t_elem	*p;
 				public:
-					const void* getAddr() const
-					{
-						return (p);
-					}
+					t_elem	*p;
 					iterator() //
 					{	p = NULL;}
 					iterator(const iterator &copy)//
@@ -276,7 +283,70 @@ namespace ft
 			{
 				return length;
 			}
+			bool empty() const
+			{
+				if (length == 0)
+					return true;
+				return false;
+			}
+			size_t max_size() const
+			{
+				return (-1 / sizeof(t_elem));
+			}
 
+			T& front()
+			{
+				return first_elem->content;
+			}
+			T& front() const
+			{
+				return first_elem->content;
+			}
+			T& back()
+			{
+				return last_elem->content;
+			}
+			T& back() const
+			{
+				return last_elem->content;
+			}
+
+			void clear()
+			{
+				size_t s = size();
+				for (size_t i = 0; i < s; i++)
+					pop_back();
+			}
+			void assign (size_t n, const T& val)
+			{
+				clear();
+				for (size_t i = 0; i < n; i++)
+					push_back(val);
+			}
+			template <class InputIterator>
+			void assign (InputIterator first, InputIterator last)
+			{
+				clear();
+				size_t n = last - first;
+				if (last - 1 < first)
+					throw std::exception();
+				for (size_t i = 0; i <= n - 1; i++)
+					push_back(*(first + i));
+			}
+			iterator insert (iterator position, const T& val)
+			{
+				createElemet(position.p->left, position.p, val);
+				length++;
+				return (--position);
+			}
+			void insert (iterator position, size_t n, const T& val)
+			{
+				for (size_t i = 0; i < n; i++)
+				{
+					createElemet(position.p->left, position.p, val);
+					length++;
+				}
+			}
 			iterator begin()
 			{	return (iterator(first_elem));	}
 			iterator end()
