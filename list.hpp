@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/29 16:50:09 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/29 17:43:32 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,5 +397,19 @@ namespace ft
 				*this = other;
 				other = tmp;
 			}
+			void resize (size_t n, T val = T())
+			{
+				if (n < size())
+				{
+					while (n < size())
+						pop_back();
+				}
+				else if (n > size())
+				{
+					while (n > size())
+						push_back(val);
+				}
+			}
+			
 	};
 }
