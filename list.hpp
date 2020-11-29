@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/29 14:26:36 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/29 14:37:24 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,6 +347,18 @@ namespace ft
 					length++;
 				}
 			}
+			template <class InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last)
+			{
+				size_t n = last - first - 1;
+				if (last - 1 < first || last == first)
+					throw std::exception();
+				for (size_t i = 0; i <= n; i++)
+				{
+					createElemet(position.p->left, position.p, *(first + i));
+					length++;
+				}
+			}
 			iterator begin()
 			{	return (iterator(first_elem));	}
 			iterator end()
@@ -355,5 +367,6 @@ namespace ft
 			{	return (const_iterator(first_elem));	}
 			const_iterator end() const
 			{	return (const_iterator(supp_elem));	}
+
 	};
 }
