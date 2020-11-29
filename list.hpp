@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/29 14:37:24 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/29 16:50:09 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ namespace ft
 				for (size_t i = 0; i < s; i++)
 					pop_back();
 				if (copy.size() == 0)
-					return ;
+					return *this;
 				for (const_iterator it = copy.begin(); it != copy.end(); it++)
 					push_back(*it);
 				return *this;
@@ -359,6 +359,29 @@ namespace ft
 					length++;
 				}
 			}
+			iterator erase (iterator position)
+			{
+				t_elem *tmp = position.p;
+				position--;
+				tmp->left->right = tmp->right;
+				tmp->right->left = tmp->left;
+				delete tmp;
+				decreaseLength();
+				return (position);
+			}
+			iterator erase (iterator first, iterator last)
+			{
+				first.p->left->right = last.p;
+				last.p->left = first.p->left;
+				iterator it = first;
+				while (it != last)
+				{
+					delete (it.p);
+					it++;
+					decreaseLength();
+				}
+				return last;
+			}
 			iterator begin()
 			{	return (iterator(first_elem));	}
 			iterator end()
@@ -367,6 +390,12 @@ namespace ft
 			{	return (const_iterator(first_elem));	}
 			const_iterator end() const
 			{	return (const_iterator(supp_elem));	}
-
+			void swap(list &other)
+			{
+				list tmp;
+				tmp = *this;
+				*this = other;
+				other = tmp;
+			}
 	};
 }
