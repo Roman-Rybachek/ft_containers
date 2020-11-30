@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/30 04:08:50 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/30 06:02:35 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -480,5 +480,45 @@ namespace ft
 				last_elem = supp_elem->left;
 				length = getSize();
 			}	
+			void remove (const T& val)
+			{
+				iterator it = begin();
+				while (it != end())
+				{
+					if (*it == val)
+						it = erase(it);
+					it++;
+				}
+			}
+			template <class Predicate>
+			void remove_if (Predicate pred)
+			{
+				iterator it = begin();
+				while (it != end())
+				{
+					if (pred(it))
+						it = erase(it);
+					it++;
+				}
+			}
+			void reverse()
+			{
+				t_elem *tmp;
+				t_elem *tmp_supp_elem;
+
+				while (first_elem != supp_elem)
+				{
+					tmp = first_elem->right;
+					first_elem->right = first_elem->left;
+					first_elem->left = tmp;
+					tmp_supp_elem = first_elem;
+					first_elem = first_elem->left;
+				}
+				tmp = supp_elem->left;
+				supp_elem->left = supp_elem->right;
+				supp_elem->right = tmp;
+				first_elem = supp_elem->right->right;
+				last_elem = supp_elem->left;
+			}
 	};
 }
