@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/30 06:02:35 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/30 20:14:56 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -519,6 +519,16 @@ namespace ft
 				supp_elem->right = tmp;
 				first_elem = supp_elem->right->right;
 				last_elem = supp_elem->left;
+			}
+			void unique()
+			{
+				iterator tmp;
+				for (iterator it = begin(); it != end() ; it++)
+				{
+					tmp = (--it)++;
+					if (*tmp == *it && tmp != end())
+						it = erase(it);
+				}
 			}
 	};
 }

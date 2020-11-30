@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/30 06:02:22 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/30 20:16:02 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,19 @@
 
 int		main(void)
 {	
-	ft::list<int> l1((size_t)10, (int)0);
-	ft::list<int>::iterator it = l1.end();
-	for (size_t i = 1; i < l1.size() + 1; i++)
-	{
-		*it = i;
-		std::cout << *it << " ";
-		it++;
-	}
-	std::cout << "\n";
-	l1.reverse();
+	ft::list<int> l1((size_t)10, (int)5);
+	ft::list<int>::iterator it = l1.begin();
+	*it++ = 1;
+	*it++ = 1;
+	*it++ = 2;
+	*it++ = 2;
+	*it++ = 3;
+	*it++ = 3;
+	l1.unique();
 	it = l1.begin();
-	for (size_t i = 0; i < l1.size() + 3; i++)
+	for (size_t i = 0; i < l1.size(); i++)
 	{
 		std::cout << *it++ << " ";
 	}
-	std::cout << "\n" << *it;
 	return (0);
 }
