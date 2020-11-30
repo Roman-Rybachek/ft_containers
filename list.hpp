@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/29 17:43:32 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/30 03:19:05 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -411,5 +411,23 @@ namespace ft
 				}
 			}
 			
+			void splice(iterator position, list &other)
+			{
+				iterator last = --other.end();
+				iterator start = other.begin();
+
+
+				position.p->left->right = start.p;
+				start.p->left = position.p->left;
+
+				position.p->left = last.p;
+				last.p->right = position.p;
+				other.supp_elem->left = other.supp_elem;
+				other.supp_elem->right = other.supp_elem;
+				length += other.length;
+				other.length = 0;
+				first_elem = supp_elem->right;
+				last_elem = supp_elem->left;
+			}
 	};
 }

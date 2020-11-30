@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/29 16:50:47 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/30 03:22:45 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 int		main(void)
 {	
 	ft::list<int> l1((size_t)5, (int)3);
-	ft::list<int> l2((size_t)10, (int)4);
-	l1.swap(l2);
-	ft::list<int>::iterator it = l2.begin();
-
-	for (size_t i = 0; i < l2.size(); i++)
+	ft::list<int> l2((size_t)3, (int)4);
+	ft::list<int>::iterator it = l1.end();
+	l1.splice(it, l2);
+	it = l1.begin();
+	for (size_t i = 0; i < l1.size(); i++)
 	{
 		std::cout << *it++ << " ";
 	}
