@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/30 20:14:56 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/30 21:08:59 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -527,6 +527,18 @@ namespace ft
 				{
 					tmp = (--it)++;
 					if (*tmp == *it && tmp != end())
+						it = erase(it);
+				}
+			}
+			template <class BinaryPredicate>
+			void unique (BinaryPredicate binary_pred)
+			{
+				iterator tmp;
+				for (iterator it = begin(); it != end() ; it++)
+				{
+					tmp = --it;
+					it++;
+					if (binary_pred(*it, *tmp) && it != end())
 						it = erase(it);
 				}
 			}
