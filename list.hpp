@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/30 21:08:59 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/30 23:44:30 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ namespace ft
 	template < class T >
 	class list
 	{
+		public:
+			class iterator;
+
 		private:
 			typedef struct		s_elem
 			{
@@ -77,6 +80,26 @@ namespace ft
 					i++;
 				}
 				return (i);
+			}
+			t_elem *cutElem(iterator *iter, list &l)
+			{
+				iterator it = *iter++;
+				it.p->left->right = it.p->right;
+				it.p->right->left = it.p->left;
+				l.decreaseLength();
+				it.p->left = NULL;
+				it.p->right = NULL;
+				first_elem = supp_elem->right;
+				last_elem = supp_elem->left;
+				return it.p;
+			}
+			void pasteElem(t_elem *elem, iterator it, list &l)
+			{
+				it.p->right->left = elem;
+				elem->right = it.p->right;
+				it.p->right = elem;
+				elem->left = it.p;
+				l.increaseLength();
 			}
 		public:
 			list()
@@ -541,6 +564,23 @@ namespace ft
 					if (binary_pred(*it, *tmp) && it != end())
 						it = erase(it);
 				}
+			}
+			void merge (list& other)
+			{
+				iterator it_other = other.begin();
+				t_elem *cut_paste;
+
+				for (iterator it_this = begin(); it_this != end(); it_this++)
+				{
+					if (*it_other > *it_this)
+					{
+						other = *(other.right);
+						cut_paste = cutElem(&it_other, other);
+						pasteElem(cut_paste, it_this, *this);
+						it_this++;
+					}
+				}
+				this->splice(end(), other, it_other, other.end());
 			}
 	};
 }
