@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/30 03:19:05 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/11/30 04:01:45 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,17 @@ namespace ft
 			{
 				length -= delta;
 			}
-
+			size_t getSize()
+			{
+				t_elem *tmp = first_elem;
+				size_t i = 0;
+				while (tmp != supp_elem)
+				{
+					tmp = tmp->right;
+					i++;
+				}
+				return (i);
+			}
 		public:
 			list()
 			{	
@@ -416,7 +426,6 @@ namespace ft
 				iterator last = --other.end();
 				iterator start = other.begin();
 
-
 				position.p->left->right = start.p;
 				start.p->left = position.p->left;
 
@@ -428,6 +437,27 @@ namespace ft
 				other.length = 0;
 				first_elem = supp_elem->right;
 				last_elem = supp_elem->left;
+			}
+			void splice (iterator position, list& other, iterator i)
+			{
+				iterator last = --other.end();
+				iterator start = i;
+
+				start.p->left->right = other.supp_elem;
+				other.supp_elem->left = start.p->left;
+				other.last_elem = other.supp_elem->left;
+				other.first_elem = other.supp_elem->right;
+				
+				position.p->left->right = start.p;
+				start.p->left = position.p->left;
+
+				position.p->left = last.p;
+				last.p->right = position.p;
+
+				other.length = other.getSize();
+				first_elem = supp_elem->right;
+				last_elem = supp_elem->left;
+				length = getSize();
 			}
 	};
 }
