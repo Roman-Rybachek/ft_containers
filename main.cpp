@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/30 23:21:49 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/02 02:05:07 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int		main(void)
 	l1.push_back(1);
 	l1.push_back(3);
 	l1.push_back(5);
+	l1.push_back(6);
+	l1.push_back(1);
 	ft::list<int> l2;
 	l2.push_back(2);
 	l2.push_back(4);
@@ -33,6 +35,10 @@ int		main(void)
 	{
 		std::cout << *it << " ";
 	}
-
+	// ft::list<int>::iterator it = l1.begin();
+	// for (size_t i = 0; i < l1.size(); i++)
+	// {
+	// 	std::cout << *it++ << " ";
+	// }
 	return (0);
 }

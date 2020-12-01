@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/11/30 23:44:30 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/02 01:58:39 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ namespace ft
 			}
 			t_elem *cutElem(iterator *iter, list &l)
 			{
-				iterator it = *iter++;
+				iterator it = *iter;
+				(*iter)++;
 				it.p->left->right = it.p->right;
 				it.p->right->left = it.p->left;
 				l.decreaseLength();
@@ -484,6 +485,8 @@ namespace ft
 			}
 			void splice (iterator position, list& other, iterator first, iterator set_last)
 			{
+				if (first == other.supp_elem)
+					return ;
 				iterator last = --set_last;
 				iterator start = first;
 
@@ -574,7 +577,6 @@ namespace ft
 				{
 					if (*it_other > *it_this)
 					{
-						other = *(other.right);
 						cut_paste = cutElem(&it_other, other);
 						pasteElem(cut_paste, it_this, *this);
 						it_this++;
