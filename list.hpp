@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/02 01:58:39 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/02 02:14:04 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -576,6 +576,23 @@ namespace ft
 				for (iterator it_this = begin(); it_this != end(); it_this++)
 				{
 					if (*it_other > *it_this)
+					{
+						cut_paste = cutElem(&it_other, other);
+						pasteElem(cut_paste, it_this, *this);
+						it_this++;
+					}
+				}
+				this->splice(end(), other, it_other, other.end());
+			}
+			template <class Compare>
+			void merge (list& other, Compare comp)
+			{
+				iterator it_other = other.begin();
+				t_elem *cut_paste;
+
+				for (iterator it_this = begin(); it_this != end(); it_this++)
+				{
+					if (comp(*it_other, *it_this))
 					{
 						cut_paste = cutElem(&it_other, other);
 						pasteElem(cut_paste, it_this, *this);
