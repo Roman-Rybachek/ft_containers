@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/02 10:43:45 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/02 10:51:59 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -638,13 +638,12 @@ namespace ft
 				}
 			}
 
-			template <class T>
-			friend bool operator== (const list<T>& lhs, const list<T>& rhs)
+			friend bool operator== (const list& lhs, const list& rhs)
 			{
 				if (lhs.size() != rhs.size())
 					return false;
-				iterator il = lhs.begin();
-				iterator ir = rhs.begin();
+				const_iterator il = lhs.begin();
+				const_iterator ir = rhs.begin();
 				while (il != lhs.end())
 				{
 					if (*il++ != *ir++)
@@ -652,13 +651,12 @@ namespace ft
 				}
 				return true;
 			}
-			template <class T>
-			friend bool operator!= (const list<T>& lhs, const list<T>& rhs)
+			friend bool operator!= (const list& lhs, const list& rhs)
 			{
 				if (lhs.size() != rhs.size())
 					return true;
-				iterator il = lhs.begin();
-				iterator ir = rhs.begin();
+				const_iterator il = lhs.begin();
+				const_iterator ir = rhs.begin();
 				while (il != lhs.end())
 				{
 					if (*il++ != *ir++)
@@ -666,15 +664,14 @@ namespace ft
 				}
 				return false;
 			}
-			template <class T>
-			friend bool operator< (const list<T>& lhs, const list<T>& rhs)
+			friend bool operator< (const list& lhs, const list& rhs)
 			{
 				if (lhs.size() < rhs.size())
 					return true;
 				if (lhs.size() > rhs.size())
 					return false;
-				iterator il = lhs.begin();
-				iterator ir = rhs.begin();
+				const_iterator il = lhs.begin();
+				const_iterator ir = rhs.begin();
 				while (il != lhs.end())
 				{
 					if (*il++ < *ir++)
@@ -682,15 +679,14 @@ namespace ft
 				}
 				return false;
 			}
-			template <class T>
-			friend bool operator> (const list<T>& lhs, const list<T>& rhs)
+			friend bool operator> (const list& lhs, const list& rhs)
 			{
 				if (lhs.size() > rhs.size())
 					return true;
 				if (lhs.size() < rhs.size())
 					return false;
-				iterator il = lhs.begin();
-				iterator ir = rhs.begin();
+				const_iterator il = lhs.begin();
+				const_iterator ir = rhs.begin();
 				while (il != lhs.end())
 				{
 					if (*il++ > *ir++)
@@ -698,15 +694,14 @@ namespace ft
 				}
 				return false;
 			}
-			template <class T>
-			friend bool operator<= (const list<T>& lhs, const list<T>& rhs)
+			friend bool operator<= (const list& lhs, const list& rhs)
 			{
 				if (lhs.size() < rhs.size())
 					return true;
 				if (lhs.size() > rhs.size())
 					return false;
-				iterator il = lhs.begin();
-				iterator ir = rhs.begin();
+				const_iterator il = lhs.begin();
+				const_iterator ir = rhs.begin();
 				while (il != lhs.end())
 				{
 					if (*il++ < *ir++)
@@ -714,25 +709,31 @@ namespace ft
 				}
 				return true;
 			}
-			template <class T>
-			friend bool operator>= (const list<T>& lhs, const list<T>& rhs)
+			friend bool operator>= (const list& lhs, const list& rhs)
 			{
 				if (lhs.size() > rhs.size())
 					return true;
 				if (lhs.size() < rhs.size())
 					return false;
-				iterator il = lhs.begin();
-				iterator ir = rhs.begin();
+				const_iterator il = lhs.begin();
+				const_iterator ir = rhs.begin();
 				while (il != lhs.end())
 				{
 					if (*il++ > *ir++)
 						return true;
 				}
 				return true;
+			}
+			friend void swap (list& x, list& y)
+			{
+				list tmp;
+				tmp = x;
+				x = y;
+				y = tmp;
 			}
 	};
 }
 
 /*
-	Осталось сделать два риверсивных оператора, свап
+	Осталось сделать два риверсивных оператора
 */
