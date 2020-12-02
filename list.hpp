@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/02 10:51:59 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/02 11:20:42 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,66 @@ namespace ft
 						return false;
 					}
 			};
+
+			class reverse_iterator
+			{
+				private:
+					iterator it;
+				public:
+					reverse_iterator(){}
+					reverse_iterator(const reverse_iterator &copy)
+					{
+						it = copy.it;
+					}
+					reverse_iterator(iterator set_it)
+					{
+						it = set_it;
+					}
+					T &operator*()
+					{
+						return (*it);
+					}
+					reverse_iterator &operator=(const reverse_iterator &copy)
+					{
+						it = copy.it;
+						return (*this);
+					}
+					iterator &operator++()//
+					{	
+						it--;
+						return (*this);	
+					}
+					iterator &operator--()//
+					{
+						it++;
+						return (*this);	
+					}
+					iterator operator++(int)
+					{	
+						iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					iterator operator--(int)
+					{	
+						iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					bool operator==(iterator const &other)
+					{
+						if (it == other.it)
+							return (true);
+						return false;
+					}
+					bool operator!=(iterator const &other)
+					{
+						if (it != other.it)
+							return (true);
+						return false;
+					}
+			}; 
+			
 			class const_iterator : iterator
 			{
 				protected:
@@ -307,6 +367,64 @@ namespace ft
 					bool operator!=(const_iterator const &other)
 					{
 						if (p != other.p)
+							return (true);
+						return false;
+					}
+			};
+			class const_reverse_iterator
+			{
+				private:
+					const_iterator it;
+				public:
+					const_reverse_iterator(){}
+					const_reverse_iterator(const const_reverse_iterator &copy)
+					{
+						it = copy.it;
+					}
+					const_reverse_iterator(iterator set_it)
+					{
+						it = set_it;
+					}
+					T &operator*() const
+					{
+						return (*it);
+					}
+					const_reverse_iterator &operator=(const const_reverse_iterator &copy)
+					{
+						it = copy.it;
+						return (*this);
+					}
+					iterator &operator++()//
+					{	
+						it--;
+						return (*this);	
+					}
+					iterator &operator--()//
+					{
+						it++;
+						return (*this);	
+					}
+					iterator operator++(int)
+					{	
+						iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					iterator operator--(int)
+					{	
+						iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					bool operator==(iterator const &other)
+					{
+						if (it == other.it)
+							return (true);
+						return false;
+					}
+					bool operator!=(iterator const &other)
+					{
+						if (it != other.it)
 							return (true);
 						return false;
 					}
@@ -416,6 +534,22 @@ namespace ft
 			{	return (iterator(first_elem));	}
 			iterator end()
 			{	return (iterator(supp_elem));	}
+			reverse_iterator rbegin()
+			{
+				return reverse_iterator(iterator(last_elem));
+			}
+			reverse_iterator rend()
+			{
+				return reverse_iterator(iterator(supp_elem));
+			}
+			const_reverse_iterator rbegin() const
+			{
+				return const_reverse_iterator(const_iterator(last_elem));
+			}
+			const_reverse_iterator rend() const
+			{
+				return const_reverse_iterator(const_iterator(supp_elem));
+			}
 			const_iterator begin() const
 			{	return (const_iterator(first_elem));	}
 			const_iterator end() const
