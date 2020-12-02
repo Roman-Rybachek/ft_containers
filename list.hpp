@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/02 02:14:04 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/02 05:07:32 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -600,6 +600,47 @@ namespace ft
 					}
 				}
 				this->splice(end(), other, it_other, other.end());
+			}
+			void sort()
+			{
+				T tmp;
+				for (iterator i = ++begin(); i != end(); i++)
+				{
+					tmp = *i;
+					i--;
+					iterator j = i;
+					i++;
+					while (tmp < *j)
+					{
+						iterator z = j;
+						*(++z) = *j;
+						j--;
+					}
+					j++;
+					*j = tmp;
+					j--;
+				}
+			}
+			template <class Compare>
+			void sort(Compare comp)
+			{
+				T tmp;
+				for (iterator i = ++begin(); i != end(); i++)
+				{
+					tmp = *i;
+					i--;
+					iterator j = i;
+					i++;
+					while (comp(tmp, *j))
+					{
+						iterator z = j;
+						*(++z) = *j;
+						j--;
+					}
+					j++;
+					*j = tmp;
+					j--;
+				}
 			}
 	};
 }
