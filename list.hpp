@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/02 05:07:32 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/02 05:12:32 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,6 @@ namespace ft
 				delete tmp;
 				decreaseLength();
 			}
-
 			class iterator
 			{
 				public:
@@ -312,7 +311,6 @@ namespace ft
 						return false;
 					}
 			};
-
 			size_t size() const
 			{
 				return length;
@@ -327,7 +325,6 @@ namespace ft
 			{
 				return (-1 / sizeof(t_elem));
 			}
-
 			T& front()
 			{
 				return first_elem->content;
@@ -344,7 +341,6 @@ namespace ft
 			{
 				return last_elem->content;
 			}
-
 			void clear()
 			{
 				size_t s = size();
@@ -444,7 +440,6 @@ namespace ft
 						push_back(val);
 				}
 			}
-			
 			void splice(iterator position, list &other)
 			{
 				iterator last = --other.end();
@@ -644,3 +639,7 @@ namespace ft
 			}
 	};
 }
+
+/*
+	Осталось сделать два риверсивных оператора, операторы сравнения, свап
+*/
