@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/03 14:27:37 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/03 18:40:46 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace ft
 	template < class Key, class T, typename Compare = std::less<Key> >
 	class map
 	{
-		typedef std::pair<const Key, T> value_type;
+		typedef std::pair<Key, T> value_type;
 
 		private:
 			typedef struct			s_elem
@@ -31,6 +31,7 @@ namespace ft
 				value_type			content;
 			}						t_elem;
 
+			Compare					compare;
 			t_elem					*root;
 			size_t					length;
 			t_elem 					*newElem(	t_elem *parent = NULL, \
@@ -45,20 +46,23 @@ namespace ft
 				new_elem->content = content;
 				return new_elem;
 			}
-			t_elem *paste(t_elem *current, t_elem *parent, t_elem *new_elem)
+			t_elem *paste(t_elem **current, t_elem *parent, t_elem *new_elem)
 			{
-				if (current == NULL)
+				t_elem *ins_elem = NULL;
+
+				if (*current == NULL)
 				{
-					current = new_elem;
-					current->parent = parent;
+					*current = new_elem;
+					(*current)->parent = parent;
+					ins_elem = *current;
 				}
-				else if (Compare(current->content.first, new_elem->content.first))
-					paste(current->right, parent, new_elem);
-				else if (Compare(new_elem->content.first, current->content.first))
-					paste(current->left, parent, new_elem);
+				else if (compare((*current)->content.first, new_elem->content.first))
+					ins_elem = paste(&(*current)->right, parent, new_elem);
+				else if (compare(new_elem->content.first, (*current)->content.first))
+					ins_elem = paste(&(*current)->left, parent, new_elem);
 				else
-					return (current);
-				return (current);
+					return (ins_elem);
+				return (ins_elem);
 			}
 		public:
 			map()
@@ -101,6 +105,7 @@ namespace ft
 							elem = tmp->parent;
 							return *this;
 						}
+						return *this;
 					}
 					iterator &operator--()
 					{
@@ -124,6 +129,7 @@ namespace ft
 							elem = tmp->parent;
 							return *this;
 						}
+						return *this;
 					}
 					iterator operator++(int)
 					{	
@@ -146,6 +152,11 @@ namespace ft
 						if (elem->content.first != other.elem->content.first)
 							return true;
 						return false;
+					}
+					iterator &operator=(const iterator &copy)
+					{
+						elem = copy.elem;
+						return *this;
 					}
 			};
 			iterator begin()
@@ -174,7 +185,7 @@ namespace ft
 			std::pair<iterator, bool> insert (const value_type& val)
 			{
 				t_elem	*new_elem = newElem(NULL, NULL, NULL, val);
-				t_elem	*ins_elem = paste(root, NULL, new_elem);
+				t_elem	*ins_elem = paste(&root, NULL, new_elem);
 				bool	inserted;
 				if (new_elem == ins_elem)
 					inserted = true;
