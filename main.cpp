@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/02 10:51:23 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/03 14:20:04 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,24 @@
 #include <stack>
 #include <list>
 #include "list.hpp"
+#include "map.hpp"
+
 
 int		main(void)
 {	
-	ft::list<int> l1;
-	l1.push_back(5);
-	l1.push_back(4);
-	l1.push_back(9);
-	l1.push_back(2);
-	l1.push_back(1);
 
-	ft::list<int> l2;
-	l2.push_back(5);
-	l2.push_back(4);
-	l2.push_back(9);
-	l2.push_back(2);
-	l2.push_back(1);
 
-	if (l2 > l1)
-		std::cout << "gsdfgsdfg";
-
-	l1.sort();
-	for (ft::list<int>::iterator it = l1.begin(); it != l1.end(); it++)
+	ft::map<int, int> m;
+	m.insert(std::pair<int, int>(1, 11));
+	m.insert(std::pair<int, int>(2, 22));
+	m.insert(std::pair<int, int>(3, 33));
+	m.insert(std::pair<int, int>(4, 44));
+	m.insert(std::pair<int, int>(5, 55));
+	for (ft::map<int, int>::iterator i = m.begin(); i != m.end(); i++)
 	{
-		std::cout << *it << " ";
+		std::cout << (*i).first << " ";
 	}
-	// ft::list<int>::iterator it = l1.begin();
-	// for (size_t i = 0; i < l1.size(); i++)
-	// {
-	// 	std::cout << *it++ << " ";
-	// }
+	
+
 	return (0);
 }

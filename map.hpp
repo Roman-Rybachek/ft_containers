@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/03 13:38:23 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/03 14:27:37 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ namespace ft
 			}
 			t_elem *paste(t_elem *current, t_elem *parent, t_elem *new_elem)
 			{
-				if (current = NULL)
+				if (current == NULL)
 				{
 					current = new_elem;
 					current->parent = parent;
 				}
-				else if (value_type.first > current->content.first)
+				else if (Compare(current->content.first, new_elem->content.first))
 					paste(current->right, parent, new_elem);
-				else if (value_type.first < current->content.first)
+				else if (Compare(new_elem->content.first, current->content.first))
 					paste(current->left, parent, new_elem);
 				else
 					return (current);
@@ -94,7 +94,7 @@ namespace ft
 						t_elem *tmp = elem;
 						while (tmp->parent != NULL && tmp->parent->content.first < tmp->content.first) // Если это правый лист
 							tmp = elem->parent;
-						if (tmp->parent = NULL)
+						if (tmp->parent == NULL)
 							return *this;
 						else if (tmp->parent->content.first > tmp->content.first)
 						{
@@ -117,7 +117,7 @@ namespace ft
 						t_elem *tmp = elem;
 						while (tmp->parent != NULL && tmp->parent->content.first > tmp->content.first) // Если это левый лист
 							tmp = elem->parent;
-						if (tmp->parent = NULL)
+						if (tmp->parent == NULL)
 							return *this;
 						else if (tmp->parent->content.first < tmp->content.first)
 						{
@@ -125,9 +125,27 @@ namespace ft
 							return *this;
 						}
 					}
+					iterator operator++(int)
+					{	
+						iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					iterator operator--(int)
+					{	
+						iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
 					value_type &operator*()
 					{
 						return (elem->content);
+					}
+					bool operator!=(const iterator &other) const
+					{
+						if (elem->content.first != other.elem->content.first)
+							return true;
+						return false;
 					}
 			};
 			iterator begin()
