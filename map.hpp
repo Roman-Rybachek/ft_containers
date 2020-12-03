@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/03 12:55:52 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/03 13:38:23 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ namespace ft
 			t_elem 					*newElem(	t_elem *parent = NULL, \
 												t_elem *left = NULL, \
 												t_elem *right = NULL, \
-												value_type content = pair<Key, T>(Key(), T()))
+												value_type content = value_type(Key(), T()))
 			{
 				t_elem *new_elem = new t_elem;
 				new_elem->parent = parent;
@@ -44,6 +44,21 @@ namespace ft
 				new_elem->right = right;
 				new_elem->content = content;
 				return new_elem;
+			}
+			t_elem *paste(t_elem *current, t_elem *parent, t_elem *new_elem)
+			{
+				if (current = NULL)
+				{
+					current = new_elem;
+					current->parent = parent;
+				}
+				else if (value_type.first > current->content.first)
+					paste(current->right, parent, new_elem);
+				else if (value_type.first < current->content.first)
+					paste(current->left, parent, new_elem);
+				else
+					return (current);
+				return (current);
 			}
 		public:
 			map()
@@ -137,13 +152,21 @@ namespace ft
 				}
 				return it;
 			}
-			/*value_type insert (const value_type& val)
+			
+			std::pair<iterator, bool> insert (const value_type& val)
 			{
-				if (root == NULL)
+				t_elem	*new_elem = newElem(NULL, NULL, NULL, val);
+				t_elem	*ins_elem = paste(root, NULL, new_elem);
+				bool	inserted;
+				if (new_elem == ins_elem)
+					inserted = true;
+				else
 				{
-					root = newElem(NULL, NULL, NULL, val);
-					value_type ret(); // добавить итератор
+					inserted = false;
+					delete new_elem;
 				}
-			};*/
+				iterator it(ins_elem);
+				return (std::pair<iterator, bool>(it, inserted));
+			}
 	};
 }
