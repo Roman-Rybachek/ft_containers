@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/04 11:54:26 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/04 12:50:33 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ namespace ft
 				s_elem 				*left;
 				s_elem 				*right;
 				value_type			content;
+				bool				is_red;
 			}						t_elem;
 
 			Compare					compare;
@@ -60,7 +61,7 @@ namespace ft
 					if ((*current)->content.first > max_value)
 					{
 						max_value = (*current)->content.first;
-						(*current)->right = end_elem();
+						(*current)->right = end_elem;
 					}
 				}
 				else if (compare((*current)->content.first, new_elem->content.first))
@@ -76,6 +77,8 @@ namespace ft
 			{
 				root = NULL;
 				length = 0;
+				end_elem = newElem(NULL, NULL, NULL);
+				root = end_elem;
 			}
 
 			class iterator
@@ -219,5 +222,4 @@ namespace ft
 		Делаем поворот влево, перекрашиваем дядю и батю
 	2. Если он красный:
 		Перекрашиваем дядю, батю и деда. Запускаем балансировку для деда.
-
 */
