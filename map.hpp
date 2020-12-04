@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/03 18:40:46 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/04 03:01:41 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ namespace ft
 					ins_elem = *current;
 				}
 				else if (compare((*current)->content.first, new_elem->content.first))
-					ins_elem = paste(&(*current)->right, parent, new_elem);
+					ins_elem = paste(&(*current)->right, *current, new_elem);
 				else if (compare(new_elem->content.first, (*current)->content.first))
-					ins_elem = paste(&(*current)->left, parent, new_elem);
+					ins_elem = paste(&(*current)->left, *current, new_elem);
 				else
 					return (ins_elem);
 				return (ins_elem);
@@ -88,6 +88,8 @@ namespace ft
 						if (elem->right != NULL) // Если есть справа элемент
 						{
 							elem = elem->right;
+							while (elem->left != NULL)
+								elem = elem->left;
 							return (*this);
 						}
 						if (elem->parent != NULL && elem->parent->content.first > elem->content.first) // Если это левый лист
@@ -97,7 +99,7 @@ namespace ft
 						}
 						t_elem *tmp = elem;
 						while (tmp->parent != NULL && tmp->parent->content.first < tmp->content.first) // Если это правый лист
-							tmp = elem->parent;
+							tmp = tmp->parent;
 						if (tmp->parent == NULL)
 							return *this;
 						else if (tmp->parent->content.first > tmp->content.first)
@@ -112,6 +114,8 @@ namespace ft
 						if (elem->left != NULL) // Если есть слево элемент
 						{
 							elem = elem->left;
+							while (elem->right != NULL)
+								elem = elem->right;
 							return (*this);
 						}
 						if (elem->parent != NULL && elem->parent->content.first < elem->content.first) // Если это правый лист
@@ -121,7 +125,7 @@ namespace ft
 						}
 						t_elem *tmp = elem;
 						while (tmp->parent != NULL && tmp->parent->content.first > tmp->content.first) // Если это левый лист
-							tmp = elem->parent;
+							tmp = tmp->parent;
 						if (tmp->parent == NULL)
 							return *this;
 						else if (tmp->parent->content.first < tmp->content.first)
@@ -181,7 +185,7 @@ namespace ft
 				}
 				return it;
 			}
-			
+		
 			std::pair<iterator, bool> insert (const value_type& val)
 			{
 				t_elem	*new_elem = newElem(NULL, NULL, NULL, val);
