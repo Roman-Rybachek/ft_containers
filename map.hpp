@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/04 03:01:41 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/04 03:02:37 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ namespace ft
 						{
 							elem = tmp->parent;
 							return *this;
-						}
+						} 
 						return *this;
 					}
 					iterator &operator--()
