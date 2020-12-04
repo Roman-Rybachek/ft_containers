@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/04 03:02:37 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/04 03:21:06 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ namespace ft
 
 			Compare					compare;
 			t_elem					*root;
+			t_elem					*end_elem;
+			Key						max_value;
 			size_t					length;
 			t_elem 					*newElem(	t_elem *parent = NULL, \
 												t_elem *left = NULL, \
@@ -50,11 +52,16 @@ namespace ft
 			{
 				t_elem *ins_elem = NULL;
 
-				if (*current == NULL)
+				if (*current == NULL || *current == end_elem)
 				{
 					*current = new_elem;
 					(*current)->parent = parent;
 					ins_elem = *current;
+					if ((*current)->content.first > max_value)
+					{
+						max_value = (*current)->content.first;
+						(*current)->right = end_elem();
+					}
 				}
 				else if (compare((*current)->content.first, new_elem->content.first))
 					ins_elem = paste(&(*current)->right, *current, new_elem);
@@ -185,7 +192,7 @@ namespace ft
 				}
 				return it;
 			}
-		
+
 			std::pair<iterator, bool> insert (const value_type& val)
 			{
 				t_elem	*new_elem = newElem(NULL, NULL, NULL, val);
