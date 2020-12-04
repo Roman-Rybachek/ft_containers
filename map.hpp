@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/04 12:50:33 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/04 13:34:16 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ namespace ft
 	{
 		typedef std::pair<Key, T> value_type;
 
+		public:
+			class iterator;
 		private:
 			typedef struct			s_elem
 			{
@@ -47,6 +49,7 @@ namespace ft
 				new_elem->left = left;
 				new_elem->right = right;
 				new_elem->content = content;
+				new_elem->is_red = true;
 				return new_elem;
 			}
 			t_elem *paste(t_elem **current, t_elem *parent, t_elem *new_elem)
@@ -71,6 +74,49 @@ namespace ft
 				else
 					return (ins_elem);
 				return (ins_elem);
+			}
+			t_elem *getGrandparent(t_elem *elem)
+			{
+				if ((elem != NULL) && (elem->parent != NULL))
+					return elem->parent->parent;
+				return NULL;
+			}
+			t_elem *getUncle(t_elem *elem)
+			{
+				t_elem *grandparent = getGrandparent(elem);
+				if ( grandparent == NULL)
+					return NULL;
+				if (elem->parent == grandparent->left)
+					return grandparent->right;
+				else
+					return grandparent->right;
+			}
+/*
+1) Вставляем узел, смотрим кто его батя. Если батя черный - все норм. Если батя красный - включаем балансеровку.
+2) Смотрим, кто у нас дядя:
+	1. Если он черный:
+		Делаем поворот влево, перекрашиваем дядю и батю
+	2. Если он красный:
+		Перекрашиваем дядю, батю и деда. Запускаем балансировку для деда.
+*/
+			iterator rotate(t_elem *elem)
+			{
+				
+			}
+			iterator balance(t_elem *elem)
+			{
+				if (elem->parent == NULL || elem->parent->is_red == false)
+					return (iterator(elem));
+				if (getUncle(elem).is_red == false)
+					// rotate
+				else
+				{
+					getUncle()->is_red = !getUncle()->is_red;
+					getGrandparent()->is_red = !getGrandparent()->is_red;
+					elem->parent->is_red = !elem->parent->is_red;
+					return (iterator(elem));
+				}
+				
 			}
 		public:
 			map()
@@ -214,12 +260,3 @@ namespace ft
 	};
 }
 
-/*
-
-1) Вставляем узел, смотрим кто его батя. Если батя черный - все норм. Если батя красный - включаем балансеровку.
-2) Смотрим, кто у нас дядя:
-	1. Если он черный:
-		Делаем поворот влево, перекрашиваем дядю и батю
-	2. Если он красный:
-		Перекрашиваем дядю, батю и деда. Запускаем балансировку для деда.
-*/
