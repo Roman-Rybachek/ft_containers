@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/05 12:18:40 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/05 13:32:33 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,28 @@ namespace ft
 				end_elem = newElem(NULL, NULL, NULL);
 				root = end_elem;
 			}
-
+			template <class InputIterator>
+			map (InputIterator first, InputIterator last)
+			{
+				if (last < first)
+					throw std::exception();
+				length = 0;
+				root = NULL;
+				end_elem = newElem(NULL, NULL, NULL);
+				while (first != last)
+				{
+					insert(*first);
+					first++;
+				}
+			}
+			map (const map& copy)
+			{
+				length = 0;
+				root = NULL;
+				for (iterator it = copy.begin(); it != copy.end(); it++)
+					insert(*it);
+			}
+			
 			class iterator
 			{
 				public:
@@ -311,6 +332,7 @@ namespace ft
 				if (new_elem == ins_elem)
 				{
 					inserted = true;
+					length++;
 					balance(&ins_elem);
 				}
 				else
