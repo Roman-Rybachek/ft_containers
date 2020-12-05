@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/05 13:32:33 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/05 13:44:19 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ namespace ft
 			t_elem					*end_elem;
 			Key						max_value;
 			size_t					length;
+
 			t_elem 					*newElem(	t_elem *parent = NULL, \
 												t_elem *left = NULL, \
 												t_elem *right = NULL, \
@@ -179,6 +180,7 @@ namespace ft
 					return ;
 				}
 			}
+
 		public:
 			map()
 			{
@@ -208,7 +210,7 @@ namespace ft
 				for (iterator it = copy.begin(); it != copy.end(); it++)
 					insert(*it);
 			}
-			
+
 			class iterator
 			{
 				public:
@@ -324,6 +326,20 @@ namespace ft
 				return it;
 			}
 
+			size_t size() const
+			{
+				return length;
+			}
+			bool empty() const
+			{
+				if (length == 0)
+					return true;
+				return false;
+			}
+			size_t max_size() const
+			{
+				return (-1 / sizeof(t_elem));
+			}
 			std::pair<iterator, bool> insert (const value_type& val)
 			{
 				t_elem	*new_elem = newElem(NULL, NULL, NULL, val);
