@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/05 06:40:58 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/05 08:11:56 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,63 +99,73 @@ namespace ft
 	2. Если он красный:
 		Перекрашиваем дядю, батю и деда. Запускаем балансировку для деда.
 */
-			void smallRotate(t_elem *elem)
+			void smallRotate(t_elem **elem)
 			{
 				t_elem *place_for_parent;
 				t_elem *place_for_null;
 				
-				if (elem = elem->parent->right)
+				if ((*elem) = (*elem)->parent->right)
 				{
-					place_for_parent = elem->left;
-					place_for_null = elem->parent->right;
+					place_for_parent = (*elem)->left;
+					place_for_null = (*elem)->parent->right;
 				}
 				else
 				{
-					place_for_parent = elem->right;
-					place_for_null = elem->parent->left;
+					place_for_parent = (*elem)->right;
+					place_for_null = (*elem)->parent->left;
 				}
-				place_for_parent = elem->parent;
-				t_elem *grandparent = getGrandparent(elem);
+				place_for_parent = (*elem)->parent;
+				t_elem *grandparent = getGrandparent((*elem));
 				place_for_null = NULL;
-				elem->parent->parent = elem;
-				elem->parent = grandparent;
+				(*elem)->parent->parent = (*elem);
+				(*elem)->parent = grandparent;
 			}
-
-			rotateLeft(t_elem *elem)
+			void rotateLeft(t_elem **elem)
 			{
-				
+				t_elem *new_root = (*elem)->parent;
+				t_elem *grandparent = getGrandparent();
+				new_root->left = grandparent;
+				new_root->parent = grandparent->parent;
+				grandparent->parent = new_root;
+				grandparent->right = NULL;
 			}
-
-			iterator rotate(t_elem *elem)
+			void rotateRight(t_elem **elem)
 			{
-				if (getGrandparent(elem)->left = elem->parent)
+				t_elem *new_root = (*elem)->parent;
+				t_elem *grandparent = getGrandparent();
+				new_root->right = grandparent;
+				new_root->parent = grandparent->parent;
+				grandparent->parent = new_root;
+				grandparent->left = NULL;
+			}
+			iterator rotate(t_elem **elem)
+			{
+				if (getGrandparent((*elem))->left = (*elem)->parent)
 				{
-					if (elem = elem->parent->right)
-						smallRotate(elem);
-					rotateRight();
+					if ((*elem) = (*elem)->parent->right)
+						smallRotate((*elem));
+					rotateRight((*elem));
 				}
 				else
 				{
-					if (elem = elem->parent->left)
-						smallRotate(elem);
+					if ((*elem) = (*elem)->parent->left)
+						smallRotate((*elem));
 					rotateLeft();
 				}
 			}
-
-			iterator balance(t_elem *elem)
+			iterator balance(t_elem **elem)
 			{
-				if (elem->parent == NULL || elem->parent->is_red == false)
-					return (iterator(elem));
-				if (getUncle(elem).is_red == false)
-					// rotate
+				if ((*elem)->parent == NULL || (*elem)->parent->is_red == false)
+					return (iterator((*elem)));
+				if (getUncle((*elem)).is_red == false)
+					rotate(elem);
 				else
 				{
 					getUncle()->is_red = !getUncle()->is_red;
 					getGrandparent()->is_red = !getGrandparent()->is_red;
-					elem->parent->is_red = !elem->parent->is_red;
-					return (iterator(elem));
+					(*elem)->parent->is_red = !(*elem)->parent->is_red;
+					return (iterator((*elem)));
 				}
-				
 			}
 		public:
 			map()
