@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/05 13:44:19 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/05 15:19:00 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,25 @@ namespace ft
 					return ;
 				}
 			}
-
+			t_elem *find_elem(const Key& k, t_elem *root_elem)
+			{
+				t_elem *ret = NULL;
+				if (root_elem->content->first == k)
+					return root_elem;
+				if (k > root_elem->content->first)
+					ret = find_elem(k, root_elem->right);
+				else
+					ret = find_elem(k, root_elem->left);
+			}
+			void delete_all(t_elem **elem)
+			{
+				if ((*elem)->left != NULL)
+					delete_all(&(*elem)->left);
+				if ((*elem)->right != NULL)
+					delete_all(&(*elem)->right);
+				delete *elem;
+				*elem = NULL;
+			}
 		public:
 			map()
 			{
@@ -210,7 +228,10 @@ namespace ft
 				for (iterator it = copy.begin(); it != copy.end(); it++)
 					insert(*it);
 			}
-
+			~map()
+			{
+				delete_all(&root);
+			}
 			class iterator
 			{
 				public:
@@ -358,6 +379,15 @@ namespace ft
 				}
 				iterator it(ins_elem);
 				return (std::pair<iterator, bool>(it, inserted));
+			}
+
+			iterator find (const Key& k)
+			{
+				t_elem *found = find_elem(k, root);
+				if (found == NULL)
+					return end();
+				else
+					return (iterator(found));
 			}
 	};
 }
