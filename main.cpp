@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/04 12:53:19 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/05 12:19:18 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ int		main(void)
 	m.insert(std::pair<int, int>(2, 22));
 	m.insert(std::pair<int, int>(3, 33));
 	m.insert(std::pair<int, int>(1, 11));
+	m.insert(std::pair<int, int>(7, 11));
+	m.insert(std::pair<int, int>(8, 11));
+	m.insert(std::pair<int, int>(9, 11));
 	m.insert(std::pair<int, int>(5, 55));
 	std::cout << m.end().elem->content.first << "\n";
 	for (ft::map<int, int>::iterator i = m.begin(); i != m.end(); i++)

@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/05 08:11:56 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/05 12:18:40 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ namespace ft
 1) Вставляем узел, смотрим кто его батя. Если батя черный - все норм. Если батя красный - включаем балансеровку.
 2) Смотрим, кто у нас дядя:
 	1. Если он черный:
-		Делаем поворот влево, перекрашиваем дядю и батю
+		Делаем поворот, перекрашиваем дядю и батю
 	2. Если он красный:
 		Перекрашиваем дядю, батю и деда. Запускаем балансировку для деда.
 */
@@ -104,7 +104,7 @@ namespace ft
 				t_elem *place_for_parent;
 				t_elem *place_for_null;
 				
-				if ((*elem) = (*elem)->parent->right)
+				if ((*elem) == (*elem)->parent->right)
 				{
 					place_for_parent = (*elem)->left;
 					place_for_null = (*elem)->parent->right;
@@ -123,48 +123,60 @@ namespace ft
 			void rotateLeft(t_elem **elem)
 			{
 				t_elem *new_root = (*elem)->parent;
-				t_elem *grandparent = getGrandparent();
+				t_elem *grandparent = getGrandparent(*elem);
+				new_root->is_red = !new_root->is_red;
+				grandparent->is_red = !grandparent->is_red;
 				new_root->left = grandparent;
 				new_root->parent = grandparent->parent;
 				grandparent->parent = new_root;
 				grandparent->right = NULL;
 			}
+			// забыл изменить цвета при повороте
 			void rotateRight(t_elem **elem)
 			{
 				t_elem *new_root = (*elem)->parent;
-				t_elem *grandparent = getGrandparent();
+				t_elem *grandparent = getGrandparent(*elem);
+				new_root->is_red = !new_root->is_red;
+				grandparent->is_red = !grandparent->is_red;
 				new_root->right = grandparent;
 				new_root->parent = grandparent->parent;
 				grandparent->parent = new_root;
 				grandparent->left = NULL;
 			}
-			iterator rotate(t_elem **elem)
+			void rotate(t_elem **elem)
 			{
-				if (getGrandparent((*elem))->left = (*elem)->parent)
+				if (getGrandparent(*elem)->left == (*elem)->parent)
 				{
-					if ((*elem) = (*elem)->parent->right)
-						smallRotate((*elem));
-					rotateRight((*elem));
+					if ((*elem) == (*elem)->parent->right)
+						smallRotate(elem);
+					rotateRight(elem);
 				}
 				else
 				{
-					if ((*elem) = (*elem)->parent->left)
-						smallRotate((*elem));
-					rotateLeft();
+					if ((*elem) == (*elem)->parent->left)
+						smallRotate((elem));
+					rotateLeft(elem);
 				}
 			}
-			iterator balance(t_elem **elem)
+			void balance(t_elem **elem)
 			{
 				if ((*elem)->parent == NULL || (*elem)->parent->is_red == false)
-					return (iterator((*elem)));
-				if (getUncle((*elem)).is_red == false)
+					return ;
+				if (getGrandparent(*elem) == NULL)
+				{
+					(*elem)->parent->is_red = !(*elem)->parent->is_red;
+					return ;
+				}
+				if (getUncle(*elem)->is_red == false)
 					rotate(elem);
 				else
 				{
-					getUncle()->is_red = !getUncle()->is_red;
-					getGrandparent()->is_red = !getGrandparent()->is_red;
+					getUncle(*elem)->is_red = !getUncle(*elem)->is_red;
+					getGrandparent(*elem)->is_red = !getGrandparent(*elem)->is_red;
 					(*elem)->parent->is_red = !(*elem)->parent->is_red;
-					return (iterator((*elem)));
+					t_elem *gr = getGrandparent(*elem);
+					balance(&gr);
+					return ;
 				}
 			}
 		public:
@@ -297,7 +309,10 @@ namespace ft
 				t_elem	*ins_elem = paste(&root, NULL, new_elem);
 				bool	inserted;
 				if (new_elem == ins_elem)
+				{
 					inserted = true;
+					balance(&ins_elem);
+				}
 				else
 				{
 					inserted = false;
