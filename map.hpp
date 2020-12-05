@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/05 15:19:00 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/05 15:37:51 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,12 +183,15 @@ namespace ft
 			t_elem *find_elem(const Key& k, t_elem *root_elem)
 			{
 				t_elem *ret = NULL;
-				if (root_elem->content->first == k)
+				if (root_elem->content.first == k)
 					return root_elem;
-				if (k > root_elem->content->first)
+				else if (root_elem->left == NULL && root_elem->right == NULL)
+					return NULL;
+				if (k > root_elem->content.first)
 					ret = find_elem(k, root_elem->right);
-				else
+				else if (k < root_elem->content.first)
 					ret = find_elem(k, root_elem->left);
+				return ret;
 			}
 			void delete_all(t_elem **elem)
 			{
@@ -379,6 +382,14 @@ namespace ft
 				}
 				iterator it(ins_elem);
 				return (std::pair<iterator, bool>(it, inserted));
+			}
+			T& operator[] (const Key& k)
+			{
+				t_elem *found = find_elem(k, root);
+				if (found != NULL)
+					return (found->content.second);
+				iterator ret = insert(value_type(k, T())).first;
+				return ((*ret).second);
 			}
 
 			iterator find (const Key& k)
