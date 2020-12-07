@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/07 15:25:46 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/07 15:30:21 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,18 +383,20 @@ namespace ft
 						elem = copy.elem;
 						end_elem = copy.end_elem;
 					}
-					const_iterator(const iterator &copy) : iterator(copy)
-					{
-						elem = iterator::elem;
-						end_elem = iterator::end_elem;
-					}
 					const_iterator(t_elem *set_elem, t_elem *set_end_elem)
 					{
 						elem = set_elem;
 						end_elem = set_end_elem;
 					}
+					const_iterator(const iterator &copy) : iterator(copy)
+					{
+						elem = iterator::elem;
+						end_elem = iterator::end_elem;
+					}
 					const_iterator &operator++()
 					{
+						if (elem == end_elem)
+							return *this;
 						if (elem->right != NULL) // Если есть справа элемент
 						{
 							elem = elem->right;
@@ -433,7 +435,7 @@ namespace ft
 							elem = elem->parent;
 							return (*this);
 						}
-						if (elem->parent != NULL && elem == end_elem)
+						if (elem->parent != NULL && elem == end_elem) // Если это правый лист
 						{
 							elem = elem->parent;
 							return (*this);
@@ -475,6 +477,7 @@ namespace ft
 					const_iterator &operator=(const const_iterator &copy)
 					{
 						elem = copy.elem;
+						end_elem = copy.end_elem;
 						return *this;
 					}
 			};
