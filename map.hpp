@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/05 15:37:51 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/05 18:11:31 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ namespace ft
 				grandparent->parent = new_root;
 				grandparent->right = NULL;
 			}
-			// забыл изменить цвета при повороте
 			void rotateRight(t_elem **elem)
 			{
 				t_elem *new_root = (*elem)->parent;
