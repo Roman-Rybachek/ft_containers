@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/07 17:05:12 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/07 19:12:20 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ namespace ft
 			}
 			void balance(t_elem **elem)
 			{
-				if ((*elem)->parent == NULL || (*elem)->parent->is_red == false)
+				if (*elem == NULL || (*elem)->parent == NULL || (*elem)->parent->is_red == false)
 					return ;
 				if (getGrandparent(*elem) == NULL)
 				{
@@ -624,7 +624,7 @@ namespace ft
 						to_erase->parent->left = NULL;
 					if (to_erase->parent->right == to_erase)
 						to_erase->parent->right = NULL;
-					balance(to_erase->parent);
+					balance(&to_erase->parent);
 					delete to_erase;	
 					return ;
 				}
@@ -633,6 +633,7 @@ namespace ft
 				{
 					if (to_erase->left != NULL)
 					{
+						// остановился тут
 						to_erase->content = to_erase->left->content;
 						delete to_erase->left;
 						to_erase->left = NULL;
@@ -646,12 +647,13 @@ namespace ft
 						return ;
 					}
 				}
-				else if (to_erase->is_red == true)
+				// красный узел с двумя детьми
+				else if (to_erase->is_red == true && to_erase->left && to_erase->right)
 				{
 					t_elem *tmp;
 
 					tmp = getMax(to_erase->left);
-					if (tmp->left == NULL && tmp->right = NULL)
+					if (tmp->left == NULL && tmp->right == NULL)
 					{
 						to_erase->content =	tmp->content;
 						if (tmp->parent->left == tmp)
@@ -662,13 +664,31 @@ namespace ft
 						return ;
 					}
 					tmp = getMin(to_erase->right);
-					if (tmp->left == NULL && tmp->right = NULL)
+					if (tmp->left == NULL && tmp->right == NULL)
 					{
 						to_erase->content =	tmp->content;
 						if (tmp->parent->left == tmp)
 							tmp->parent->left = NULL;
 						if (tmp->parent->right == tmp)
 							tmp->parent->right = NULL;
+						delete tmp;
+						return ;
+					}
+					tmp = getMax(to_erase->left);
+					if (tmp->left != NULL)
+					{
+						to_erase->content = tmp->content;
+						tmp->parent->right = tmp->left;
+						tmp->left->parent = tmp->parent;
+						delete tmp;
+						return ;
+					}
+					tmp = getMin(to_erase->right);
+					if (tmp->right != NULL)
+					{
+						to_erase->content = tmp->content;
+						tmp->parent->left = tmp->right;
+						tmp->right->parent = tmp->parent;
 						delete tmp;
 						return ;
 					}

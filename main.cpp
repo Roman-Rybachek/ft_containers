@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/07 15:26:01 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/07 18:57:40 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ int		main(void)
 	m.insert(std::pair<int, int>(8, 11));
 	m.insert(std::pair<int, int>(9, 11));
 	m.insert(std::pair<int, int>(5, 55));
-	ft::map<int, int>::iterator it(m.end());
-	std::cout << (*it).first << "\n";
 
 	for (ft::map<int,int>::iterator i = m.begin() ; i != m.end(); i++)
 	{
@@ -43,7 +41,16 @@ int		main(void)
 	}
 	std::cout << "\n";
 	
-	
+	ft::map<int, int>::iterator it(m.end());
+	it--;
+	it--;
+	m.erase(it);
+
+	for (ft::map<int,int>::iterator i = m.begin() ; i != m.end(); i++)
+	{
+		std::cout << (*i).first << " ";
+	}
+	std::cout << "\n";
 
 	return (0);
 }
