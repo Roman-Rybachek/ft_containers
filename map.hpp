@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/07 10:59:14 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/07 15:25:46 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ namespace ft
 					{
 						max_value = (*current)->content.first;
 						(*current)->right = end_elem;
+						end_elem->parent = *current;
 					}
 				}
 				else if (compare((*current)->content.first, new_elem->content.first))
@@ -228,6 +229,7 @@ namespace ft
 				length = 0;
 				end_elem = newElem(NULL, NULL, NULL);
 				root = end_elem;
+				max_value = 0;
 			}
 			template <class InputIterator>
 			map (InputIterator first, InputIterator last)
@@ -235,6 +237,7 @@ namespace ft
 				if (last < first)
 					throw std::exception();
 				length = 0;
+				max_value = 0;
 				root = NULL;
 				end_elem = newElem(NULL, NULL, NULL);
 				while (first != last)
@@ -246,6 +249,7 @@ namespace ft
 			map (const map& copy)
 			{
 				length = 0;
+				max_value = 0;
 				root = NULL;
 				for (iterator it = copy.begin(); it != copy.end(); it++)
 					insert(*it);
@@ -256,18 +260,29 @@ namespace ft
 			}
 			class iterator
 			{
+				protected:
+					t_elem *end_elem;
 				public:
 					t_elem *elem;
 					iterator()
 					{
 						elem = NULL;
+						end_elem = NULL;
 					}
-					iterator(t_elem *set_elem)
+					iterator(const iterator &copy)
+					{
+						elem = copy.elem;
+						end_elem = copy.end_elem;
+					}
+					iterator(t_elem *set_elem, t_elem *set_end_elem)
 					{
 						elem = set_elem;
+						end_elem = set_end_elem;
 					}
 					iterator &operator++()
 					{
+						if (elem == end_elem)
+							return *this;
 						if (elem->right != NULL) // Если есть справа элемент
 						{
 							elem = elem->right;
@@ -302,6 +317,11 @@ namespace ft
 							return (*this);
 						}
 						if (elem->parent != NULL && elem->parent->content.first < elem->content.first) // Если это правый лист
+						{
+							elem = elem->parent;
+							return (*this);
+						}
+						if (elem->parent != NULL && elem == end_elem) // Если это правый лист
 						{
 							elem = elem->parent;
 							return (*this);
@@ -343,12 +363,124 @@ namespace ft
 					iterator &operator=(const iterator &copy)
 					{
 						elem = copy.elem;
+						end_elem = copy.end_elem;
+						return *this;
+					}
+			};
+			class const_iterator : public iterator
+			{
+				protected:
+					t_elem *end_elem;
+				public:
+					t_elem *elem;
+					const_iterator()
+					{
+						elem = NULL;
+						end_elem = NULL;
+					}
+					const_iterator(const const_iterator &copy)
+					{
+						elem = copy.elem;
+						end_elem = copy.end_elem;
+					}
+					const_iterator(const iterator &copy) : iterator(copy)
+					{
+						elem = iterator::elem;
+						end_elem = iterator::end_elem;
+					}
+					const_iterator(t_elem *set_elem, t_elem *set_end_elem)
+					{
+						elem = set_elem;
+						end_elem = set_end_elem;
+					}
+					const_iterator &operator++()
+					{
+						if (elem->right != NULL) // Если есть справа элемент
+						{
+							elem = elem->right;
+							while (elem->left != NULL)
+								elem = elem->left;
+							return (*this);
+						}
+						if (elem->parent != NULL && elem->parent->content.first > elem->content.first) // Если это левый лист
+						{
+							elem = elem->parent;
+							return (*this);
+						}
+						t_elem *tmp = elem;
+						while (tmp->parent != NULL && tmp->parent->content.first < tmp->content.first) // Если это правый лист
+							tmp = tmp->parent;
+						if (tmp->parent == NULL)
+							return *this;
+						else if (tmp->parent->content.first > tmp->content.first)
+						{
+							elem = tmp->parent;
+							return *this;
+						} 
+						return *this;
+					}
+					const_iterator &operator--()
+					{
+						if (elem->left != NULL) // Если есть слево элемент
+						{
+							elem = elem->left;
+							while (elem->right != NULL)
+								elem = elem->right;
+							return (*this);
+						}
+						if (elem->parent != NULL && elem->parent->content.first < elem->content.first) // Если это правый лист
+						{
+							elem = elem->parent;
+							return (*this);
+						}
+						if (elem->parent != NULL && elem == end_elem)
+						{
+							elem = elem->parent;
+							return (*this);
+						}
+						t_elem *tmp = elem;
+						while (tmp->parent != NULL && tmp->parent->content.first > tmp->content.first) // Если это левый лист
+							tmp = tmp->parent;
+						if (tmp->parent == NULL)
+							return *this;
+						else if (tmp->parent->content.first < tmp->content.first)
+						{
+							elem = tmp->parent;
+							return *this;
+						}
+						return *this;
+					}
+					const_iterator operator++(int)
+					{	
+						const_iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					const_iterator operator--(int)
+					{	
+						const_iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					value_type &operator*() const
+					{
+						return (elem->content);
+					}
+					bool operator!=(const const_iterator &other) const
+					{
+						if (elem->content.first != other.elem->content.first)
+							return true;
+						return false;
+					}
+					const_iterator &operator=(const const_iterator &copy)
+					{
+						elem = copy.elem;
 						return *this;
 					}
 			};
 			iterator begin()
 			{
-				iterator it(root);
+				iterator it(root, end_elem);
 				t_elem *prev = NULL;
 				while (it.elem != prev)
 				{
@@ -359,11 +491,11 @@ namespace ft
 			}
 			iterator end()
 			{
-				iterator it(root);
-				t_elem *next = NULL;
-				while (it.elem != next)
+				iterator it(root, end_elem);
+				t_elem *prew = NULL;
+				while (it.elem != prew)
 				{
-					next = it.elem;
+					prew = it.elem;
 					++it;
 				}
 				return it;
@@ -406,7 +538,7 @@ namespace ft
 					inserted = false;
 					delete new_elem;
 				}
-				iterator it(ins_elem);
+				iterator it(ins_elem, end_elem);
 				return (std::pair<iterator, bool>(it, inserted));
 			}
 			iterator insert (iterator position, const value_type& val)
