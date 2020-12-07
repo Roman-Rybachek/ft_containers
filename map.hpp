@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/07 15:30:21 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/07 17:05:12 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,6 @@ namespace ft
 					ret = find_elem_or_next(k, root_elem->left);
 				return ret;
 			}
-
 			void delete_all(t_elem **elem)
 			{
 				if ((*elem)->left != NULL)
@@ -222,6 +221,21 @@ namespace ft
 				*elem = NULL;
 				length = 0;
 			}
+			t_elem *getMax(t_elem *root)
+			{
+				t_elem *tmp = root;
+				while (tmp->right)
+					tmp = tmp->right;
+				return tmp;
+			}
+			t_elem *getMin(t_elem *root)
+			{
+				t_elem *tmp = root;
+				while (tmp->left)
+					tmp = tmp->left;
+				return tmp;
+			}
+
 		public:
 			map()
 			{
@@ -589,7 +603,7 @@ namespace ft
 				else
 					return (iterator(found));
 			}
-			/*void erase (iterator position)
+			void erase (iterator position)
 			{
 				t_elem *to_erase = position.elem;
 				
@@ -614,8 +628,52 @@ namespace ft
 					delete to_erase;	
 					return ;
 				}
+				// черный узел с одним ребенком
+				else if (to_erase->is_red == false)
+				{
+					if (to_erase->left != NULL)
+					{
+						to_erase->content = to_erase->left->content;
+						delete to_erase->left;
+						to_erase->left = NULL;
+						return ;
+					}
+					if (to_erase->right != NULL)
+					{
+						to_erase->content = to_erase->right->content;
+						delete to_erase->right;
+						to_erase->right = NULL;
+						return ;
+					}
+				}
+				else if (to_erase->is_red == true)
+				{
+					t_elem *tmp;
 
-			}*/
+					tmp = getMax(to_erase->left);
+					if (tmp->left == NULL && tmp->right = NULL)
+					{
+						to_erase->content =	tmp->content;
+						if (tmp->parent->left == tmp)
+							tmp->parent->left = NULL;
+						if (tmp->parent->right == tmp)
+							tmp->parent->right = NULL;
+						delete tmp;
+						return ;
+					}
+					tmp = getMin(to_erase->right);
+					if (tmp->left == NULL && tmp->right = NULL)
+					{
+						to_erase->content =	tmp->content;
+						if (tmp->parent->left == tmp)
+							tmp->parent->left = NULL;
+						if (tmp->parent->right == tmp)
+							tmp->parent->right = NULL;
+						delete tmp;
+						return ;
+					}
+				}
+			}
 			void clear()
 			{
 				delete_all(&root);
