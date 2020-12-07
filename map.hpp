@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/05 18:11:31 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/07 07:02:30 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ namespace ft
 					delete_all(&(*elem)->right);
 				delete *elem;
 				*elem = NULL;
+				length = 0;
 			}
 		public:
 			map()
@@ -349,6 +350,13 @@ namespace ft
 				return it;
 			}
 
+			map& operator= (const map& copy)
+			{
+				delete_all(&root);
+				for (iterator it = copy.begin(); it != copy.end(); it++)
+					insert(*it);
+				return *this;
+			}
 			size_t size() const
 			{
 				return length;
@@ -381,6 +389,34 @@ namespace ft
 				}
 				iterator it(ins_elem);
 				return (std::pair<iterator, bool>(it, inserted));
+			}
+			iterator insert (iterator position, const value_type& val)
+			{
+				if (find(val.first) != end())
+					return find(val.first);
+				if ((*position).first > val.first && position.elem->left == NULL)
+				{
+					position.elem->left = newElem(position.elem, NULL, NULL, val);
+					length++;
+					balance(&position.elem->left);
+				}
+				if ((*position).first < val.first && position.elem->right == NULL)
+				{
+					position.elem->right = newElem(position.elem, NULL, NULL, val);
+					length++;
+					balance(&position.elem->right);
+				}
+				else
+					return insert(val).first;
+			}
+			template <class InputIterator>
+			void insert (InputIterator first, InputIterator last)
+			{
+				while ( first != last )
+				{
+					insert(*first);
+					first++;
+				}
 			}
 			T& operator[] (const Key& k)
 			{
