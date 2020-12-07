@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/05 15:38:19 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/07 08:22:00 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ int		main(void)
 	{
 		std::cout << (*i).first << " ";
 	}
+	if (NULL == NULL)
+		std::cout << "\n b \n";
+
 	
 
 	return (0);

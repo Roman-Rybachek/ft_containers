@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/07 07:02:30 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/07 10:59:14 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ namespace ft
 			}						t_elem;
 
 			Compare					compare;
+			std::less<T>			compare_value;
 			t_elem					*root;
 			t_elem					*end_elem;
 			Key						max_value;
@@ -192,6 +193,24 @@ namespace ft
 					ret = find_elem(k, root_elem->left);
 				return ret;
 			}
+			t_elem *find_elem_or_next(const Key& k, t_elem *root_elem)
+			{
+				t_elem *ret = NULL;
+				if (root_elem->content.first == k)
+					return root_elem;
+				else if (root_elem->left == NULL && root_elem->right == NULL)
+				{
+					iterator it(root_elem);
+					it++;
+					return (it->elem);
+				}
+				if (k > root_elem->content.first)
+					ret = find_elem_or_next(k, root_elem->right);
+				else if (k < root_elem->content.first)
+					ret = find_elem_or_next(k, root_elem->left);
+				return ret;
+			}
+
 			void delete_all(t_elem **elem)
 			{
 				if ((*elem)->left != NULL)
@@ -434,6 +453,66 @@ namespace ft
 					return end();
 				else
 					return (iterator(found));
+			}
+			/*void erase (iterator position)
+			{
+				t_elem *to_erase = position.elem;
+				
+				// красный узел без детей
+				if (to_erase->is_red && to_erase->left == to_erase->right)
+				{
+					if (to_erase->parent->left == to_erase)
+						to_erase->parent->left = NULL;
+					if (to_erase->parent->right == to_erase)
+						to_erase->parent->right = NULL;
+					delete to_erase;
+					return ;
+				}
+				// черный узел без детей
+				else if (to_erase->left == to_erase->right)
+				{
+					if (to_erase->parent->left == to_erase)
+						to_erase->parent->left = NULL;
+					if (to_erase->parent->right == to_erase)
+						to_erase->parent->right = NULL;
+					balance(to_erase->parent);
+					delete to_erase;	
+					return ;
+				}
+
+			}*/
+			void clear()
+			{
+				delete_all(&root);
+			}
+			void swap (map& x)
+			{
+				map tmp = *this;
+				*this = x;
+				x = tmp;
+			}
+			size_t count (const Key& k) const
+			{
+				if (find(k) == end())
+					return 0;
+				return 1;
+			}
+			std::pair<iterator,iterator> equal_range (const Key& k)
+			{
+				t_elem *found = find_elem_or_next(k, root);
+				iterator it(found);
+				if ((*it).first == k)
+					return std::pair<iterator, iterator>(it, it);
+				++it;
+				return std::pair<iterator, iterator>(it, it);
+			}
+			Compare key_comp() const
+			{
+				return compare;
+			}
+			std::less<T> value_comp() const
+			{
+				return (compare_value);
 			}
 	};
 }
