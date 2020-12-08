@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/08 17:27:18 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/08 18:55:15 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,11 @@ namespace ft
 				else
 					return grandparent->right;
 			}
-
+			void	is_root(t_elem *old_root, t_elem *new_root)
+			{
+				if (old_root == root)
+					root = new_root;
+			}
 			t_elem *find_elem(const Key& k, t_elem *root_elem)
 			{
 				t_elem *ret = NULL;
@@ -134,16 +138,16 @@ namespace ft
 				*elem = NULL;
 				length = 0;
 			}
-			t_elem *getMax(t_elem *root)
+			t_elem *getMax(t_elem *elem)
 			{
-				t_elem *tmp = root;
+				t_elem *tmp = elem;
 				while (tmp->right)
 					tmp = tmp->right;
 				return tmp;
 			}
-			t_elem *getMin(t_elem *root)
+			t_elem *getMin(t_elem *elem)
 			{
-				t_elem *tmp = root;
+				t_elem *tmp = elem;
 				while (tmp->left)
 					tmp = tmp->left;
 				return tmp;
@@ -183,8 +187,12 @@ namespace ft
 					t_elem *tmp = (*elem)->left;
 					(*elem)->left = tmp->left;
 					(*elem)->right = tmp->right;
-					tmp = NULL;
+					if (tmp->left != NULL)
+						tmp->left->parent = *elem;
+					if (tmp->right != NULL)
+						tmp->right->parent = *elem;
 					delete tmp;
+					tmp = NULL;
 					return true;
 				}
 				else if ((*elem)->left == NULL && (*elem)->right != NULL)
@@ -192,7 +200,11 @@ namespace ft
 					(*elem)->content = (*elem)->right->content;
 					t_elem *tmp = (*elem)->right;
 					(*elem)->left = tmp->left;
+					if (tmp->left != NULL)
+						tmp->left->parent = *elem;
 					(*elem)->right = tmp->right;
+					if (tmp->right != NULL)
+						tmp->right->parent = *elem;
 					delete tmp;
 					tmp = NULL;
 					return true;
@@ -605,7 +617,7 @@ namespace ft
 				if (found == NULL)
 					return end();
 				else
-					return (iterator(found));
+					return (iterator(found, end_elem));
 			}
 			void erase (iterator position)
 			{
@@ -625,6 +637,24 @@ namespace ft
 					length--;
 					return ;
 				}
+			}
+			size_t erase (const Key& k)
+			{
+				iterator to_erase = find(k);
+				erase(to_erase);
+				return 1;
+			}
+			void erase (iterator first, iterator last)
+			{
+				Key k[length];
+				int i = 0;
+				while (first != last)
+				{
+					k[i++] = (*first).first;
+					first++;
+				}
+				while (i != 0)
+					erase(k[--i]);
 			}
 			void clear()
 			{
