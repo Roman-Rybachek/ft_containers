@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/08 09:36:10 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/08 16:40:07 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,10 +164,10 @@ namespace ft
 			{
 				if (is_list(*elem) == true)
 				{
-					if (is_left(*elem) && elem_>parent != NULL)
-						to_erase->parent->left = NULL;
-					else if (!is_left(*elem) && elem_>parent != NULL)
-						to_erase->parent->right = NULL;
+					if (is_left(*elem) && (*elem)->parent != NULL)
+						(*elem)->parent->left = NULL;
+					else if (!is_left(*elem) && (*elem)->parent != NULL)
+						(*elem)->parent->right = NULL;
 					delete *elem;
 					length--;
 					return true;
@@ -198,11 +198,21 @@ namespace ft
 			}
 			bool	delete_if_right_min(t_elem **elem)
 			{
-				t_elem *min = getMin(elem->right);
+				t_elem *min = getMin((*elem)->right);
+				if (min == end_elem)
+				{
+					(*elem)->left->parent = (*elem)->parent;
+					(*elem)->parent->right = (*elem)->left;
+					delete *elem;
+					return true;
+				}
 				if (is_list(min) == false)
 				{
-					// удаляем элемент с одним поддеревом
-					return false;
+					(*elem)->content = min->content;
+					min->parent->left = min->right;
+					min->right->parent = min->parent;
+					delete min;
+					return true;
 				}
 				(*elem)->content = min->content;
 				if (is_left(min))
@@ -211,6 +221,20 @@ namespace ft
 					min->parent->right = NULL;
 				delete min;
 				return true;
+			}
+			void	add_end_elem()
+			{
+				if (end_elem->parent != NULL)
+				{
+					if (is_left(end_elem))
+						end_elem->parent->left = NULL;
+					else
+						end_elem->parent->right = NULL;
+				}
+				t_elem *tmp = root;
+				while (tmp->right != NULL)
+					tmp = tmp->right;
+				tmp->right = end_elem;
 			}
 		public:
 			map()
@@ -581,12 +605,17 @@ namespace ft
 			{
 				t_elem *to_erase = position.elem;
 
-				if (delete_list(&to_erase) == true)
+				position++;
+				if (to_erase == end_elem)
 					return ;
-				if (delete_one_brench(&to_erase) == true)
+				else if (	delete_list(&to_erase) || \
+							delete_one_brench(&to_erase) || \
+							delete_if_right_min(&to_erase))
+				{
+					if (position.elem == end_elem)
+						add_end_elem();
 					return ;
-				if (delete_if_right_min(&to_erase) == true)
-					return ;
+				}
 			}
 			void clear()
 			{

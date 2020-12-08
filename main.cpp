@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/08 08:22:17 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/08 16:41:49 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,21 @@ int		main(void)
 	}
 	std::cout << "\n";
 	
-
+	ft::map<int, int>::iterator it(m.end());
+	it--;
+	m.erase(it);
+	it = m.end();
+	it--;
+	m.erase(it);
+	it = m.end();
+	it--;
+	m.erase(it);
 	for (ft::map<int,int>::iterator i = m.begin() ; i != m.end(); i++)
 	{
 		std::cout << (*i).first << " ";
 	}
 	std::cout << "\n";
+
 
 	return (0);
 }
