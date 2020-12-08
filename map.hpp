@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/08 16:40:07 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/08 17:27:18 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ namespace ft
 					else if (!is_left(*elem) && (*elem)->parent != NULL)
 						(*elem)->parent->right = NULL;
 					delete *elem;
+					*elem = NULL;
 					length--;
 					return true;
 				}
@@ -182,6 +183,7 @@ namespace ft
 					t_elem *tmp = (*elem)->left;
 					(*elem)->left = tmp->left;
 					(*elem)->right = tmp->right;
+					tmp = NULL;
 					delete tmp;
 					return true;
 				}
@@ -192,6 +194,7 @@ namespace ft
 					(*elem)->left = tmp->left;
 					(*elem)->right = tmp->right;
 					delete tmp;
+					tmp = NULL;
 					return true;
 				}
 				return false;
@@ -204,6 +207,7 @@ namespace ft
 					(*elem)->left->parent = (*elem)->parent;
 					(*elem)->parent->right = (*elem)->left;
 					delete *elem;
+					*elem = NULL;
 					return true;
 				}
 				if (is_list(min) == false)
@@ -212,6 +216,7 @@ namespace ft
 					min->parent->left = min->right;
 					min->right->parent = min->parent;
 					delete min;
+					min = NULL;
 					return true;
 				}
 				(*elem)->content = min->content;
@@ -235,6 +240,7 @@ namespace ft
 				while (tmp->right != NULL)
 					tmp = tmp->right;
 				tmp->right = end_elem;
+				tmp->right->parent = tmp;
 			}
 		public:
 			map()
@@ -605,6 +611,8 @@ namespace ft
 			{
 				t_elem *to_erase = position.elem;
 
+				if (position.elem == NULL)
+					return ;
 				position++;
 				if (to_erase == end_elem)
 					return ;
@@ -614,6 +622,7 @@ namespace ft
 				{
 					if (position.elem == end_elem)
 						add_end_elem();
+					length--;
 					return ;
 				}
 			}
