@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/08 08:51:16 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/08 09:36:10 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ namespace ft
 					return true;
 				return false;
 			}
-			void	delete_list(t_elem **elem)
+			bool	delete_list(t_elem **elem)
 			{
 				if (is_list(*elem) == true)
 				{
@@ -170,9 +170,11 @@ namespace ft
 						to_erase->parent->right = NULL;
 					delete *elem;
 					length--;
+					return true;
 				}
+				return false;
 			}
-			void	delete_one_bench(t_elem **elem)
+			bool	delete_one_brench(t_elem **elem)
 			{
 				if ((*elem)->left != NULL && (*elem)->right == NULL )
 				{
@@ -181,6 +183,7 @@ namespace ft
 					(*elem)->left = tmp->left;
 					(*elem)->right = tmp->right;
 					delete tmp;
+					return true;
 				}
 				else if ((*elem)->left == NULL && (*elem)->right != NULL)
 				{
@@ -189,7 +192,25 @@ namespace ft
 					(*elem)->left = tmp->left;
 					(*elem)->right = tmp->right;
 					delete tmp;
+					return true;
 				}
+				return false;
+			}
+			bool	delete_if_right_min(t_elem **elem)
+			{
+				t_elem *min = getMin(elem->right);
+				if (is_list(min) == false)
+				{
+					// удаляем элемент с одним поддеревом
+					return false;
+				}
+				(*elem)->content = min->content;
+				if (is_left(min))
+					min->parent->left = NULL;
+				else
+					min->parent->right = NULL;
+				delete min;
+				return true;
 			}
 		public:
 			map()
@@ -548,7 +569,6 @@ namespace ft
 				iterator ret = insert(value_type(k, T())).first;
 				return ((*ret).second);
 			}
-
 			iterator find (const Key& k)
 			{
 				t_elem *found = find_elem(k, root);
@@ -561,8 +581,12 @@ namespace ft
 			{
 				t_elem *to_erase = position.elem;
 
-				delete_list(&to_erase);	
-				delete_one_bench(&to_erase);
+				if (delete_list(&to_erase) == true)
+					return ;
+				if (delete_one_brench(&to_erase) == true)
+					return ;
+				if (delete_if_right_min(&to_erase) == true)
+					return ;
 			}
 			void clear()
 			{
