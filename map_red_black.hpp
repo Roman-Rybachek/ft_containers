@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/08 08:51:16 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/08 08:11:15 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ namespace ft
 				new_elem->left = left;
 				new_elem->right = right;
 				new_elem->content = content;
+				new_elem->is_red = true;
 				return new_elem;
 			}
 			t_elem *paste(t_elem **current, t_elem *parent, t_elem *new_elem)
@@ -93,7 +94,93 @@ namespace ft
 				else
 					return grandparent->right;
 			}
-
+/*
+1) Вставляем узел, смотрим кто его батя. Если батя черный - все норм. Если батя красный - включаем балансеровку.
+2) Смотрим, кто у нас дядя:
+	1. Если он черный:
+		Делаем поворот, перекрашиваем дядю и батю
+	2. Если он красный:
+		Перекрашиваем дядю, батю и деда. Запускаем балансировку для деда.
+*/
+			void smallRotate(t_elem **elem)
+			{
+				t_elem *place_for_parent;
+				t_elem *place_for_null;
+				
+				if ((*elem) == (*elem)->parent->right)
+				{
+					place_for_parent = (*elem)->left;
+					place_for_null = (*elem)->parent->right;
+				}
+				else
+				{
+					place_for_parent = (*elem)->right;
+					place_for_null = (*elem)->parent->left;
+				}
+				place_for_parent = (*elem)->parent;
+				t_elem *grandparent = getGrandparent((*elem));
+				place_for_null = NULL;
+				(*elem)->parent->parent = (*elem);
+				(*elem)->parent = grandparent;
+			}
+			void rotateLeft(t_elem **elem)
+			{
+				t_elem *new_root = (*elem)->parent;
+				t_elem *grandparent = getGrandparent(*elem);
+				new_root->is_red = !new_root->is_red;
+				grandparent->is_red = !grandparent->is_red;
+				new_root->left = grandparent;
+				new_root->parent = grandparent->parent;
+				grandparent->parent = new_root;
+				grandparent->right = NULL;
+			}
+			void rotateRight(t_elem **elem)
+			{
+				t_elem *new_root = (*elem)->parent;
+				t_elem *grandparent = getGrandparent(*elem);
+				new_root->is_red = !new_root->is_red;
+				grandparent->is_red = !grandparent->is_red;
+				new_root->right = grandparent;
+				new_root->parent = grandparent->parent;
+				grandparent->parent = new_root;
+				grandparent->left = NULL;
+			}
+			void rotate(t_elem **elem)
+			{
+				if (getGrandparent(*elem)->left == (*elem)->parent)
+				{
+					if ((*elem) == (*elem)->parent->right)
+						smallRotate(elem);
+					rotateRight(elem);
+				}
+				else
+				{
+					if ((*elem) == (*elem)->parent->left)
+						smallRotate((elem));
+					rotateLeft(elem);
+				}
+			}
+			void balance(t_elem **elem)
+			{
+				if (*elem == NULL || (*elem)->parent == NULL || (*elem)->parent->is_red == false)
+					return ;
+				if (getGrandparent(*elem) == NULL)
+				{
+					(*elem)->parent->is_red = !(*elem)->parent->is_red;
+					return ;
+				}
+				if (getUncle(*elem)->is_red == false)
+					rotate(elem);
+				else
+				{
+					getUncle(*elem)->is_red = !getUncle(*elem)->is_red;
+					getGrandparent(*elem)->is_red = !getGrandparent(*elem)->is_red;
+					(*elem)->parent->is_red = !(*elem)->parent->is_red;
+					t_elem *gr = getGrandparent(*elem);
+					balance(&gr);
+					return ;
+				}
+			}
 			t_elem *find_elem(const Key& k, t_elem *root_elem)
 			{
 				t_elem *ret = NULL;
@@ -148,49 +235,7 @@ namespace ft
 					tmp = tmp->left;
 				return tmp;
 			}
-			bool	is_list(t_elem *elem)
-			{
-				if (elem->left == elem->right)
-					return true;
-				return false;
-			}
-			bool	is_left(t_elem *elem)
-			{
-				if (elem->parent->left == elem)
-					return true;
-				return false;
-			}
-			void	delete_list(t_elem **elem)
-			{
-				if (is_list(*elem) == true)
-				{
-					if (is_left(*elem) && elem_>parent != NULL)
-						to_erase->parent->left = NULL;
-					else if (!is_left(*elem) && elem_>parent != NULL)
-						to_erase->parent->right = NULL;
-					delete *elem;
-					length--;
-				}
-			}
-			void	delete_one_bench(t_elem **elem)
-			{
-				if ((*elem)->left != NULL && (*elem)->right == NULL )
-				{
-					(*elem)->content = (*elem)->left->content;
-					t_elem *tmp = (*elem)->left;
-					(*elem)->left = tmp->left;
-					(*elem)->right = tmp->right;
-					delete tmp;
-				}
-				else if ((*elem)->left == NULL && (*elem)->right != NULL)
-				{
-					(*elem)->content = (*elem)->right->content;
-					t_elem *tmp = (*elem)->right;
-					(*elem)->left = tmp->left;
-					(*elem)->right = tmp->right;
-					delete tmp;
-				}
-			}
+
 		public:
 			map()
 			{
@@ -503,6 +548,7 @@ namespace ft
 				{
 					inserted = true;
 					length++;
+					balance(&ins_elem);
 				}
 				else
 				{
@@ -560,9 +606,95 @@ namespace ft
 			void erase (iterator position)
 			{
 				t_elem *to_erase = position.elem;
+				
+				// красный узел без детей
+				if (to_erase->is_red && to_erase->left == to_erase->right)
+				{
+					if (to_erase->parent->left == to_erase)
+						to_erase->parent->left = NULL;
+					if (to_erase->parent->right == to_erase)
+						to_erase->parent->right = NULL;
+					delete to_erase;
+					return ;
+				}
+				// черный узел без детей
+				else if (to_erase->left == to_erase->right)
+				{
+					if (to_erase->parent->left == to_erase)
+						to_erase->parent->left = NULL;
+					if (to_erase->parent->right == to_erase)
+						to_erase->parent->right = NULL;
+					balance(&to_erase->parent);
+					delete to_erase;	
+					return ;
+				}
+				// черный узел с одним ребенком
+				else if (to_erase->is_red == false)
+				{
+					if (to_erase->left != NULL)
+					{
+						// остановился тут
+						to_erase->content = to_erase->left->content;
+						delete to_erase->left;
+						to_erase->left = NULL;
+						return ;
+					}
+					if (to_erase->right != NULL)
+					{
+						to_erase->content = to_erase->right->content;
+						delete to_erase->right;
+						to_erase->right = NULL;
+						return ;
+					}
+				}
+				// красный узел с двумя детьми
+				else if (to_erase->is_red == true && to_erase->left && to_erase->right)
+				{
+					t_elem *tmp;
 
-				delete_list(&to_erase);	
-				delete_one_bench(&to_erase);
+					tmp = getMax(to_erase->left);
+					if (tmp->left == NULL && tmp->right == NULL)
+					{
+						to_erase->content =	tmp->content;
+						if (tmp->parent->left == tmp)
+							tmp->parent->left = NULL;
+						if (tmp->parent->right == tmp)
+							tmp->parent->right = NULL;
+						delete tmp;
+						return ;
+					}
+					tmp = getMin(to_erase->right);
+					if (tmp->left == NULL && tmp->right == NULL)
+					{
+						to_erase->content =	tmp->content;
+						if (tmp->parent->left == tmp)
+							tmp->parent->left = NULL;
+						if (tmp->parent->right == tmp)
+							tmp->parent->right = NULL;
+						delete tmp;
+						return ;
+					}
+					tmp = getMax(to_erase->left);
+					if (tmp->left != NULL)
+					{
+						to_erase->content = tmp->content;
+						tmp->parent->right = tmp->left;
+						tmp->left->parent = tmp->parent;
+						delete tmp;
+						return ;
+					}
+					tmp = getMin(to_erase->right);
+					if (tmp->right != NULL)
+					{
+						to_erase->content = tmp->content;
+						tmp->parent->left = tmp->right;
+						tmp->right->parent = tmp->parent;
+						delete tmp;
+						return ;
+					}
+					
+				}
+				throw std::exception();
 			}
 			void clear()
 			{
