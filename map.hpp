@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/09 07:51:11 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/09 10:02:20 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ namespace ft
 				s_elem 				*left;
 				s_elem 				*right;
 				value_type			content;
-				bool				is_red;
 			}						t_elem;
 
 			Compare					compare;
@@ -68,6 +67,8 @@ namespace ft
 						(*current)->right = end_elem;
 						end_elem->parent = *current;
 					}
+					if (getMin(root) == *current)
+						end_elem->right = *current;
 				}
 				else if (compare((*current)->content.first, new_elem->content.first))
 					ins_elem = paste(&(*current)->right, *current, new_elem);
@@ -130,11 +131,12 @@ namespace ft
 			}
 			void delete_all(t_elem **elem)
 			{
-				if ((*elem)->left != NULL)
+				if ((*elem)->left != NULL && (*elem)->left != end_elem)
 					delete_all(&(*elem)->left);
-				if ((*elem)->right != NULL)
+				if ((*elem)->right != NULL && (*elem)->right != end_elem)
 					delete_all(&(*elem)->right);
-				delete *elem;
+				if (*elem != NULL)
+					delete *elem;
 				*elem = NULL;
 				length = 0;
 			}
@@ -253,6 +255,7 @@ namespace ft
 					tmp = tmp->right;
 				tmp->right = end_elem;
 				tmp->right->parent = tmp;
+				end_elem->right = begin().elem;
 			}
 		public:
 			map()
@@ -341,6 +344,11 @@ namespace ft
 					}
 					iterator &operator--()
 					{
+						if (elem == end_elem->right)
+						{
+							elem = end_elem;
+							return *this;
+						}
 						if (elem->left != NULL) // Если есть слево элемент
 						{
 							elem = elem->left;
@@ -513,9 +521,136 @@ namespace ft
 						return *this;
 					}
 			};
+			class reverse_iterator
+			{
+				private:
+					iterator it;
+				public:
+					reverse_iterator(){}
+					reverse_iterator(const reverse_iterator &copy)
+					{
+						it = copy.it;
+					}
+					reverse_iterator(iterator set_it)
+					{
+						it = set_it;
+					}
+					reverse_iterator &operator++()
+					{
+						it--;
+						return *this;
+					}
+					reverse_iterator &operator--()
+					{
+						it++;
+						return *this;
+					}
+					reverse_iterator operator++(int)
+					{	
+						reverse_iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					reverse_iterator operator--(int)
+					{	
+						reverse_iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					value_type &operator*()
+					{
+						return (*it);
+					}
+					bool operator!=(const reverse_iterator &other) const
+					{
+						if (it != other.it)
+							return true;
+						return false;
+					}
+					bool operator==(const reverse_iterator &other) const
+					{
+						if (it == other.it)
+							return true;
+						return false;
+					}
+			};
+			class const_reverse_iterator
+			{
+				private:
+					iterator it;
+				public:
+					const_reverse_iterator(){}
+					const_reverse_iterator(const const_reverse_iterator &copy)
+					{
+						it = copy.it;
+					}
+					const_reverse_iterator(iterator set_it)
+					{
+						it = set_it;
+					}
+					const_reverse_iterator &operator++()
+					{
+						it--;
+						return *this;
+					}
+					const_reverse_iterator &operator--()
+					{
+						it++;
+						return *this;
+					}
+					const_reverse_iterator operator++(int)
+					{	
+						const_reverse_iterator tmp = *this;
+						++(*this);
+						return (tmp);	
+					}
+					const_reverse_iterator operator--(int)
+					{	
+						const_reverse_iterator tmp = *this;
+						--(*this);
+						return (tmp);	
+					}
+					value_type &operator*()
+					{
+						return (*it);
+					}
+					bool operator!=(const const_reverse_iterator &other) const
+					{
+						if (it != other.it)
+							return true;
+						return false;
+					}
+					bool operator==(const const_reverse_iterator &other) const
+					{
+						if (it == other.it)
+							return true;
+						return false;
+					}
+			};
 			iterator begin()
 			{
-				iterator it(root, end_elem);
+				iterator it(end_elem->right, end_elem);
+				return it;
+			}
+			reverse_iterator rbegin()
+			{
+				return reverse_iterator(--end());
+			}
+			reverse_iterator rend()
+			{
+				return reverse_iterator(end());
+			}
+			const_reverse_iterator rbegin() const
+			{
+				return const_reverse_iterator(end_elem);
+			}
+			const_reverse_iterator rend() const
+			{
+				return const_reverse_iterator(end_elem);
+			}
+			const_iterator begin() const
+			{
+				const_iterator it(root, end_elem);
 				t_elem *prev = NULL;
 				while (it.elem != prev)
 				{
@@ -527,6 +662,17 @@ namespace ft
 			iterator end()
 			{
 				iterator it(root, end_elem);
+				t_elem *prew = NULL;
+				while (it.elem != prew)
+				{
+					prew = it.elem;
+					++it;
+				}
+				return it;
+			}
+			const_iterator end() const
+			{
+				const_iterator it(root, end_elem);
 				t_elem *prew = NULL;
 				while (it.elem != prew)
 				{
