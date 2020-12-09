@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/07 06:58:10 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/09 19:34:31 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,9 +179,8 @@ namespace ft
 
 			class iterator
 			{
-				protected:
-					T *p;
 				public:
+					T *p;
 					iterator()
 					{	p = NULL;		}
 					iterator(const iterator &copy)
@@ -277,9 +276,8 @@ namespace ft
 			};
 			class const_iterator : public iterator
 			{
-				protected:
-					T *p;
 				public:
+					T *p;
 					const_iterator() : iterator()
 					{	p = NULL;}
 					const_iterator(const const_iterator &copy) : iterator(copy)
@@ -598,51 +596,33 @@ namespace ft
 
 			iterator insert (iterator position, const T& val)
 			{
-				if (position.getCurrent() != this || \
-					position.getIndex() > len || \
-					position.getIndex() < 0 || \
-					size() == 0)
-					throw std::exception();
 				reserve(len + 1);
-				for (size_t i = len; i != position.getIndex(); i--)
+				for (size_t i = len; &c[i] >= position.p; i--)
 					c[i] = c[i - 1];
-				c[position.getIndex()] = val;
+				*position.p = val;
 				len++;
-				return (iterator(this, position.getIndex()));
+				return (iterator(position.p));
 			}
 			void insert (iterator position, size_t n, const T& val)
 			{
-				if (position.getCurrent() != this || \
-					position.getIndex() > len || \
-					position.getIndex() < 0 || \
-					size() == 0)
-					throw std::exception();
-				reserve(len + n);
-				for (size_t i = len + n - 1; i >= position.getIndex() + n; i--)
-					c[i] = c[i - n];
-				for (long long i = (long long)position.getIndex() + n - 1; i >= (long long)position.getIndex(); i--)
-					c[i] = val;
-				len += n;
+				for (size_t i = 0; i < n; i++)
+				{
+					insert(position, val);
+					position++;
+				}
 			}
-			template <class InputIterator>
+			/*template <class InputIterator>
 			void insert (iterator position, InputIterator first, InputIterator last)
 			{
-				if (position.getCurrent() != this || \
-					position.getIndex() > len || \
-					position.getIndex() < 0 || \
-					size() == 0 || \
-					last < first)
+				if (size() == 0 || last < first)
 					throw std::exception();
 
-				size_t n = last - first;
-				reserve(len + n);
-				for (size_t i = len + n - 1; i >= position.getIndex() + n; i--)
-					c[i] = c[i - n];
-				size_t n_copy = n;
-				for (long long i = (long long)position.getIndex() + n - 1; i >= (long long)position.getIndex(); i--)
-					c[i] = *(first + --n_copy);
-				len += n;
-			}
+				while (first != last)
+				{
+					insert(position, *first);
+					first++;
+				}
+			}*/
 			iterator erase (iterator position)
 			{
 				if (position.getIndex() >= len || position.getIndex() < 0)
