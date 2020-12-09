@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/02 11:20:42 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/09 16:23:35 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ namespace ft
 			void pop_front()
 			{
 				t_elem *tmp;
+				tmp = first_elem;
 				first_elem = first_elem->right;
 				first_elem->left = supp_elem;
 				supp_elem->right = first_elem;

@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/09 12:43:14 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/09 16:32:51 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	push_pop(ft::stack<T, Containers> s)
 
 int		main(void)
 {	
-	std::cout << "Stack test: \n\n";
+	std::cout << "\nStack test: \n\n";
 	ft::stack<int> s1;
 	push_pop(s1);
 	ft::stack<int, ft::list<int> > s2;

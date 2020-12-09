@@ -6,12 +6,13 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 22:25:12 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/24 00:20:30 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/09 16:19:02 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <list>
+#include <cstdlib>
 
 namespace ft
 {
