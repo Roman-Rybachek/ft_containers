@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/08 18:55:15 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/09 07:51:11 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -535,7 +535,6 @@ namespace ft
 				}
 				return it;
 			}
-
 			map& operator= (const map& copy)
 			{
 				delete_all(&root);
@@ -688,6 +687,30 @@ namespace ft
 			std::less<T> value_comp() const
 			{
 				return (compare_value);
+			}
+			iterator lower_bound (const Key& k)
+			{
+				iterator it = find(k);
+				if (--end() == it)
+					return it;
+				return ++it;
+			}
+			const_iterator lower_bound (const Key& k) const
+			{
+				const_iterator it = find(k);
+				if (--end() == it)
+					return it;
+				return ++it;
+			}
+			iterator upper_bound (const Key& k)
+			{
+				iterator it = find(k);
+				return ++it;
+			}
+			const_iterator upper_bound (const Key& k) const
+			{
+				const_iterator it = find(k);
+				return ++it;
 			}
 	};
 }
