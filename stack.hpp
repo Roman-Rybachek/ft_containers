@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 18:17:58 by jeldora           #+#    #+#             */
-/*   Updated: 2020/11/24 19:31:49 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/09 12:34:46 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ namespace ft
 			void push(const T& val)
 			{	c.push_back(val);	}
 			void pop()
-			{	c.pop_back();	}
+			{	
+				if (!c.empty())
+					c.pop_back();	
+			}
 
 			friend bool operator== (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
 			{	return (lhs.c == rhs.c);	}
@@ -48,6 +51,6 @@ namespace ft
 			friend bool operator> (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
 			{	return (lhs.c > rhs.c);	}
 			friend bool operator>= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
-			{	return (lhs.c != rhs.c);	}
+			{	return (lhs.c >= rhs.c);	}
 	};
 }
