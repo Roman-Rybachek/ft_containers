@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/11 15:21:13 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 17:33:33 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,10 +169,13 @@ namespace ft
 				{
 					first_elem = createElemet(supp_elem, supp_elem, val);
 					last_elem = first_elem;
+					supp_elem->right = first_elem;
+					supp_elem->left = last_elem;
 				}
 				else
 				{
 					last_elem = createElemet(last_elem, supp_elem, val);
+					supp_elem->left = last_elem;
 				}
 				increaseLength();
 			}
@@ -211,6 +214,16 @@ namespace ft
 			void pop_front()
 			{
 				t_elem *tmp;
+				if (last_elem == first_elem)
+				{
+					first_elem = NULL;
+					last_elem = NULL;
+					supp_elem->right = NULL;
+					supp_elem->left = NULL;
+					delete tmp;
+					length = 0;
+					return ;
+				}
 				tmp = first_elem;
 				first_elem = first_elem->right;
 				first_elem->left = supp_elem;
@@ -484,6 +497,8 @@ namespace ft
 				size_t s = size();
 				for (size_t i = 0; i < s; i++)
 					pop_back();
+				first_elem = NULL;
+				last_elem = NULL;
 			}
 			void assign (size_t n, const T& val)
 			{
@@ -700,7 +715,7 @@ namespace ft
 				for (iterator it = begin(); it != end() ; it++)
 				{
 					tmp = (--it)++;
-					if (*tmp == *it && tmp != end())
+					while (*tmp == *it && tmp != end())
 						it = erase(it);
 				}
 			}
@@ -712,7 +727,7 @@ namespace ft
 				{
 					tmp = --it;
 					it++;
-					if (binary_pred(*it, *tmp) && it != end())
+					while (binary_pred(*it, *tmp) && it != end())
 						it = erase(it);
 				}
 			}

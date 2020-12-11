@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 12:55:34 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/11 15:27:46 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 17:36:07 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ void print_list(ft::list<T> v)
 	for (typename ft::list<T>::iterator i = v.begin(); i != v.end(); i++)
 		std::cout << *i << " ";
 	std::cout << "\n";
+}
+
+template <typename T>
+bool predicate(T x, T y)
+{
+	if (x == y)
+		return true;
+	return false;
 }
 
 int main()
@@ -76,5 +84,28 @@ int main()
 	print_list(v);
 
 	std::cout << "\nUnique: \n";
+	v1 = v;
+	v.unique();
+	print_list(v);
+	v = v1;
+	v.unique(predicate<int>);
+	print_list(v);
+
+	std::cout << "\nSplice: \n";
+	v1.assign((size_t)4, (int)4);
+	v.assign((size_t)5, (int)5);
+	v.splice(v.begin(), v1);
+	print_list(v);
+
+	v.assign((size_t)5, (int)5);
+	v1.assign((size_t)4, (int)4);
+	v.splice(v.begin(), v1, v1.begin());
+	print_list(v);
+
+	v.assign((size_t)5, (int)5);
+	v1.assign((size_t)4, (int)4);
+	v.splice(v.begin(), v1, v1.begin(), v1.end());
+	print_list(v);
+
 	return 0;
 }
