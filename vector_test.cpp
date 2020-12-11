@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 16:58:26 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/09 19:17:48 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 09:37:23 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,16 @@ int main()
 	std::cout << "\nThree variant insert: \n";
 	it_end = --v1.end();
 	it_begin = v1.begin();
+
+	print_vector(v);
+	v.insert(v.begin() + 2, 55);
+	print_vector(v);
 	v.insert(v.begin(), 55);
 	print_vector(v);
-	v.insert(v.begin(), 3, 33);
+	v.insert(v.begin(), 55);
 	print_vector(v);
+	//v.insert(v.begin(), 3, 33);
+	//print_vector(v);
 	//v.insert(v.begin(), it_begin, it_end);
 
 	return (0);

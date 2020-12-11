@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/09 19:34:31 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 09:36:21 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@
 
 namespace ft
 {
-	template <typename T, typename Alloc = std::allocator<T> >
+	template <typename T>
 	class vector
 	{	
 		private:
-			Alloc	alloc;
 			T		*c;
 			size_t	len;
 			size_t	space;
@@ -32,17 +31,16 @@ namespace ft
 			{	c = NULL; len = 0;	space = 0;	}
 			explicit vector(size_t n, const T& val = T())	// Fill [Узнать, почемy const]
 			{
-				c = alloc.allocate(n);
+				c = new T[n];
 				for (size_t i = 0; i < n; i++)
 					c[i] = val;
 				len = n; space = n;
 			}
 			vector(const vector<T>& copy)	// Copy
 			{
-				alloc = copy.alloc;
 				len = copy.len;
 				space = copy.space;
-				c = alloc.allocate(space);
+				c = new T[space];
 				for (size_t i = 0; i < len; i++)
 					c[i] = copy.c[i];
 			}
@@ -53,14 +51,14 @@ namespace ft
 					throw std::exception();
 				len = last - first;
 				space = len;
-				c = alloc.allocate(space);
+				c = new T[space];
 				for (size_t i = 0; i < len; i++)
 					c[i] = *(first + i);
 			}
 			~vector()
 			{
 				if (c != NULL)
-					alloc.deallocate(c, space);
+					delete[] c;
 			}
 
 			T&	operator[](size_t index)
@@ -70,10 +68,10 @@ namespace ft
 			vector &operator=(const vector &copy)
 			{
 				if (c != NULL)
-					alloc.deallocate(c, space);
+					delete[] c; 
 				len = copy.len;
 				space = copy.space;
-				c = alloc.allocate(space);
+				c = new T[space];
 				for(size_t i = 0; i < len; i++)
 					c[i] = copy.c[i];
 				return (*this);
@@ -108,8 +106,8 @@ namespace ft
 				if (n > max_size())
 					throw std::bad_alloc();
 				vector<T> tmp(*this);
-				alloc.deallocate(c, space);
-				c = alloc.allocate(n);
+				delete[] c;
+				c = new T[n];
 				for (size_t i = 0; i < len; i++)
 					c[i] = tmp[i];
 				space = n;
@@ -146,20 +144,20 @@ namespace ft
 			void assign(TemplateIterator &first, TemplateIterator &last)
 			{
 				if (c != NULL)
-					alloc.deallocate(c, space);
+					delete[] c;
 				if (last < first)
 					throw std::exception();
 				len = last - first;
 				space = len;
-				c = alloc.allocate(space);
+				c = new T[space];
 				for (size_t i = 0; i < len; i++)
 					c[i] = *(first + i);
 			}
 			void assign(size_t n, const T& val = T())
 			{
 				if (c != NULL)
-					alloc.deallocate(c, space);
-				c = alloc.allocate(n);
+					delete[] c;
+				c = new T[n];
 				for (size_t i = 0; i < n; i++)
 					c[i] = val;
 				len = n; space = n;
@@ -238,8 +236,8 @@ namespace ft
 					bool operator!=(iterator const &other)
 					{
 						if (p != other.p)
-							return (false);
-						return true;
+							return (true);
+						return false;
 					}
 					bool operator>(iterator const &other)
 					{
@@ -597,8 +595,9 @@ namespace ft
 			iterator insert (iterator position, const T& val)
 			{
 				reserve(len + 1);
-				for (size_t i = len; &c[i] >= position.p; i--)
-					c[i] = c[i - 1];
+
+				for (iterator it_end = end(); it_end > position; it_end--)
+					*it_end = *(it_end - 1);
 				*position.p = val;
 				len++;
 				return (iterator(position.p));
@@ -607,7 +606,7 @@ namespace ft
 			{
 				for (size_t i = 0; i < n; i++)
 				{
-					insert(position, val);
+					position = insert(position, val);
 					position++;
 				}
 			}
@@ -676,7 +675,7 @@ namespace ft
 			const_reverse_iterator rend() const
 			{	return(const_iterator(begin()));		}
 
-			friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			friend bool operator== (const vector<T >& lhs, const vector<T >& rhs)
 			{
 				if (lhs.size() != rhs.size())
 					return false;
@@ -685,7 +684,7 @@ namespace ft
 						return (false);
 				return true;
 			}
-			friend bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			friend bool operator!= (const vector<T >& lhs, const vector<T >& rhs)
 			{
 				if (lhs.size() == rhs.size())
 					return false;
@@ -694,7 +693,7 @@ namespace ft
 						return (false);
 				return true;
 			}
-			friend bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			friend bool operator> (const vector<T >& lhs, const vector<T >& rhs)
 			{
 				for (size_t i = 0; i < lhs.size(); i++)
 				{
@@ -707,7 +706,7 @@ namespace ft
 				}
 				return false;
 			}
-			friend bool operator< (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			friend bool operator< (const vector<T >& lhs, const vector<T >& rhs)
 			{
 				for (size_t i = 0; i < rhs.size(); i++)
 				{
@@ -720,7 +719,7 @@ namespace ft
 				}
 				return false;
 			}
-			friend bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			friend bool operator>= (const vector<T >& lhs, const vector<T >& rhs)
 			{
 				for (size_t i = 0; i < rhs.size(); i++)
 				{
@@ -733,7 +732,7 @@ namespace ft
 				}
 				return true;
 			}
-			friend bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+			friend bool operator<= (const vector<T >& lhs, const vector<T >& rhs)
 			{
 				for (size_t i = 0; i < lhs.size(); i++)
 				{
@@ -748,10 +747,10 @@ namespace ft
 			}
 	};
 
-	template <class T, class Alloc>
-  	void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y)
+	template <class T>
+  	void swap (ft::vector<T >& x, ft::vector<T >& y)
 	{
-		vector<T, Alloc> tmp = x;
+		vector<T> tmp = x;
 		x = y;
 		y = tmp;
 	}
