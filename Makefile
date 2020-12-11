@@ -6,7 +6,7 @@
 #    By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/23 20:20:36 by jeldora           #+#    #+#              #
-#    Updated: 2020/12/11 14:17:34 by jeldora          ###   ########.fr        #
+#    Updated: 2020/12/11 17:57:25 by jeldora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,4 +45,5 @@ clean:
 	rm -fr $(NAME1) $(NAME1).dSYM
 	rm -fr $(NAME2) $(NAME2).dSYM
 	rm -fr $(NAME3) $(NAME3).dSYM
+	rm -fr $(NAME4) $(NAME4).dSYM
 re: clean all

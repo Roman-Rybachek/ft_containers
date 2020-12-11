@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 12:55:34 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/11 17:36:07 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 18:04:39 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,23 @@ template <typename T>
 bool predicate(T x, T y)
 {
 	if (x == y)
+		return true;
+	return false;
+}
+
+template <typename T>
+bool predicate1(T x)
+{
+	if (x == 4)
+		return true;
+	return false;
+}
+
+
+template <typename T>
+bool compare(T x, T y)
+{
+	if (x > y)
 		return true;
 	return false;
 }
@@ -105,6 +122,30 @@ int main()
 	v.assign((size_t)5, (int)5);
 	v1.assign((size_t)4, (int)4);
 	v.splice(v.begin(), v1, v1.begin(), v1.end());
+	print_list(v);
+
+	std::cout << "\nRemove 4: \n";
+	v1 = v;
+	v.remove(4);
+	print_list(v);
+	v1.remove_if(predicate1<int>);
+	print_list(v1);
+
+	std::cout << "\nSort: \n";
+	v.push_back(1);
+	v.push_back(2);
+	v.push_back(3);
+	v.push_back(4);
+	v.push_back(5);
+	v.push_back(6);
+	print_list(v);
+	v.sort();
+	print_list(v);
+
+	std::cout << "\nReverse and sort\n";
+	v.reverse();
+	print_list(v);
+	v.sort(compare<int>);
 	print_list(v);
 
 	return 0;

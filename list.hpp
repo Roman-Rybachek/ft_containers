@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/11 17:33:33 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 18:04:00 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,13 +154,7 @@ namespace ft
 			}
 			list& operator= (const list& copy)
 			{
-				size_t s = size();
-				for (size_t i = 0; i < s; i++)
-					pop_back();
-				if (copy.size() == 0)
-					return *this;
-				for (const_iterator it = copy.begin(); it != copy.end(); it++)
-					push_back(*it);
+				assign(copy.begin(), copy.end());
 				return *this;
 			}
 			void push_back(const T& val)
@@ -674,7 +668,7 @@ namespace ft
 				iterator it = begin();
 				while (it != end())
 				{
-					if (*it == val)
+					while (*it == val)
 						it = erase(it);
 					it++;
 				}
@@ -685,7 +679,7 @@ namespace ft
 				iterator it = begin();
 				while (it != end())
 				{
-					if (pred(it))
+					while (pred(*it))
 						it = erase(it);
 					it++;
 				}
@@ -706,7 +700,7 @@ namespace ft
 				tmp = supp_elem->left;
 				supp_elem->left = supp_elem->right;
 				supp_elem->right = tmp;
-				first_elem = supp_elem->right->right;
+				first_elem = supp_elem->right;
 				last_elem = supp_elem->left;
 			}
 			void unique()
@@ -794,7 +788,7 @@ namespace ft
 					i--;
 					iterator j = i;
 					i++;
-					while (comp(tmp, *j))
+					while (comp(*j, tmp))
 					{
 						iterator z = j;
 						*(++z) = *j;
