@@ -6,12 +6,12 @@
 #    By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/23 20:20:36 by jeldora           #+#    #+#              #
-#    Updated: 2020/12/11 17:57:25 by jeldora          ###   ########.fr        #
+#    Updated: 2020/12/11 18:14:53 by jeldora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC =		clang++
-FLAGS =		-Wall -Wextra -Werror -g -std=c++98 -o
+FLAGS =		-Wall -Wextra -Werror -g -o
 
 NAME1 =		stack_test
 NAME2 =		queue_test
