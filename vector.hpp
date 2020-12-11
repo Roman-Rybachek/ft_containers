@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/11 11:36:44 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 12:53:14 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ namespace ft
 			{
 				iterator it_begin = begin();
 				int i = 0;
-				while (it_begin != it)
+				while (it_begin < it)
+				{
 					i++;
+					it_begin++;
+				}
 				return i;
 			}
 		public:
@@ -612,7 +615,7 @@ namespace ft
 					*it_end = *(it_end - 1);
 				*position.p = val;
 				len++;
-				return (iterator(position.p));
+				return (position);
 			}
 			void insert (iterator position, size_t n, const T& val)
 			{
@@ -622,23 +625,21 @@ namespace ft
 					position++;
 				}
 			}
-			/*template <class InputIterator>
+			template <class InputIterator>
 			void insert (iterator position, InputIterator first, InputIterator last)
 			{
 				if (size() == 0 || last < first)
 					throw std::exception();
-
 				while (first != last)
 				{
-					insert(position, *first);
+					position = insert(position, *first);
+					position++;
 					first++;
 				}
-			}*/
+			}
 			iterator erase (iterator position)
 			{
-				if (position.getIndex() >= len || position.getIndex() < 0)
-					throw std::exception();
-				for (size_t i = position.getIndex(); i < len - 1; i++)
+				for (size_t i = takeIndex(position); i < len - 1; i++)
 					c[i] = c[i + 1];
 				c[len - 1] = 0;
 				len -= 1;
@@ -649,12 +650,12 @@ namespace ft
 				if (last < first || last > end() || first < begin())
 					throw std::exception();
 				int n = last - first;
-				iterator it_end = end();
-				for (size_t i = first.getIndex(); i <= it_end.getIndex(); i++)
-					c[i] = c[i + n + 1];
-				for (size_t i = it_end.getIndex() - 1; i >= it_end.getIndex() -1 - n; i--)
-					c[i] = 0;
-				len -= n + 1;
+				while (n)
+				{
+					erase(first);
+					n--;
+				}
+				len -= n;
 				return (first);
 			}
 			void swap (ft::vector<T>& x)
@@ -665,7 +666,7 @@ namespace ft
 			}
 			void clear()
 			{
-				for (int i = 0; i < size(); i++)
+				for (size_t i = 0; i < size(); i++)
 					c[i] = 0;
 				len = 0;
 			}
@@ -698,8 +699,8 @@ namespace ft
 			}
 			friend bool operator!= (const vector<T >& lhs, const vector<T >& rhs)
 			{
-				if (lhs.size() == rhs.size())
-					return false;
+				if (lhs.size() != rhs.size())
+					return true;
 				for (size_t i = 0; i < lhs.size(); i++)
 					if (lhs[i] == rhs[i])
 						return (false);

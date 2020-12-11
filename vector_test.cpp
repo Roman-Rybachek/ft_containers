@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 16:58:26 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/11 11:15:23 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 12:54:25 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void print_vector(ft::vector<T> v)
 int main()
 {
 	ft::vector<int> v;
-/*
+
 	std::cout << "\nVector test:\n";
 	std::cout << "Max size: " << v.max_size() << "\n";
 	std::cout << "Size: " << v.size() << "\n";
@@ -71,25 +71,42 @@ int main()
 	print_vector(v);
 	print_vector(v1);
 
-	std::cout << "\nThree variant insert: \n";
-	it_end = --v1.end();
+	print_vector(v);
+	std::cout << "\nInsert: \n";
+	it_end = v1.end();
 	it_begin = v1.begin();
-*/
-	v.resize(10);
-	int n = 1;
-	for (ft::vector<int>::iterator i = v.begin(); i < v.end(); i++)
-		*i = n++;
-	
+	// Они базируются на простом insert
+	v.insert(v.begin(), (size_t)3, (int)33);
 	print_vector(v);
-	v.insert(v.begin(), 55);
+	v.insert(v.begin(), it_begin, it_end);
 	print_vector(v);
-	/*v.insert(v.begin(), 55);
+
+	std::cout << "\nErase: \n";
+	v.erase(v.begin());
 	print_vector(v);
-	v.insert(v.begin(), 55);
-	print_vector(v);*/
-	//v.insert(v.begin(), 3, 33);
-	//print_vector(v);
-	//v.insert(v.begin(), it_begin, it_end);
+	it_end = v.end() - 1;
+	it_begin = v.begin() + 1;
+	v.erase(it_begin, it_end);
+	print_vector(v);
+
+	std::cout << "\nRelations operators:\n";
+	v.clear();
+	v1.clear();
+	v.assign(3, 33);
+	v1.assign(3, 33);
+	if (v == v1)
+		std::cout << "==\n";
+	v1.push_back(10);
+	if (v != v1)
+		std::cout << "!=\n";
+	if (v <= v1)
+		std::cout << "<=\n";
+	if (v1 >= v)
+		std::cout << ">=\n";
+	if (v < v1)
+		std::cout << "<\n";
+	if (v1 > v)
+		std::cout << ">\n";
 
 	return (0);
 }

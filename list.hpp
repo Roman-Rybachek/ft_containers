@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/09 16:23:35 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 14:29:54 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,13 @@ namespace ft
 			void                decreaseLength(size_t delta = 1)
 			{
 				length -= delta;
+				if (length == 0)
+				{
+					supp_elem->left = supp_elem;
+					supp_elem->right = supp_elem;
+					first_elem = NULL;
+					last_elem = NULL;
+				}
 			}
 			size_t getSize()
 			{
@@ -185,6 +192,16 @@ namespace ft
 			void pop_back()
 			{
 				t_elem *tmp = last_elem;
+				if (last_elem == first_elem)
+				{
+					first_elem = NULL;
+					last_elem = NULL;
+					supp_elem->right = NULL;
+					supp_elem->left = NULL;
+					delete tmp;
+					length = 0;
+					return ;
+				}
 				last_elem = last_elem->left;
 				last_elem->right = supp_elem;
 				supp_elem->left = last_elem;
@@ -212,7 +229,9 @@ namespace ft
 					iterator(t_elem *set_p)//
 					{	p = set_p;}
 					virtual	T &operator*()//
-					{	return(p->content);		}
+					{	
+						return(p->content);
+					}
 					iterator &operator=(const iterator &copy)//
 					{
 						p = copy.p;
@@ -476,11 +495,8 @@ namespace ft
 			void assign (InputIterator first, InputIterator last)
 			{
 				clear();
-				size_t n = last - first;
-				if (last - 1 < first)
-					throw std::exception();
-				for (size_t i = 0; i <= n - 1; i++)
-					push_back(*(first + i));
+				for (; first != last; first++)
+					push_back(*first);
 			}
 			iterator insert (iterator position, const T& val)
 			{
@@ -511,30 +527,33 @@ namespace ft
 			iterator erase (iterator position)
 			{
 				t_elem *tmp = position.p;
-				position--;
+				position++;
 				tmp->left->right = tmp->right;
 				tmp->right->left = tmp->left;
 				delete tmp;
 				decreaseLength();
+				last_elem = supp_elem->left;
+				first_elem = supp_elem->right;
 				return (position);
 			}
 			iterator erase (iterator first, iterator last)
 			{
-				first.p->left->right = last.p;
-				last.p->left = first.p->left;
-				iterator it = first;
-				while (it != last)
+				while (first != last)
 				{
-					delete (it.p);
-					it++;
-					decreaseLength();
+					first = erase(first);
 				}
 				return last;
 			}
 			iterator begin()
-			{	return (iterator(first_elem));	}
+			{	
+				if (first_elem == NULL)
+					return iterator(supp_elem);
+				return iterator(first_elem);
+			}
 			iterator end()
-			{	return (iterator(supp_elem));	}
+			{	
+				return iterator(supp_elem);	
+			}
 			reverse_iterator rbegin()
 			{
 				return reverse_iterator(iterator(last_elem));
@@ -868,7 +887,3 @@ namespace ft
 			}
 	};
 }
-
-/*
-	Осталось сделать два риверсивных оператора
-*/
