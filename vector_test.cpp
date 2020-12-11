@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 16:58:26 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/11 09:37:23 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 11:15:23 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void print_vector(ft::vector<T> v)
 int main()
 {
 	ft::vector<int> v;
-
+/*
 	std::cout << "\nVector test:\n";
 	std::cout << "Max size: " << v.max_size() << "\n";
 	std::cout << "Size: " << v.size() << "\n";
@@ -74,14 +74,19 @@ int main()
 	std::cout << "\nThree variant insert: \n";
 	it_end = --v1.end();
 	it_begin = v1.begin();
-
-	print_vector(v);
-	v.insert(v.begin() + 2, 55);
+*/
+	v.resize(10);
+	int n = 1;
+	for (ft::vector<int>::iterator i = v.begin(); i < v.end(); i++)
+		*i = n++;
+	
 	print_vector(v);
 	v.insert(v.begin(), 55);
 	print_vector(v);
-	v.insert(v.begin(), 55);
+	/*v.insert(v.begin(), 55);
 	print_vector(v);
+	v.insert(v.begin(), 55);
+	print_vector(v);*/
 	//v.insert(v.begin(), 3, 33);
 	//print_vector(v);
 	//v.insert(v.begin(), it_begin, it_end);

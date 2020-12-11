@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 02:38:00 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/11 09:36:21 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 11:36:44 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,21 @@ namespace ft
 {
 	template <typename T>
 	class vector
-	{	
+	{
+		public:
+			class iterator;
 		private:
 			T		*c;
 			size_t	len;
 			size_t	space;
+			int		takeIndex(iterator it)
+			{
+				iterator it_begin = begin();
+				int i = 0;
+				while (it_begin != it)
+					i++;
+				return i;
+			}
 		public:
 			vector()	// Base 
 			{	c = NULL; len = 0;	space = 0;	}
@@ -594,8 +604,10 @@ namespace ft
 
 			iterator insert (iterator position, const T& val)
 			{
+				int index = takeIndex(position);
 				reserve(len + 1);
-
+				position = iterator(&c[index]);
+				//память первыделяется после того, как я передал место, в которуе нужно вставить!
 				for (iterator it_end = end(); it_end > position; it_end--)
 					*it_end = *(it_end - 1);
 				*position.p = val;
