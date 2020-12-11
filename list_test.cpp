@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 12:55:34 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/11 14:30:29 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 15:27:46 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int main()
 	v.assign(it_begin, it_end);
 	print_list(v);
 
+
+
 	v.push_back(22);
 	v.push_front(11);
 	std::cout << "\nPush back 22 and push front 11" << "\n";
@@ -54,10 +56,25 @@ int main()
 	std::cout << "\nErase: \n";
 	v.erase(v.begin());
 	print_list(v);
-	it_end = --v.end();
+	it_end = v.end();
 	it_begin = ++v.begin();
 	v.erase(++it_begin, it_end);
 	print_list(v);
 
+	std::cout << "\nSwap: \n";
+	v1.assign((size_t)5, (int)5);
+	v.swap(v1);
+	print_list(v);
+	print_list(v1);
+
+	std::cout << "\nInsert: \n";
+	it_end = v1.end();
+	it_begin = v1.begin();
+	v.insert(v.begin(), (size_t)3, (int)33);
+	print_list(v);
+	v.insert(v.begin(), it_begin, it_end);
+	print_list(v);
+
+	std::cout << "\nUnique: \n";
 	return 0;
 }

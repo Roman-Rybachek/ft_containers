@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/11 14:29:54 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/11 15:21:13 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -509,18 +509,17 @@ namespace ft
 				for (size_t i = 0; i < n; i++)
 				{
 					createElemet(position.p->left, position.p, val);
+					first_elem = supp_elem->right;
+					last_elem = supp_elem->left;
 					length++;
 				}
 			}
 			template <class InputIterator>
 			void insert (iterator position, InputIterator first, InputIterator last)
 			{
-				size_t n = last - first - 1;
-				if (last - 1 < first || last == first)
-					throw std::exception();
-				for (size_t i = 0; i <= n; i++)
+				for (; first != last; first++)
 				{
-					createElemet(position.p->left, position.p, *(first + i));
+					insert(position, (size_t)1, (const T&)*first);
 					length++;
 				}
 			}
