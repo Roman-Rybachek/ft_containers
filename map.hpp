@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/12 17:34:04 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/12 18:39:22 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -661,13 +661,7 @@ namespace ft
 			}
 			const_iterator begin() const
 			{
-				const_iterator it(root, end_elem);
-				t_elem *prev = NULL;
-				while (it.elem != prev)
-				{
-					prev = it.elem;
-					--it;
-				}
+				const_iterator it(end_elem->right, end_elem);
 				return it;
 			}
 			iterator end()
@@ -695,7 +689,13 @@ namespace ft
 			map& operator= (const map& copy)
 			{
 				delete_all(&root);
-				for (iterator it = copy.begin(); it != copy.end(); it++)
+				length = 0;
+				max_value = 0;
+				root = NULL;
+				end_elem = newElem(NULL, NULL, NULL);
+				compare = copy.compare;
+				compare_value = copy.compare_value;
+				for (const_iterator it = copy.begin(); it != copy.end(); it++)
 					insert(*it);
 				return *this;
 			}

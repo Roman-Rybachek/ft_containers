@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 10:00:27 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/12 16:55:31 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/12 18:33:31 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,12 @@ int		main()
 	it++; it++; it++;
 	v.erase(it, v.end());
 	print_map(v);
+
+	std::cout << "\nSwap: \n";
+	print_map(v);
+	print_map(v1);
+	v.swap(v1);
+	print_map(v);
+	print_map(v1);
 	return 0;
 }
