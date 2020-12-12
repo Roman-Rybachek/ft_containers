@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/12 16:18:55 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/12 17:34:04 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,12 @@ namespace ft
 				}
 				else if ((*elem)->left == NULL && (*elem)->right != NULL)
 				{
+				/*	if ((*elem)->right == end_elem)
+					{
+						(*elem)->parent->right = end_elem;
+						delete *elem;
+						return true;
+					}*/
 					(*elem)->content = (*elem)->right->content;
 					t_elem *tmp = (*elem)->right;
 					(*elem)->left = tmp->left;
@@ -207,6 +213,8 @@ namespace ft
 					(*elem)->right = tmp->right;
 					if (tmp->right != NULL)
 						tmp->right->parent = *elem;
+					if (tmp == end_elem)
+						end_elem = *elem;
 					delete tmp;
 					tmp = NULL;
 					return true;

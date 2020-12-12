@@ -6,14 +6,14 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 10:00:27 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/12 16:30:34 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/12 16:55:31 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.hpp"
 #include <iostream>
 
-void print_map(ft::map<int, int> v)
+void print_map(ft::map<int, int> &v)
 {
 	for (ft::map<int, int>::iterator i = v.begin(); i != v.end(); i++)
 		std::cout << (*i).first << ":" << (*i).second << " ";
@@ -52,6 +52,21 @@ int		main()
 	v1.insert(std::pair<int, int>(9, 900));
 	v1.insert(std::pair<int, int>(10, 1000));
 	v.insert(v1.begin(), v1.end());
+	print_map(v);
+	std::cout << "Find 9: ";
+	if (v.find(9) != v.end())
+		std::cout << "true\n";
+	else
+		std::cout << "false\n";
+
+	std::cout << "\nErase: \n";
+	v.erase(v.begin());
+	print_map(v);
+	v.erase(9);
+	print_map(v);
+	it = v.begin();
+	it++; it++; it++;
+	v.erase(it, v.end());
 	print_map(v);
 	return 0;
 }
