@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 10:00:27 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/12 18:33:31 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/12 20:25:32 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ int		main()
 	v.insert(v1.begin(), v1.end());
 	print_map(v);
 	std::cout << "Find 9: ";
-	if (v.find(9) != v.end())
-		std::cout << "true\n";
-	else
+	if ((*v.find(9)).first != (*v.end()).first)
 		std::cout << "false\n";
+	else
+		std::cout << "true\n";
 
 	std::cout << "\nErase: \n";
 	v.erase(v.begin());
@@ -75,5 +75,20 @@ int		main()
 	v.swap(v1);
 	print_map(v);
 	print_map(v1);
+
+	std::cout << "\nCount: \n" << v.count(8) << "\n";
+	std::cout << "\nEqual range: \n" << (*v.equal_range(8).first).second << "\n";
+	std::cout << "\nLower bound: \n" << (*v.lower_bound(8)).second << "\n";
+	std::cout << "\nUpper bound: \n" << (*v.upper_bound(8)).second << "\n";
+	
+	std::cout << "Reverse iterator\n";
+	v.insert(std::pair<int, int>(1, 100));
+	v.insert(std::pair<int, int>(2, 200));
+	v.insert(std::pair<int, int>(3, 300));
+	v.insert(std::pair<int, int>(4, 400));
+	v.insert(std::pair<int, int>(5, 500));
+	for (ft::map<int, int>::reverse_iterator i = v.rbegin(); i != v.rend(); i++)
+		std::cout << (*i).first << ":" << (*i).second << " ";
+	
 	return 0;
 }

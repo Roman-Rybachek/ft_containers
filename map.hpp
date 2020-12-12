@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/12 18:39:22 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/12 20:42:28 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,19 @@ namespace ft
 					ret = find_elem(k, root_elem->left);
 				return ret;
 			}
+			t_elem *find_elem(const Key& k, t_elem *root_elem) const
+			{
+				t_elem *ret = NULL;
+				if (root_elem->content.first == k)
+					return root_elem;
+				else if (root_elem == end_elem)
+					return NULL;
+				if (k > root_elem->content.first)
+					ret = find_elem(k, root_elem->right);
+				else if (k < root_elem->content.first)
+					ret = find_elem(k, root_elem->left);
+				return ret;
+			}
 			t_elem *find_elem_or_next(const Key& k, t_elem *root_elem)
 			{
 				t_elem *ret = NULL;
@@ -119,9 +132,9 @@ namespace ft
 					return root_elem;
 				else if (root_elem->left == NULL && root_elem->right == NULL)
 				{
-					iterator it(root_elem);
+					iterator it(root_elem, end_elem);
 					it++;
-					return (it->elem);
+					return (it.elem);
 				}
 				if (k > root_elem->content.first)
 					ret = find_elem_or_next(k, root_elem->right);
@@ -143,7 +156,7 @@ namespace ft
 			t_elem *getMax(t_elem *elem)
 			{
 				t_elem *tmp = elem;
-				while (tmp->right)
+				while (tmp->right != end_elem)
 					tmp = tmp->right;
 				return tmp;
 			}
@@ -322,6 +335,10 @@ namespace ft
 					}
 					iterator(t_elem *set_elem, t_elem *set_end_elem)
 					{
+						if (set_elem == NULL)
+							throw std::exception();
+						if (set_end_elem == NULL)
+							throw std::exception();
 						elem = set_elem;
 						end_elem = set_end_elem;
 					}
@@ -649,15 +666,15 @@ namespace ft
 			}
 			reverse_iterator rend()
 			{
-				return reverse_iterator(end());
+				return reverse_iterator(++end());
 			}
 			const_reverse_iterator rbegin() const
 			{
-				return const_reverse_iterator(end_elem);
+				return const_reverse_iterator(--end());
 			}
 			const_reverse_iterator rend() const
 			{
-				return const_reverse_iterator(end_elem);
+				return const_reverse_iterator(++end());
 			}
 			const_iterator begin() const
 			{
@@ -666,24 +683,12 @@ namespace ft
 			}
 			iterator end()
 			{
-				iterator it(root, end_elem);
-				t_elem *prew = NULL;
-				while (it.elem != prew)
-				{
-					prew = it.elem;
-					++it;
-				}
+				iterator it(end_elem->parent, end_elem);
 				return it;
 			}
 			const_iterator end() const
 			{
-				const_iterator it(root, end_elem);
-				t_elem *prew = NULL;
-				while (it.elem != prew)
-				{
-					prew = it.elem;
-					++it;
-				}
+				const_iterator it(end_elem->parent, end_elem);
 				return it;
 			}
 			map& operator= (const map& copy)
@@ -775,6 +780,14 @@ namespace ft
 				else
 					return (iterator(found, end_elem));
 			}
+			const_iterator find (const Key& k) const
+			{
+				t_elem *found = find_elem(k, root);
+				if (found == NULL)
+					return end();
+				else
+					return (const_iterator(found, end_elem));
+			}
 			void erase (iterator position)
 			{
 				t_elem *to_erase = position.elem;
@@ -790,6 +803,7 @@ namespace ft
 				{
 					if (position.elem == end_elem)
 						add_end_elem();
+					max_value = getMax(root)->content.first;
 					length--;
 					return ;
 				}
@@ -824,14 +838,14 @@ namespace ft
 			}
 			size_t count (const Key& k) const
 			{
-				if (find(k) == end())
+				if ((*find(k)).first == (*end()).first)
 					return 0;
 				return 1;
 			}
 			std::pair<iterator,iterator> equal_range (const Key& k)
 			{
 				t_elem *found = find_elem_or_next(k, root);
-				iterator it(found);
+				iterator it(found, end_elem);
 				if ((*it).first == k)
 					return std::pair<iterator, iterator>(it, it);
 				++it;
@@ -848,14 +862,14 @@ namespace ft
 			iterator lower_bound (const Key& k)
 			{
 				iterator it = find(k);
-				if (--end() == it)
+				if ((*--end()).first == (*it).first)
 					return it;
 				return ++it;
 			}
 			const_iterator lower_bound (const Key& k) const
 			{
 				const_iterator it = find(k);
-				if (--end() == it)
+				if ((*--end()).first == (*it).first)
 					return it;
 				return ++it;
 			}
@@ -871,4 +885,3 @@ namespace ft
 			}
 	};
 }
-
