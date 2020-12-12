@@ -6,17 +6,16 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 10:00:27 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/12 10:20:25 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/12 16:30:34 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.hpp"
 #include <iostream>
 
-template <typename T, typename Key, typename map = ft::map<Key, T> >
-void print_map(map v)
+void print_map(ft::map<int, int> v)
 {
-	for (typename map::iterator i = v.begin(); i != v.end(); i++)
+	for (ft::map<int, int>::iterator i = v.begin(); i != v.end(); i++)
 		std::cout << (*i).first << ":" << (*i).second << " ";
 	std::cout << "\n";
 }
@@ -30,13 +29,29 @@ int		main()
 	std::cout << "Is empty: " << v.empty() << "\n";
 	std::cout << "Max size: " << v.max_size() << "\n";
 
-	std::cout << "Insert: \n";
+
+	std::cout << "\nInsert: \n";
 	v.insert(std::pair<int, int>(1, 100));
 	v.insert(std::pair<int, int>(2, 200));
 	v.insert(std::pair<int, int>(3, 300));
 	v.insert(std::pair<int, int>(4, 400));
 	v.insert(std::pair<int, int>(5, 500));
-	print_map<int, int>(v);
+	print_map(v);
+	ft::map<int, int>::iterator it = v.begin();
+	it++;
+	it++;
+	it++;
+	it++;
+	it++;
+	v.insert(it, std::pair<int, int>(6, 600));
+	print_map(v);
 
+	ft::map<int, int> v1;
+	v1.insert(std::pair<int, int>(7, 700));
+	v1.insert(std::pair<int, int>(8, 800));
+	v1.insert(std::pair<int, int>(9, 900));
+	v1.insert(std::pair<int, int>(10, 1000));
+	v.insert(v1.begin(), v1.end());
+	print_map(v);
 	return 0;
 }

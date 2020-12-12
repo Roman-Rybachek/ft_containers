@@ -6,11 +6,11 @@
 #    By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/23 20:20:36 by jeldora           #+#    #+#              #
-#    Updated: 2020/12/12 10:21:59 by jeldora          ###   ########.fr        #
+#    Updated: 2020/12/12 14:29:54 by jeldora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC =		clang++
+CC =		clang++ -std=c++11
 FLAGS =		-Wall -Wextra -Werror -g -o
 
 NAME1 =		stack_test

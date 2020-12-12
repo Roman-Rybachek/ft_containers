@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/09 10:02:20 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/12 16:18:55 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ namespace ft
 				value_type			content;
 			}						t_elem;
 
-			Compare					compare;
-			std::less<T>			compare_value;
 			t_elem					*root;
 			t_elem					*end_elem;
 			Key						max_value;
 			size_t					length;
+			std::less<T>			compare_value;
+			Compare					compare;
 
 			t_elem 					*newElem(	t_elem *parent = NULL, \
 												t_elem *left = NULL, \
@@ -104,7 +104,7 @@ namespace ft
 				t_elem *ret = NULL;
 				if (root_elem->content.first == k)
 					return root_elem;
-				else if (root_elem->left == NULL && root_elem->right == NULL)
+				else if (root_elem == end_elem)
 					return NULL;
 				if (k > root_elem->content.first)
 					ret = find_elem(k, root_elem->right);
@@ -286,7 +286,10 @@ namespace ft
 				length = 0;
 				max_value = 0;
 				root = NULL;
-				for (iterator it = copy.begin(); it != copy.end(); it++)
+				end_elem = newElem(NULL, NULL, NULL);
+				compare = copy.compare;
+				compare_value = copy.compare_value;
+				for (const_iterator it = copy.begin(); it != copy.end(); it++)
 					insert(*it);
 			}
 			~map()
@@ -728,13 +731,13 @@ namespace ft
 				{
 					position.elem->left = newElem(position.elem, NULL, NULL, val);
 					length++;
-					balance(&position.elem->left);
+					return (iterator(position.elem->left, end_elem));
 				}
-				if ((*position).first < val.first && position.elem->right == NULL)
+				else if ((*position).first < val.first && position.elem->right == NULL)
 				{
 					position.elem->right = newElem(position.elem, NULL, NULL, val);
 					length++;
-					balance(&position.elem->right);
+					return (iterator(position.elem->right, end_elem));
 				}
 				else
 					return insert(val).first;
