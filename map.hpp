@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/13 10:57:17 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/13 11:28:11 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -864,25 +864,25 @@ namespace ft
 			iterator lower_bound (const Key& k)
 			{
 				iterator it = find(k);
-				if ((*--end()).first == (*it).first)
-					return it;
-				return ++it;
+				return it;
 			}
 			const_iterator lower_bound (const Key& k) const
 			{
 				const_iterator it = find(k);
-				if ((*--end()).first == (*it).first)
-					return it;
-				return ++it;
+				return it;
 			}
 			iterator upper_bound (const Key& k)
 			{
 				iterator it = find(k);
+				if ((*it).first == (*end()).first)
+					return it;
 				return ++it;
 			}
 			const_iterator upper_bound (const Key& k) const
 			{
 				const_iterator it = find(k);
+				if ((*it).first == (*end()).first)
+					return it;
 				return ++it;
 			}
 	};

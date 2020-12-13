@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 10:00:27 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/13 11:08:22 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/13 11:15:05 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int		main()
 	std::cout << "\nEqual range: \n" << (*v.equal_range(8).first).second << "\n";
 	std::cout << "\nLower bound: \n" << (*v.lower_bound(8)).second << "\n";
 	std::cout << "\nUpper bound: \n" << (*v.upper_bound(8)).second << "\n";
-	
+
 	std::cout << "Reverse iterator\n";
 	v.insert(std::pair<int, int>(1, 100));
 	v.insert(std::pair<int, int>(2, 200));
@@ -89,6 +89,12 @@ int		main()
 	for (ft::map<int, int>::reverse_iterator i = v.rbegin(); i != v.rend(); i++)
 		std::cout << (*i).first << ":" << (*i).second << " ";
 	std::cout << "\n";
-	
+
+	std::cout << "Operator []\n";	
+	std::cout << v[1] << "\n";
+	std::cout << v[2] << "\n";
+	std::cout << v[3] << "\n";
+	v[11] = 1100;
+	std::cout << v[11] << "\n";
 	return 0;
 }
