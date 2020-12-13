@@ -6,11 +6,11 @@
 #    By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/23 20:20:36 by jeldora           #+#    #+#              #
-#    Updated: 2020/12/12 14:29:54 by jeldora          ###   ########.fr        #
+#    Updated: 2020/12/13 18:57:15 by jeldora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC =		clang++ -std=c++11
+CC =		clang++ 
 FLAGS =		-Wall -Wextra -Werror -g -o
 
 NAME1 =		stack_test
@@ -25,23 +25,23 @@ SRCS_4 =	list_test.cpp
 SRCS_5 =	map_test.cpp 
 HEADERS =	vector.hpp stack.hpp list.hpp queue.hpp map.hpp
 
-all: $(NAME5) # $(NAME4) # $(NAME3) # $(NAME1) $(NAME2)
+all: $(NAME5) $(NAME4) $(NAME3) $(NAME2) $(NAME1)
 	
 $(NAME1): $(SRCS_1) Makefile $(HEADERS)
 	@$(CC) $(FLAGS) $(NAME1) $(SRCS_1)
-	@./$(NAME1)
+	#@./$(NAME1)
 
 $(NAME2): $(SRCS_2) Makefile $(HEADERS)
 	@$(CC) $(FLAGS) $(NAME2) $(SRCS_2)
-	@./$(NAME2)
+	#@./$(NAME2)
 
 $(NAME3): $(SRCS_3) Makefile $(HEADERS)
 	@$(CC) $(FLAGS) $(NAME3) $(SRCS_3)
-	@./$(NAME3)
+	#@./$(NAME3)
 	
 $(NAME4): $(SRCS_4) Makefile $(HEADERS)
 	@$(CC) $(FLAGS) $(NAME4) $(SRCS_4)
-	@./$(NAME4)
+	#@./$(NAME4)
 
 $(NAME5): $(SRCS_5) Makefile $(HEADERS)
 	@$(CC) $(FLAGS) $(NAME5) $(SRCS_5)

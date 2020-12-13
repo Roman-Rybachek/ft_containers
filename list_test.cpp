@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 12:55:34 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/11 18:20:39 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/13 17:36:06 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,18 @@
 #include <list>
 #include <iostream>
 
-template <typename T, typename list = ft::list<T> >
-void print_list(list v)
+template <typename T>
+void print_list(ft::list<T> v)
 {
-	for (typename list::iterator i = v.begin(); i != v.end(); i++)
+	for (typename ft::list<T>::iterator i = v.begin(); i != v.end(); i++)
+		std::cout << *i << " ";
+	std::cout << "\n";
+}
+
+template <typename T>
+void print_list_std(std::list<T> v)
+{
+	for (typename std::list<T>::iterator i = v.begin(); i != v.end(); i++)
 		std::cout << *i << " ";
 	std::cout << "\n";
 }
@@ -177,7 +185,7 @@ int main()
 	l.push_back(6);
 	l.push_back(8);
 	l.merge(l1);
-	print_list<int, std::list<int> >(l);
+	print_list_std<int>(l);
 
 	v.clear();
 	v.push_back(1);
@@ -203,7 +211,7 @@ int main()
 	l.push_back(6);
 	l.push_back(8);
 	l.merge(l1, compare<int>);
-	print_list<int, std::list<int> >(l);
+	print_list_std<int >(l);
 
 	std::cout << "\nRelations operators:\n";
 	v.clear();

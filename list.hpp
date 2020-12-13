@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 23:22:16 by rinne             #+#    #+#             */
-/*   Updated: 2020/12/11 18:04:00 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/13 19:16:49 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,11 @@ namespace ft
 			}
 			list& operator= (const list& copy)
 			{
+				clear();
+				length = copy.length;
+				first_elem = NULL;
+				last_elem = NULL;
+				createSupportElement();
 				assign(copy.begin(), copy.end());
 				return *this;
 			}
@@ -208,6 +213,7 @@ namespace ft
 			void pop_front()
 			{
 				t_elem *tmp;
+				tmp = first_elem;
 				if (last_elem == first_elem)
 				{
 					first_elem = NULL;
@@ -218,7 +224,6 @@ namespace ft
 					length = 0;
 					return ;
 				}
-				tmp = first_elem;
 				first_elem = first_elem->right;
 				first_elem->left = supp_elem;
 				supp_elem->right = first_elem;
@@ -341,9 +346,8 @@ namespace ft
 			
 			class const_iterator : iterator
 			{
-				protected:
-					t_elem	*p;
 				public:
+					t_elem	*p;
 					const void* getAddr() const
 					{
 						return (p);
@@ -504,6 +508,8 @@ namespace ft
 			void assign (InputIterator first, InputIterator last)
 			{
 				clear();
+				if (first.p == NULL)
+					return ;
 				for (; first != last; first++)
 					push_back(*first);
 			}
