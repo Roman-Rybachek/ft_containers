@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 00:06:59 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/12 20:42:28 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/13 10:57:17 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -683,12 +683,12 @@ namespace ft
 			}
 			iterator end()
 			{
-				iterator it(end_elem->parent, end_elem);
+				iterator it(end_elem, end_elem);
 				return it;
 			}
 			const_iterator end() const
 			{
-				const_iterator it(end_elem->parent, end_elem);
+				const_iterator it(end_elem, end_elem);
 				return it;
 			}
 			map& operator= (const map& copy)
@@ -845,6 +845,8 @@ namespace ft
 			std::pair<iterator,iterator> equal_range (const Key& k)
 			{
 				t_elem *found = find_elem_or_next(k, root);
+				if (found == NULL)
+					return std::pair<iterator, iterator>(end(), end());
 				iterator it(found, end_elem);
 				if ((*it).first == k)
 					return std::pair<iterator, iterator>(it, it);

@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 10:00:27 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/12 20:25:32 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/13 11:08:22 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int		main()
 	it++;
 	it++;
 	it++;
-	it++;
 	v.insert(it, std::pair<int, int>(6, 600));
 	print_map(v);
 
@@ -55,9 +54,9 @@ int		main()
 	print_map(v);
 	std::cout << "Find 9: ";
 	if ((*v.find(9)).first != (*v.end()).first)
-		std::cout << "false\n";
-	else
 		std::cout << "true\n";
+	else
+		std::cout << "false\n";
 
 	std::cout << "\nErase: \n";
 	v.erase(v.begin());
@@ -89,6 +88,7 @@ int		main()
 	v.insert(std::pair<int, int>(5, 500));
 	for (ft::map<int, int>::reverse_iterator i = v.rbegin(); i != v.rend(); i++)
 		std::cout << (*i).first << ":" << (*i).second << " ";
+	std::cout << "\n";
 	
 	return 0;
 }
