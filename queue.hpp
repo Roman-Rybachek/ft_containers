@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 22:25:12 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/13 19:00:14 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/13 19:35:13 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 namespace ft
 {
-	template <typename T, typename Container = ft::list<T> >
+	template <typename T, typename Container = std::list<T> >
 	class queue
 	{
 		private:

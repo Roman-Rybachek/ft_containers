@@ -6,7 +6,7 @@
 /*   By: jeldora <jeldora@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 01:57:46 by jeldora           #+#    #+#             */
-/*   Updated: 2020/12/13 18:56:59 by jeldora          ###   ########.fr       */
+/*   Updated: 2020/12/13 19:32:34 by jeldora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ int		main(void)
 	ft::queue<int, std::deque<int> > s3;
 	push_pop(s3);
 
-	ft::queue<int, ft::list<int> > s6;
-	ft::queue<int, ft::list<int> > s7;
+	ft::queue<int, std::list<int> > s6;
+	ft::queue<int, std::list<int> > s7;
 
 	std::cout << "Relation operators:\n";
-	push<int, ft::list<int> >(s6);
-	push<int, ft::list<int> >(s7);
+	push<int, std::list<int> >(s6);
+	push<int, std::list<int> >(s7);
 	if (s6 == s7)
 		std::cout << "==\n";
 	s6.push(10);
